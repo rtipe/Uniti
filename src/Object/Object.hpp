@@ -7,7 +7,7 @@
 #include "json/value.h"
 #include "Transform.hpp"
 #include "IObjectPlugin.hpp"
-#include "PluginManager.hpp"
+#include "ObjectPluginManager.hpp"
 
 namespace Uniti {
     class Object;
@@ -45,12 +45,12 @@ namespace Uniti {
         Scene &getScene();
         template<typename PLUGIN>
         PLUGIN &get(const std::string &name);
-        void add(const std::string &name, std::unique_ptr<IObjectPlugin> plugin);
+        void add(const std::string &name, IObjectPlugin &plugin);
         const Object &operator[](const std::string &name) const;
         Object &operator[](const std::string &name);
         void emitEvent(const std::string &name, const Json::Value &value);
-        const PluginManager<IObjectPlugin> &getPluginManager() const;
-        PluginManager<IObjectPlugin> &getPluginManager();
+        const ObjectPluginManager &getPluginManager() const;
+        ObjectPluginManager &getPluginManager();
         Object &operator=(const Object &other);
     };
 }

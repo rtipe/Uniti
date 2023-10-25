@@ -7,6 +7,7 @@
 #include "json/value.h"
 #include "Object.hpp"
 #include "IScenePlugin.hpp"
+#include "ScenePluginManager.hpp"
 
 namespace Uniti {
     class Scene {
@@ -18,11 +19,11 @@ namespace Uniti {
         const std::string &getName() const;
         template<typename PLUGIN>
         PLUGIN &get(const std::string &name);
-        void add(const std::string &name, std::unique_ptr<IScenePlugin> plugin);
+        void add(const std::string &name, IScenePlugin &plugin);
         void addEventListener(const std::string &name, eventFunction);
         void emitEvent(const std::string &name, const Json::Value &value);
-        const PluginManager<IScenePlugin> &getPluginManager() const;
-        PluginManager<IScenePlugin> &getPluginManager();
+        const ScenePluginManager &getPluginManager() const;
+        ScenePluginManager &getPluginManager();
         const Object &operator[](const std::string &name) const;
         Object &operator[](const std::string &name);
     };

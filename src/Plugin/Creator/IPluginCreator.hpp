@@ -9,6 +9,7 @@ namespace Uniti {
     class IPluginCreator {
     public:
         virtual ~IPluginCreator() = default;
+        virtual void remove(PLUGIN *element) = 0;
         virtual PLUGIN *create() = 0;
     };
 }
