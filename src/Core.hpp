@@ -31,7 +31,7 @@ namespace Uniti {
         Json::Value &getData();
         template<typename PLUGIN>
         PLUGIN &get(const std::string &name);
-        void add(const std::string &name, std::unique_ptr<ICorePlugin> plugin);
+        void add(const std::string &name, ICorePlugin &plugin);
         void addEventListener(const std::string &name, eventFunction);
         void emitEvent(const std::string &name, const Json::Value &value);
     };

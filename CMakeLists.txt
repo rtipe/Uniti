@@ -60,6 +60,7 @@ endforeach()
 
 target_link_libraries(Uniti PUBLIC Threads::Threads)
 target_link_libraries(Uniti PUBLIC jsoncpp_lib)
+target_link_libraries(Uniti PUBLIC dl)
 
 add_subdirectory(src)
 
