@@ -29,8 +29,13 @@ namespace Uniti {
         void setA(int value);
         void set(int r, int g, int b);
         void set(int r, int g, int b, int a);
+    private:
+        int _r;
+        int _g;
+        int _b;
+        int _a;
     };
 }
 
-std::ostream &operator<<(std::ostream& os, const Uniti::Color &color);
+std::ostream &operator<<(std::ostream &os, const Uniti::Color &color);
 Uniti::Logger &operator<<(Uniti::Logger &os, const Uniti::Color &color);
