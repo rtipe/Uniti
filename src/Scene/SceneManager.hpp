@@ -21,6 +21,7 @@ namespace Uniti {
             void addScenePath(ScenePath &scenePath);
             bool changeScene(const std::string &name);
             void update();
+            void end();
             Json::Value getSceneValue(const ScenePath &scenePath) const;
         private:
             std::unique_ptr<Scene> _globalScene;

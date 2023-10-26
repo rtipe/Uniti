@@ -12,7 +12,10 @@ namespace Uniti {
     _pluginManager(scene["plugins"], *this) {}
 
     void Scene::update() {
+        this->_pluginManager.postUpdate();
+        this->_objectManager.update();
         this->_pluginManager.update();
+        this->_pluginManager.preUpdate();
     }
 
     const ObjectManager &Scene::getObjects() const {
@@ -51,5 +54,12 @@ namespace Uniti {
 
     Object &Scene::operator[](const std::string &name) {
         return this->_objectManager.operator[](name);
+    }
+
+    void Scene::end() {
+        this->_pluginManager.postEnd();
+        // TODO : add end() with objectManager
+        this->_pluginManager.end();
+        this->_pluginManager.postEnd();
     }
 }
