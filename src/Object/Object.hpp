@@ -45,7 +45,7 @@ namespace Uniti {
         Scene &getScene();
         template<typename PLUGIN>
         PLUGIN &get(const std::string &name) {
-
+            return dynamic_cast<PLUGIN &>(this->_objectPluginManager.get(name));
         }
         const Object &operator[](const std::string &name) const;
         Object &operator[](const std::string &name);
@@ -54,6 +54,14 @@ namespace Uniti {
         ObjectPluginManager &getPluginManager();
         const Json::Value &getValue() const;
         Json::Value &getValue();
+        static std::optional<std::reference_wrapper<Object>> find(const std::string &name, bool recursive = true);
+        static std::optional<std::reference_wrapper<Object>> find(const std::string &name, const Scene &scene, bool recursive = true);
+        static std::optional<std::reference_wrapper<Object>> find(const std::string &name, const ObjectManager &objectManager, bool recursive = true);
+        static std::optional<std::reference_wrapper<Object>> find(const std::string &name, const Object &object, bool recursive = true);
+        static std::optional<std::reference_wrapper<Object>> find_if(std::function<bool(const Object &object)>, bool recursive = true);
+        static std::optional<std::reference_wrapper<Object>> find_if(const Scene &scene, std::function<bool(const Object &object)> function, bool recursive = true);
+        static std::optional<std::reference_wrapper<Object>> find_if(const ObjectManager &objectManager, std::function<bool(const Object &object)> function, bool recursive = true);
+        static std::optional<std::reference_wrapper<Object>> find_if(const Object &object, std::function<bool(const Object &object)> function, bool recursive = true);
     private:
         static Json::Value openJsonFile(const std::string &fileName);
         Json::Value _value;

@@ -19,7 +19,7 @@ namespace Uniti {
         const std::string &getName() const;
         template<typename PLUGIN>
         PLUGIN &get(const std::string &name) {
-
+            return dynamic_cast<PLUGIN &>(this->_pluginManager.get(name));
         }
         void addEventListener(const std::string &name, eventFunction);
         void emitEvent(const std::string &name, const Json::Value &value);
