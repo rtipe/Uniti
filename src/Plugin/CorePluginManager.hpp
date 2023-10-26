@@ -10,5 +10,9 @@
 #include "TPluginManager.hpp"
 
 namespace Uniti {
-    class CorePluginManager : public TPluginManager<PluginHandler<ICorePlugin, IPluginCreator<ICorePlugin>>, ICorePlugin> {};
+    class Core;
+    class CorePluginManager : public TPluginManager<PluginHandler<ICorePlugin, IPluginCreator<ICorePlugin, Core>, Core>, ICorePlugin, Core> {
+    public:
+        CorePluginManager(const Json::Value &plugins, Core &parent) : TPluginManager(plugins, parent) {}
+    };
 }

@@ -5,11 +5,11 @@
 #pragma once
 
 namespace Uniti {
-    template<typename PLUGIN>
+    template<typename PLUGIN, typename PARENT>
     class IPluginCreator {
     public:
         virtual ~IPluginCreator() = default;
         virtual void remove(PLUGIN *element) = 0;
-        virtual PLUGIN *create() = 0;
+        virtual PLUGIN *create(PARENT &parent) = 0;
     };
 }

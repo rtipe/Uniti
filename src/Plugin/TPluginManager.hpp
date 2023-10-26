@@ -9,17 +9,25 @@
 #include "json/value.h"
 
 namespace Uniti {
-    template<typename Handler, typename Interface>
+    template<typename Handler, typename Interface, typename Parent>
     class TPluginManager {
     public:
+        TPluginManager(const Json::Value &plugins, Parent &parent):
+        _parent(parent) {
+            for (const Json::Value &plugin : plugins) {
+                auto name = plugin["name"].asString();
+                this->add(name, plugin);
+            }
+            this->start();
+        }
         void add(const std::string &name, const Json::Value &value) {
-            this->_plugins[name] = PluginFactory<Handler, Interface>::getFactory().get();
-            this->_plugins[name].awake(value);
+            this->_plugins.emplace(name, PluginFactory<Handler, Interface, Parent>::getFactory().get(name, _parent));
+            this->_plugins.at(name).get().awake(value);
         }
         void remove(const std::string &name) {
             if (_plugins.count(name) == 0)
                 throw std::runtime_error(name + " <- not found");
-            PluginFactory<Handler, Interface>::getFactory().removeElement(name, this->_plugins.at(name).get());
+            PluginFactory<Handler, Interface, Parent>::getFactory().removeElement(name, this->_plugins.at(name).get());
             this->_plugins.erase(name);
         }
         const Interface &get(const std::string &name) const {
@@ -64,6 +72,7 @@ namespace Uniti {
                 element.second.get().getEvent().emitEvent(name, value);
         }
     private:
+        Parent &_parent;
         std::map<std::string, std::reference_wrapper<Interface>> _plugins;
     };
 }
