@@ -12,8 +12,18 @@ namespace Uniti {
     template<typename Handler, typename Interface, typename Parent>
     class TPluginManager {
     public:
+        TPluginManager(TPluginManager &pluginManager):
+        _parent(pluginManager._parent),
+        _value(pluginManager._value) {
+            for (const auto &plugin : pluginManager._value) {
+                auto name = plugin["name"].asString();
+                this->add(name, plugin);
+            }
+            this->start();
+        }
         TPluginManager(const Json::Value &plugins, Parent &parent):
-        _parent(parent) {
+        _parent(parent),
+        _value(plugins) {
             for (const Json::Value &plugin : plugins) {
                 auto name = plugin["name"].asString();
                 this->add(name, plugin);
@@ -73,6 +83,7 @@ namespace Uniti {
         }
     private:
         Parent &_parent;
+        Json::Value _value;
         std::map<std::string, std::reference_wrapper<Interface>> _plugins;
     };
 }
