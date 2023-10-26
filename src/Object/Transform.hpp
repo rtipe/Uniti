@@ -22,7 +22,15 @@ namespace Uniti {
         Vector2f &getOrigin();
         float getRotation() const;
         float &getRotation();
+        void setPosition(Vector2f &value);
+        void setScale(Vector2f &value);
         void setRotation(float value);
+        void setOrigin(Vector2f &value);
+    private:
+        Vector2f _position;
+        Vector2f _scale;
+        Vector2f _origin;
+        float _rotation = 0;
     };
 }
 
