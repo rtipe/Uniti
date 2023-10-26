@@ -18,13 +18,20 @@ namespace Uniti {
         ObjectManager &getObjects();
         const std::string &getName() const;
         template<typename PLUGIN>
-        PLUGIN &get(const std::string &name);
-        void add(const std::string &name, IScenePlugin &plugin);
+        PLUGIN &get(const std::string &name) {
+
+        }
         void addEventListener(const std::string &name, eventFunction);
         void emitEvent(const std::string &name, const Json::Value &value);
         const ScenePluginManager &getPluginManager() const;
         ScenePluginManager &getPluginManager();
         const Object &operator[](const std::string &name) const;
         Object &operator[](const std::string &name);
+    private:
+        Event _event;
+        ObjectManager _objectManager;
+        ScenePluginManager _pluginManager;
+        std::string _name;
+        Json::Value _value;
     };
 }

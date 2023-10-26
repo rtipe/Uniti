@@ -8,8 +8,8 @@
 #include "IPluginCreator.hpp"
 
 namespace Uniti {
-    template<typename INTERFACE, typename PLUGIN>
-    class PluginCreator : public IPluginCreator<INTERFACE> {
+    template<typename INTERFACE, typename PLUGIN, typename PARENT>
+    class PluginCreator : public IPluginCreator<INTERFACE, PARENT> {
     public:
         ~PluginCreator() {
             for (PLUGIN *element : this->_elements)
@@ -19,8 +19,8 @@ namespace Uniti {
             this->_elements.erase(element);
             delete element;
         }
-        INTERFACE *create() {
-            PLUGIN *element = new PLUGIN();
+        INTERFACE *create(PARENT &parent) {
+            PLUGIN *element = new PLUGIN(parent);
             this->_elements.push_back(element);
             return element;
         }
