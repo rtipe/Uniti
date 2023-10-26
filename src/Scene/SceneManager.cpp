@@ -101,4 +101,8 @@ namespace Uniti {
         file >> scene;
         return scene;
     }
+
+    void SceneManager::end() {
+
+    }
 } // Uniti

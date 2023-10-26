@@ -44,8 +44,10 @@ namespace Uniti {
 
     void Object::update() {
         if (!this->_isEnabled) return;
-        this->_objectPluginManager.update();
+        this->_objectPluginManager.preUpdate();
         this->_objectManager.update();
+        this->_objectPluginManager.update();
+        this->_objectPluginManager.postUpdate();
     }
 
     void Object::setName(const std::string &name) {
@@ -217,5 +219,12 @@ namespace Uniti {
         if (child)
             return child;
         return std::nullopt;
+    }
+
+    void Object::end() {
+        this->_objectPluginManager.preEnd();
+        // TODO : add end() with objectManager
+        this->_objectPluginManager.end();
+        this->_objectPluginManager.postEnd();
     }
 }
