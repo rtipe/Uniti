@@ -64,5 +64,6 @@ namespace Uniti {
             if (object->getName() == name)
                 return *object;
         }
+        throw std::runtime_error(name + " <- not found");
     }
 } // Uniti
