@@ -27,7 +27,7 @@ namespace Uniti {
     {
         auto current_time = (!_paused) ? std::chrono::high_resolution_clock::now() : _pause;
         auto duration = this->getMicroSeconds() / 1000;
-        return static_cast<float>(duration);
+        return duration;
     }
 
     float Clock::getMicroSeconds() const
