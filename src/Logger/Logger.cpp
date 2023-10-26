@@ -12,7 +12,7 @@ namespace Uniti {
         if (_events.count("print"))
             printElement = _events.at("print")(LOG, text);
         if (!printElement.empty())
-            std::cout << "[Debug:Log] (" << _path << ") : " << printElement << std::endl;
+            std::cout << "[Logger:Log] (" << _path << ") : " << printElement << std::endl;
     }
 
     void Logger::Warn(const std::string &text) {
@@ -20,7 +20,7 @@ namespace Uniti {
         if (_events.count("print"))
             printElement = _events.at("print")(WARN, text);
         if (!printElement.empty())
-            std::cout << "\033[33m[Debug:Warn] (" << _path << ") : " << printElement << "\033[39m" << std::endl;
+            std::cout << "\033[33m[Logger:Warn] (" << _path << ") : " << printElement << "\033[39m" << std::endl;
     }
 
     void Logger::Danger(const std::string &text) {
@@ -28,7 +28,7 @@ namespace Uniti {
         if (_events.count("print"))
             printElement = _events.at("print")(DANGER, text);
         if (!printElement.empty())
-            std::cout << "\033[31m[Debug:Warn] (" << _path << ") : " << printElement << "\033[39m" << std::endl;
+            std::cout << "\033[31m[Logger:Warn] (" << _path << ") : " << printElement << "\033[39m" << std::endl;
     }
 
     void Logger::Info(const std::string &text) {
@@ -36,7 +36,7 @@ namespace Uniti {
         if (_events.count("print"))
             printElement = _events.at("print")(INFO, text);
         if (!printElement.empty())
-            std::cout << "\033[34m[Debug:Warn] (" << _path << ") : " << printElement << "\033[39m" << std::endl;
+            std::cout << "\033[34m[Logger:Warn] (" << _path << ") : " << printElement << "\033[39m" << std::endl;
     }
 
     Logger &Logger::operator<<(const std::string &text) {

@@ -3,6 +3,7 @@
 //
 
 #include "Event.hpp"
+#include "Logger.hpp"
 
 namespace Uniti {
     std::size_t Event::addEvent(const std::string &name, eventFunction function) {
@@ -21,10 +22,16 @@ namespace Uniti {
     }
 
     void Event::emitEvent(const std::string &name, const Json::Value &value) {
+        Logger::Info("Emit event " + name);
         auto it = _events.find(name);
         if (it != _events.end()) {
             for (auto &function : it->second) {
-                function(value);
+                Logger::Info("Execution event " + name);
+                try {
+                    function(value);
+                } catch (std::exception &e) {
+                    Logger::Danger(e.what());
+                }
             }
         }
     }
