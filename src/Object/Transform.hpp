@@ -31,7 +31,6 @@ namespace Uniti {
         Vector2f _scale;
         Vector2f _origin;
         float _rotation = 0;
-        void setRotation(float value);
     };
 }
 
