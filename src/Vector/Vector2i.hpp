@@ -37,5 +37,8 @@ namespace Uniti {
         Vector2i &operator=(const Vector2i &other);
         Vector2i &operator=(const Vector2f &other);
         Vector2i &operator=(const int &other);
+    private:
+        int _x;
+        int _y;
     };
 }
