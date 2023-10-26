@@ -139,3 +139,13 @@ namespace Uniti {
             || thisTop > otherBottom);
     }
 } // Uniti
+
+std::ostream& operator<<(std::ostream& os, const Uniti::Box &box) {
+    os << "Box dimension : width = " << box.getDimension().getX() << " height = " << box.getDimension().getY() << std::endl
+        << "Position : x = " << box.getPosition().getX() << " y = " << box.getPosition().getY();
+    return os;
+}
+
+/* TODO pareil que l'autre
+Uniti::Logger& operator<<(Uniti::Logger& os, const Uniti::Box &box);
+*/
