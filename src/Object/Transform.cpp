@@ -51,17 +51,21 @@ namespace Uniti {
         return this->_rotation;
     }
 
-    void Transform::setPosition(Vector2f value) {
+    void Transform::setPosition(Vector2f &value) {
         this->_position.setX(value.getX());
         this->_position.setY(value.getY());
     }
 
-    void Transform::setScale(Vector2f value) {
+    void Transform::setScale(Vector2f &value) {
         this->_scale.setX(value.getX());
         this->_scale.setY(value.getY());
     }
 
     void Transform::setRotation(float value) {
         this->_rotation = value;
+    }
+
+    void Transform::setOrigin(Vector2f &value) {
+        this->_origin = value;
     }
 } // Uniti
