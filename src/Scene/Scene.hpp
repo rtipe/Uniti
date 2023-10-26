@@ -14,6 +14,7 @@ namespace Uniti {
     public:
         Scene(const Json::Value &scene, const std::string &name = "");
         void update();
+        void end();
         const ObjectManager &getObjects() const;
         ObjectManager &getObjects();
         const std::string &getName() const;

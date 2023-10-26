@@ -19,7 +19,9 @@ namespace Uniti {
                 auto name = plugin["name"].asString();
                 this->add(name, plugin);
             }
+            this->preStart();
             this->start();
+            this->postStart();
         }
         TPluginManager(const Json::Value &plugins, Parent &parent):
         _parent(parent),
@@ -28,7 +30,13 @@ namespace Uniti {
                 auto name = plugin["name"].asString();
                 this->add(name, plugin);
             }
+            this->preStart();
             this->start();
+            this->postStart();
+        }
+        ~TPluginManager() {
+            for (auto &element : this->_plugins)
+                PluginFactory<Handler, Interface, Parent>::getFactory().removeElement(element.first, element.second.get());
         }
         void add(const std::string &name, const Json::Value &value) {
             this->_plugins.emplace(name, PluginFactory<Handler, Interface, Parent>::getFactory().get(name, _parent));
@@ -53,27 +61,39 @@ namespace Uniti {
         bool has(const std::string &name) const {
             return this->_plugins.contains(name);
         }
-        void update() {
+        void preUpdate() {
             for (auto &element : this->_plugins)
                 element.second.get().preUpdate();
+        }
+        void update() {
             for (auto &element : this->_plugins)
                 element.second.get().update();
+        }
+        void postUpdate() {
             for (auto &element : this->_plugins)
                 element.second.get().postUpdate();
         }
-        void start() {
+        void preStart() {
             for (auto &element : this->_plugins)
                 element.second.get().preStart();
+        }
+        void start() {
             for (auto &element : this->_plugins)
                 element.second.get().start();
+        }
+        void postStart() {
             for (auto &element : this->_plugins)
                 element.second.get().postStart();
         }
-        void end() {
+        void preEnd() {
             for (auto &element : this->_plugins)
                 element.second.get().preEnd();
+        }
+        void end() {
             for (auto &element : this->_plugins)
                 element.second.get().end();
+        }
+        void postEnd() {
             for (auto &element : this->_plugins)
                 element.second.get().postEnd();
         }
