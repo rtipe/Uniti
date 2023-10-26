@@ -15,5 +15,7 @@ namespace Uniti {
         void removeEvent(const std::string &name);
         void removeEvent(const std::string &name, std::size_t id);
         void emitEvent(const std::string &name, const Json::Value &value);
+    private:
+        std::map<std::string, std::vector<eventFunction>> _events;
     };
 }
