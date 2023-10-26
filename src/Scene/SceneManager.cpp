@@ -101,4 +101,9 @@ namespace Uniti {
         file >> scene;
         return scene;
     }
-} // Uniti
+
+    void SceneManager::end() {
+        this->_currentScene->end();
+        this->_globalScene->end();
+    }
+}

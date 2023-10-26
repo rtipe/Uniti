@@ -32,6 +32,7 @@ namespace Uniti {
         Object(const Json::Value &value, Scene &scene);
         Object(Scene &scene, const std::string &fileName);
         void update();
+        void end();
         void setName(const std::string &name);
         const std::string &getName() const;
         std::string &getName();
@@ -62,8 +63,8 @@ namespace Uniti {
         static std::optional<std::reference_wrapper<Object>> find_if(const Scene &scene, std::function<bool(const Object &object)> function, bool recursive = true);
         static std::optional<std::reference_wrapper<Object>> find_if(const ObjectManager &objectManager, std::function<bool(const Object &object)> function, bool recursive = true);
         static std::optional<std::reference_wrapper<Object>> find_if(const Object &object, std::function<bool(const Object &object)> function, bool recursive = true);
-    private:
         static Json::Value openJsonFile(const std::string &fileName);
+    private:
         Json::Value _value;
         Scene &_scene;
         ObjectManager _objectManager;
