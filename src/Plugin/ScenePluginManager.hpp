@@ -10,5 +10,9 @@
 #include "TPluginManager.hpp"
 
 namespace Uniti {
-    class ScenePluginManager : public TPluginManager<PluginHandler<IScenePlugin, IPluginCreator<IScenePlugin>>, IScenePlugin> {};
+    class Scene;
+    class ScenePluginManager : public TPluginManager<PluginHandler<IScenePlugin, IPluginCreator<IScenePlugin, Scene>, Scene>, IScenePlugin, Scene> {
+    public:
+        ScenePluginManager(const Json::Value &plugins, Scene &parent) : TPluginManager(plugins, parent) {}
+    };
 }

@@ -26,7 +26,7 @@
 #endif
 
 namespace Uniti {
-    template<typename Interface, class Creator>
+    template<typename Interface, typename Creator, typename Parent>
     class PluginHandler {
     public:
         PluginHandler(const std::string &filePath) {
@@ -49,8 +49,8 @@ namespace Uniti {
             this->getResult<void>("deleteCreator", this->_creator);
             CLOSELIB(this->_handler);
         }
-        Interface &get() {
-            Interface *element = this->_creator->creator();
+        Interface &get(Parent &parent) {
+            Interface *element = this->_creator->create(parent);
             this->_elements.push_back(element);
             return *element;
         }
