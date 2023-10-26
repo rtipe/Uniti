@@ -223,7 +223,7 @@ namespace Uniti {
 
     void Object::end() {
         this->_objectPluginManager.preEnd();
-        // TODO : add end() with objectManager
+        this->_objectManager.end();
         this->_objectPluginManager.end();
         this->_objectPluginManager.postEnd();
     }

@@ -58,7 +58,7 @@ namespace Uniti {
 
     void Scene::end() {
         this->_pluginManager.postEnd();
-        // TODO : add end() with objectManager
+        this->_objectManager.end();
         this->_pluginManager.end();
         this->_pluginManager.postEnd();
     }

@@ -66,4 +66,9 @@ namespace Uniti {
         }
         throw std::runtime_error(name + " <- not found");
     }
-} // Uniti
+
+    void ObjectManager::end() {
+        for (const auto &object: this->_objects)
+            object->end();
+    }
+}
