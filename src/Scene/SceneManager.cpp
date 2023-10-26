@@ -86,13 +86,21 @@ namespace Uniti {
     }
 
     void SceneManager::update() {
+        std::string oldPath = Logger::getPath();
+        Logger::changePath(Logger::getPath() + " > SceneManager");
         if (this->_nextScene != std::nullopt) {
-            this->_currentScene = std::make_unique<Scene>(
-            this->getSceneValue(this->_nextScene.value()), this->_nextScene->name);
-            this->_nextScene = std::nullopt;
+            Logger::Info("Changing scene : " + this->_currentScene.get()->getName() + " to " + this->_nextScene->name);
+            try {
+                this->_currentScene = std::make_unique<Scene>(
+                        this->getSceneValue(this->_nextScene.value()), this->_nextScene->name);
+                this->_nextScene = std::nullopt;
+            } catch (std::exception &e) {
+                Logger::Danger(e.what());
+            }
         }
         this->_currentScene->update();
         this->_globalScene->update();
+        Logger::changePath(oldPath);
     }
 
     Json::Value SceneManager::getSceneValue(const ScenePath &scenePath) const {
@@ -103,7 +111,10 @@ namespace Uniti {
     }
 
     void SceneManager::end() {
+        std::string oldPath = Logger::getPath();
+        Logger::changePath(Logger::getPath() + " > SceneManager");
         this->_currentScene->end();
         this->_globalScene->end();
+        Logger::changePath(oldPath);
     }
 }

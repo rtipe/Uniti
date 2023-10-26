@@ -92,9 +92,8 @@ std::ostream &operator<<(std::ostream &os, const Uniti::Color &color) {
     return os;
 }
 
-/* TODO a voir ?? proto pas bon et pas sûr
+
 Uniti::Logger &operator<<(Uniti::Logger &os, const Uniti::Color &color) {
     os << "Red = " << color.getR() << " Green = " << color.getG() << " Blue = " << color.getB() << " Alpha = " << color.getA();
     return os;
 }
-*/

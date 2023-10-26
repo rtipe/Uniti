@@ -14,7 +14,9 @@ namespace Uniti {
     _objectManager({}, scene),
     _name(name),
     _objectPluginManager({}, *this),
-    _scene(scene) {}
+    _scene(scene) {
+        Logger::Info("Empty object created : " + name);
+    }
 
     Object::Object(Object &object):
     _value(object.getValue()),
@@ -22,7 +24,9 @@ namespace Uniti {
     _objectManager(object.getChildren().getObjects()),
     _objectPluginManager(object.getPluginManager()),
     _transform(object.getTransform()),
-    _scene(object.getScene()) {}
+    _scene(object.getScene()) {
+        Logger::Info("Clone object created : " + object.getName() + std::string("_clone"));
+    }
 
     Object::Object(const Json::Value &value, Scene &scene):
     _value(value),
@@ -31,7 +35,9 @@ namespace Uniti {
     _objectPluginManager(value["plugins"], *this),
     _transform(value["transform"]),
     _isEnabled(value.get("isEnable", true).asBool()),
-    _scene(scene) {}
+    _scene(scene) {
+        Logger::Info("Object created : " + value["name"].asString());
+    }
 
     Object::Object(Scene &scene, const std::string &fileName):
     _value(openJsonFile(fileName)),
@@ -40,14 +46,19 @@ namespace Uniti {
     _objectPluginManager(_value["plugins"], *this),
     _transform(_value["transform"]),
     _isEnabled(_value.get("isEnable", true).asBool()),
-    _scene(scene) {}
+    _scene(scene) {
+        Logger::Info("object created by prefab : " + _value["name"].asString() + " path : " + fileName);
+    }
 
     void Object::update() {
         if (!this->_isEnabled) return;
+        std::string oldPath = Logger::getPath();
+        Logger::changePath(Logger::getPath() + " > Object:" + this->_name);
         this->_objectPluginManager.preUpdate();
         this->_objectManager.update();
         this->_objectPluginManager.update();
         this->_objectPluginManager.postUpdate();
+        Logger::changePath(oldPath);
     }
 
     void Object::setName(const std::string &name) {
@@ -222,9 +233,12 @@ namespace Uniti {
     }
 
     void Object::end() {
+        std::string oldPath = Logger::getPath();
+        Logger::changePath(Logger::getPath() + " > Object:" + this->_name);
         this->_objectPluginManager.preEnd();
         this->_objectManager.end();
         this->_objectPluginManager.end();
         this->_objectPluginManager.postEnd();
+        Logger::changePath(oldPath);
     }
 }

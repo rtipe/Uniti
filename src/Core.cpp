@@ -8,13 +8,24 @@ namespace Uniti {
     void Core::start() {
         std::unique_lock<std::mutex> lock(this->_mutexForStop);
 
+        std::string oldPath = Logger::getPath();
+        Logger::changePath(Logger::getPath() + " > Core:" + this->_value.get("name", "").asString());
         while (this->_stop) {
             lock.unlock();
             this->_pluginManager.preUpdate();
             this->_sceneManager.update();
             this->_pluginManager.update();
             this->_queue.consume_all([&](std::tuple<std::string, Json::Value> *event) {
-                this->_event.emitEvent(std::get<0>(*event), std::get<1>(*event));
+                std::string oldPath = Logger::getPath();
+                Logger::changePath(
+                        Logger::getPath() + " > (CoreEvent -> core:" + this->_value.get("name", "").asString() +
+                        " Event:" + std::get<0>(*event) + ")");
+                try {
+                    this->_event.emitEvent(std::get<0>(*event), std::get<1>(*event));
+                } catch (std::exception &e) {
+                    Logger::Danger(e.what());
+                }
+                Logger::changePath(oldPath);
                 delete event;
             });
             this->_pluginManager.postUpdate();
@@ -24,14 +35,18 @@ namespace Uniti {
         this->_sceneManager.end();
         this->_pluginManager.end();
         this->_pluginManager.postEnd();
+        Logger::Warn("bye !");
+        Logger::changePath(oldPath);
     }
 
     void Core::stop() {
         const std::lock_guard<std::mutex> lock(this->_mutexForStop);
+        Logger::Warn("Shutdown request");
         this->_stop = true;
     }
 
     void Core::initProject(const Json::Value &value) {
+        Logger::Info("Starting project : " + value.get("name", "").asString());
         _instance.reset(new Core(value));
     }
 
