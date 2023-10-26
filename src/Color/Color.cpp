@@ -21,7 +21,7 @@ namespace Uniti {
         this->_a = color._a;
     }
 
-    Color::Color(int r, int g, int b): _r(r), _g(g), _b(b), _a(0) {};
+    Color::Color(int r, int g, int b): _r(r), _g(g), _b(b), _a(255) {};
 
     Color::Color(int r, int g, int b, int a): _r(r), _g(g), _b(b), _a(a) {};
 
