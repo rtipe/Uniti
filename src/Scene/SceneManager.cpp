@@ -103,6 +103,7 @@ namespace Uniti {
     }
 
     void SceneManager::end() {
-
+        this->_currentScene->end();
+        this->_globalScene->end();
     }
-} // Uniti
+}
