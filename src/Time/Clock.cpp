@@ -16,25 +16,25 @@ namespace Uniti {
         _paused = false;
     }
 
-    long long Clock::getSeconds() const
+    float Clock::getSeconds() const
     {
         auto current_time = (!_paused) ? std::chrono::high_resolution_clock::now() : _pause;
         auto duration     = std::chrono::duration_cast<std::chrono::seconds>(current_time - _start);
-        return duration.count();
+        return static_cast<float>(duration.count());
     }
 
-    long long Clock::getMilliSeconds() const
+    float Clock::getMilliSeconds() const
     {
         auto current_time = (!_paused) ? std::chrono::high_resolution_clock::now() : _pause;
         auto duration     = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - _start);
-        return duration.count();
+        return static_cast<float>(duration.count());
     }
 
-    long long Clock::getMicroSeconds() const
+    float Clock::getMicroSeconds() const
     {
         auto current_time = (!_paused) ? std::chrono::high_resolution_clock::now() : _pause;
         auto duration     = std::chrono::duration_cast<std::chrono::microseconds>(current_time - _start);
-        return duration.count();
+        return static_cast<float>(duration.count());
     }
 
     void Clock::pause()
