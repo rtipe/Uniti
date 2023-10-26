@@ -21,6 +21,8 @@ namespace Uniti {
         const std::vector<std::unique_ptr<Object>> &getObjects() const;
         std::vector<std::unique_ptr<Object>> &getObjects();
         void update();
+
+        void end();
         void emitEvent(const std::string &name, const Json::Value &value);
         const Object &operator[](const std::string &name) const;
         Object &operator[](const std::string &name);
