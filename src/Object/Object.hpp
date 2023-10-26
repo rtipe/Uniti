@@ -27,10 +27,10 @@ namespace Uniti {
     };
     class Object {
     public:
-        Object();
+        Object(const std::string &name, Scene &scene);
         Object(Object &object);
         Object(const Json::Value &value, Scene &scene);
-        Object(const std::string &fileName);
+        Object(Scene &scene, const std::string &fileName);
         void update();
         void setName(const std::string &name);
         const std::string &getName() const;
@@ -44,13 +44,24 @@ namespace Uniti {
         const Scene &getScene() const;
         Scene &getScene();
         template<typename PLUGIN>
-        PLUGIN &get(const std::string &name);
-        void add(const std::string &name, IObjectPlugin &plugin);
+        PLUGIN &get(const std::string &name) {
+
+        }
         const Object &operator[](const std::string &name) const;
         Object &operator[](const std::string &name);
         void emitEvent(const std::string &name, const Json::Value &value);
         const ObjectPluginManager &getPluginManager() const;
         ObjectPluginManager &getPluginManager();
-        Object &operator=(const Object &other);
+        const Json::Value &getValue() const;
+        Json::Value &getValue();
+    private:
+        static Json::Value openJsonFile(const std::string &fileName);
+        Json::Value _value;
+        Scene &_scene;
+        ObjectManager _objectManager;
+        std::string _name;
+        ObjectPluginManager _objectPluginManager;
+        Transform _transform;
+        bool _isEnabled = true;
     };
 }
