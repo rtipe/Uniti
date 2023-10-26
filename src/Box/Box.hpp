@@ -10,6 +10,7 @@
 
 namespace Uniti {
     class Box {
+    public:
         Box(const Json::Value &value);
         Box(float x, float y, float width, float height);
         const Vector2f &getPosition() const;
@@ -25,7 +26,6 @@ namespace Uniti {
         const float getHeight() const;
         float getHeight();
         void setPosition(const Vector2f &position);
-        void setDimension(const Vector2f &dimension);
         void setX(float x);
         void setY(float y);
         void setWidth(float width);
@@ -37,8 +37,6 @@ namespace Uniti {
     private:
         Vector2f _position;
         Vector2f _dimension;
-
-        void setDimension(const Vector2f &dimension);
     };
 }
 
