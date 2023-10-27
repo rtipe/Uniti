@@ -1,5 +1,9 @@
 {
-    "plugins": [],
+    "plugins": [
+        {
+            "name": "plugin"
+        }
+    ],
     "name": "lol",
     "sceneFolder": "../../json",
     "startScene": "startScene.json",
