@@ -6,6 +6,7 @@
 
 #include <functional>
 #include "json/value.h"
+#include "Logger.hpp"
 
 namespace Uniti {
     using eventFunction = std::function<void(const Json::Value &value)>;
@@ -14,7 +15,8 @@ namespace Uniti {
         std::size_t addEvent(const std::string &name, eventFunction function);
         void removeEvent(const std::string &name);
         void removeEvent(const std::string &name, std::size_t id);
-        void emitEvent(const std::string &name, const Json::Value &value);
+
+        void emitEvent(const std::string &name, const Json::Value &value, Logger &logger);
     private:
         std::map<std::string, std::vector<eventFunction>> _events;
     };

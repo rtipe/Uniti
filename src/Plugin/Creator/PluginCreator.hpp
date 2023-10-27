@@ -8,18 +8,20 @@
 #include "IPluginCreator.hpp"
 
 namespace Uniti {
-    template<typename INTERFACE, typename PLUGIN, typename PARENT>
-    class PluginCreator : public IPluginCreator<INTERFACE, PARENT> {
+    template<typename Interface, typename PLUGIN, typename PARENT>
+    class PluginCreator : public IPluginCreator<Interface, PARENT> {
     public:
         ~PluginCreator() {
             for (PLUGIN *element : this->_elements)
                 delete element;
         }
-        void remove(PLUGIN *element) {
-            this->_elements.erase(element);
+
+        void remove(Interface *element) {
+            this->_elements.erase(std::find(this->_elements.begin(), this->_elements.end(), element));
             delete element;
         }
-        INTERFACE *create(PARENT &parent) {
+
+        Interface *create(PARENT &parent) {
             PLUGIN *element = new PLUGIN(parent);
             this->_elements.push_back(element);
             return element;

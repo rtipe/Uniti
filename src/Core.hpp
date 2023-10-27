@@ -10,6 +10,7 @@
 #include <thread>
 #include <boost/lockfree/queue.hpp>
 #include <mutex>
+#include "Logger.hpp"
 #include "json/value.h"
 #include "SceneManager.hpp"
 #include "ICorePlugin.hpp"
@@ -22,9 +23,6 @@ namespace Uniti {
         ~Core();
         void start();
         void stop();
-        static void initProject(const Json::Value &value);
-        static void initProject(const std::string &fileName);
-        static Core &getInstance();
         Core &getSubInstance(const std::string &name);
         std::map<std::string, std::tuple<std::unique_ptr<Core>, std::thread>> &getSubInstances();
         void openSubInstance(const std::string &name);
@@ -42,8 +40,12 @@ namespace Uniti {
         }
         void addEventListener(const std::string &name, eventFunction);
         void emitEvent(const std::string &name, const Json::Value &value);
+
+        const Logger &log() const;
+
+        Logger &log();
     private:
-        static std::unique_ptr<Core> _instance;
+        Logger _logger;
         std::map<std::string, std::tuple<std::unique_ptr<Core>, std::thread>> _subInstances;
         CorePluginManager _pluginManager;
         SceneManager _sceneManager;

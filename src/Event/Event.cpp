@@ -21,16 +21,16 @@ namespace Uniti {
         this->_events[name].erase(this->_events[name].begin() + id);
     }
 
-    void Event::emitEvent(const std::string &name, const Json::Value &value) {
-        Logger::Info("Emit event " + name);
+    void Event::emitEvent(const std::string &name, const Json::Value &value, Logger &logger) {
+        logger.Info("Emit event " + name);
         auto it = _events.find(name);
         if (it != _events.end()) {
             for (auto &function : it->second) {
-                Logger::Info("Execution event " + name);
+                logger.Info("Execution event " + name);
                 try {
                     function(value);
                 } catch (std::exception &e) {
-                    Logger::Danger(e.what());
+                    logger.Danger(e.what());
                 }
             }
         }

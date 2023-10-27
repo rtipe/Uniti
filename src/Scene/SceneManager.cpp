@@ -6,13 +6,18 @@
 #include <filesystem>
 #include <fstream>
 #include <json/json.h>
-
+#include "Core.hpp"
 
 namespace Uniti {
-    SceneManager::SceneManager(const Json::Value &value): _sceneFolderPath(value["sceneFolder"].asString()) {
+    SceneManager::SceneManager(const Json::Value &value, Core &core) :
+            _sceneFolderPath(value["sceneFolder"].asString()),
+            _core(core) {
+        this->_core.log().changePath("SceneManager");
+        this->_core.log().Info("Start loading directory scenes : " + this->_sceneFolderPath);
         for (const auto &entry: std::filesystem::recursive_directory_iterator(this->_sceneFolderPath)) {
             std::string fullPath = entry.path().string();
             std::string directoryPath, fileType, fileName;
+            std::replace(fullPath.begin(), fullPath.end(), '\\', '/');
             auto pos = fullPath.find_last_of('/');
 
             if (pos != std::string::npos) {
@@ -24,16 +29,20 @@ namespace Uniti {
                     pos += 1;
                     fileName = fullPath.substr(pos, posFileType - pos) += ".json";
                     directoryPath += fileName;
+                    this->_core.log().Info("Add scene -> " + fileName);
                     this->_scenes.emplace_back(fileName, directoryPath);
                 }
             }
         }
         auto globalScenePath = this->getScenePath(value["startScene"].asString());
-        auto startScenePath  = this->getScenePath(value["globalScene"].asString());;
+        auto startScenePath = this->getScenePath(value["globalScene"].asString());
+        this->_core.log().Info("Loading global scene -> " + globalScenePath.name);
         this->_globalScene =
-            std::make_unique<Scene>(this->getSceneValue(globalScenePath), globalScenePath.name);
+                std::make_unique<Scene>(this->getSceneValue(globalScenePath), core, globalScenePath.name);
+        this->_core.log().Info("Loading start scene -> " + startScenePath.name);
         this->_currentScene =
-            std::make_unique<Scene>(this->getSceneValue(startScenePath), startScenePath.name);
+                std::make_unique<Scene>(this->getSceneValue(startScenePath), core, startScenePath.name);
+        this->_core.log().changePath("");
     }
 
     const Scene &SceneManager::getCurrentScene() const {
@@ -64,6 +73,7 @@ namespace Uniti {
                 return path.name == name;
             }
         );
+        if (it == this->getAllScenes().end()) throw std::runtime_error("ScenePath not found > " + name);
         return *it;
     }
 
@@ -86,21 +96,22 @@ namespace Uniti {
     }
 
     void SceneManager::update() {
-        std::string oldPath = Logger::getPath();
-        Logger::changePath(Logger::getPath() + " > SceneManager");
+        std::string oldPath = this->_core.log().getPath();
+        this->_core.log().changePath(this->_core.log().getPath() + " > SceneManager");
         if (this->_nextScene != std::nullopt) {
-            Logger::Info("Changing scene : " + this->_currentScene.get()->getName() + " to " + this->_nextScene->name);
+            this->_core.log().Info(
+                    "Changing scene : " + this->_currentScene.get()->getName() + " to " + this->_nextScene->name);
             try {
                 this->_currentScene = std::make_unique<Scene>(
-                        this->getSceneValue(this->_nextScene.value()), this->_nextScene->name);
+                        this->getSceneValue(this->_nextScene.value()), this->_core, this->_nextScene->name);
                 this->_nextScene = std::nullopt;
             } catch (std::exception &e) {
-                Logger::Danger(e.what());
+                this->_core.log().Danger(e.what());
             }
         }
         this->_currentScene->update();
         this->_globalScene->update();
-        Logger::changePath(oldPath);
+        this->_core.log().changePath(oldPath);
     }
 
     Json::Value SceneManager::getSceneValue(const ScenePath &scenePath) const {
@@ -111,10 +122,18 @@ namespace Uniti {
     }
 
     void SceneManager::end() {
-        std::string oldPath = Logger::getPath();
-        Logger::changePath(Logger::getPath() + " > SceneManager");
+        std::string oldPath = this->_core.log().getPath();
+        this->_core.log().changePath(this->_core.log().getPath() + " > SceneManager");
         this->_currentScene->end();
         this->_globalScene->end();
-        Logger::changePath(oldPath);
+        this->_core.log().changePath(oldPath);
+    }
+
+    const Core &SceneManager::getCore() const {
+        return this->_core;
+    }
+
+    Core &SceneManager::getCore() {
+        return this->_core;
     }
 }

@@ -14,7 +14,8 @@ namespace Uniti {
     public:
         TPluginManager(TPluginManager &pluginManager):
         _parent(pluginManager._parent),
-        _value(pluginManager._value) {
+        _value(pluginManager._value),
+        _logger(pluginManager._logger) {
             for (const auto &plugin : pluginManager._value) {
                 auto name = plugin["name"].asString();
                 this->add(name, plugin);
@@ -23,9 +24,11 @@ namespace Uniti {
             this->start();
             this->postStart();
         }
-        TPluginManager(const Json::Value &plugins, Parent &parent):
+
+        TPluginManager(const Json::Value &plugins, Parent &parent, Logger &logger) :
         _parent(parent),
-        _value(plugins) {
+        _value(plugins),
+        _logger(logger) {
             for (const Json::Value &plugin : plugins) {
                 auto name = plugin["name"].asString();
                 this->add(name, plugin);
@@ -39,17 +42,17 @@ namespace Uniti {
                 PluginFactory<Handler, Interface, Parent>::getFactory().removeElement(element.first, element.second.get());
         }
         void add(const std::string &name, const Json::Value &value) {
-            std::string oldPath = Logger::getPath();
-            Logger::changePath(Logger::getPath() + " > Plugin:" + this->_name + " awake()");
+            std::string oldPath = this->_logger.getPath();
+            this->_logger.changePath(this->_logger.getPath() + " > Plugin:" + name + " awake()");
             try {
                 this->_plugins.emplace(name,
                                        PluginFactory<Handler, Interface, Parent>::getFactory().get(name, _parent));
-                Logger::Info("start");
+                this->_logger.Info("start");
                 this->_plugins.at(name).get().awake(value);
             } catch (std::exception &e) {
-                Logger::Danger(e.what());
+                this->_logger.Danger(e.what());
             }
-            Logger::changePath(oldPath);
+            this->_logger.changePath(oldPath);
         }
         void remove(const std::string &name) {
             if (_plugins.count(name) == 0)
@@ -72,122 +75,123 @@ namespace Uniti {
         }
         void preUpdate() {
             for (auto &element: this->_plugins) {
-                std::string oldPath = Logger::getPath();
-                Logger::changePath(Logger::getPath() + " > Plugin:" + element.first + " preUpdate()");
+                std::string oldPath = this->_logger.getPath();
+                this->_logger.changePath(this->_logger.getPath() + " > Plugin:" + element.first + " preUpdate()");
                 try {
                     element.second.get().preUpdate();
                 } catch (std::exception &e) {
-                    Logger::Danger(e.what());
+                    this->_logger.Danger(e.what());
                 }
-                Logger::changePath(oldPath);
+                this->_logger.changePath(oldPath);
             }
         }
         void update() {
             for (auto &element: this->_plugins) {
-                std::string oldPath = Logger::getPath();
-                Logger::changePath(Logger::getPath() + " > Plugin:" + element.first + " update()");
+                std::string oldPath = this->_logger.getPath();
+                this->_logger.changePath(this->_logger.getPath() + " > Plugin:" + element.first + " update()");
                 try {
                     element.second.get().update();
                 } catch (std::exception &e) {
-                    Logger::Danger(e.what());
+                    this->_logger.Danger(e.what());
                 }
-                Logger::changePath(oldPath);
+                this->_logger.changePath(oldPath);
             }
         }
         void postUpdate() {
             for (auto &element: this->_plugins) {
-                std::string oldPath = Logger::getPath();
-                Logger::changePath(Logger::getPath() + " > Plugin:" + element.first + " postUpdate()");
+                std::string oldPath = this->_logger.getPath();
+                this->_logger.changePath(this->_logger.getPath() + " > Plugin:" + element.first + " postUpdate()");
                 try {
                     element.second.get().postUpdate();
                 } catch (std::exception &e) {
-                    Logger::Danger(e.what());
+                    this->_logger.Danger(e.what());
                 }
-                Logger::changePath(oldPath);
+                this->_logger.changePath(oldPath);
             }
         }
         void preStart() {
             for (auto &element: this->_plugins) {
-                std::string oldPath = Logger::getPath();
-                Logger::changePath(Logger::getPath() + " > Plugin:" + element.first + " preStart()");
+                std::string oldPath = this->_logger.getPath();
+                this->_logger.changePath(this->_logger.getPath() + " > Plugin:" + element.first + " preStart()");
                 try {
                     element.second.get().preStart();
                 } catch (std::exception &e) {
-                    Logger::Danger(e.what());
+                    this->_logger.Danger(e.what());
                 }
-                Logger::changePath(oldPath);
+                this->_logger.changePath(oldPath);
             }
         }
         void start() {
             for (auto &element: this->_plugins) {
-                std::string oldPath = Logger::getPath();
-                Logger::changePath(Logger::getPath() + " > Plugin:" + element.first + " start()");
+                std::string oldPath = this->_logger.getPath();
+                this->_logger.changePath(this->_logger.getPath() + " > Plugin:" + element.first + " start()");
                 try {
                     element.second.get().start();
                 } catch (std::exception &e) {
-                    Logger::Danger(e.what());
+                    this->_logger.Danger(e.what());
                 }
-                Logger::changePath(oldPath);
+                this->_logger.changePath(oldPath);
             }
         }
         void postStart() {
             for (auto &element: this->_plugins) {
-                std::string oldPath = Logger::getPath();
-                Logger::changePath(Logger::getPath() + " > Plugin:" + element.first + " postStart()");
+                std::string oldPath = this->_logger.getPath();
+                this->_logger.changePath(this->_logger.getPath() + " > Plugin:" + element.first + " postStart()");
                 try {
                     element.second.get().postStart();
                 } catch (std::exception &e) {
-                    Logger::Danger(e.what());
+                    this->_logger.Danger(e.what());
                 }
-                Logger::changePath(oldPath);
+                this->_logger.changePath(oldPath);
             }
         }
         void preEnd() {
             for (auto &element: this->_plugins) {
-                std::string oldPath = Logger::getPath();
-                Logger::changePath(Logger::getPath() + " > Plugin:" + element.first + " preEnd()");
+                std::string oldPath = this->_logger.getPath();
+                this->_logger.changePath(this->_logger.getPath() + " > Plugin:" + element.first + " preEnd()");
                 try {
                     element.second.get().preEnd();
                 } catch (std::exception &e) {
-                    Logger::Danger(e.what());
+                    this->_logger.Danger(e.what());
                 }
-                Logger::changePath(oldPath);
+                this->_logger.changePath(oldPath);
             }
         }
         void end() {
             for (auto &element: this->_plugins) {
-                std::string oldPath = Logger::getPath();
-                Logger::changePath(Logger::getPath() + " > Plugin:" + element.first + " end()");
+                std::string oldPath = this->_logger.getPath();
+                this->_logger.changePath(this->_logger.getPath() + " > Plugin:" + element.first + " end()");
                 try {
                     element.second.get().end();
                 } catch (std::exception &e) {
-                    Logger::Danger(e.what());
+                    this->_logger.Danger(e.what());
                 }
-                Logger::changePath(oldPath);
+                this->_logger.changePath(oldPath);
             }
         }
         void postEnd() {
             for (auto &element: this->_plugins) {
-                std::string oldPath = Logger::getPath();
-                Logger::changePath(Logger::getPath() + " > Plugin:" + element.first + " postEnd()");
+                std::string oldPath = this->_logger.getPath();
+                this->_logger.changePath(this->_logger.getPath() + " > Plugin:" + element.first + " postEnd()");
                 try {
                     element.second.get().postEnd();
                 } catch (std::exception &e) {
-                    Logger::Danger(e.what());
+                    this->_logger.Danger(e.what());
                 }
-                Logger::changePath(oldPath);
+                this->_logger.changePath(oldPath);
             }
         }
         void emitEvent(const std::string &name, const Json::Value &value) {
             for (auto &element: this->_plugins) {
-                std::string oldPath = Logger::getPath();
-                Logger::changePath(Logger::getPath() + " > Plugin:" + element.first + " Event:" + name);
-                element.second.get().getEvent().emitEvent(name, value);
-                Logger::changePath(oldPath);
+                std::string oldPath = this->_logger.getPath();
+                this->_logger.changePath(this->_logger.getPath() + " > Plugin:" + element.first + " Event:" + name);
+                element.second.get().getEvent().emitEvent(name, value, _logger);
+                this->_logger.changePath(oldPath);
             }
         }
     private:
         Parent &_parent;
+        Logger &_logger;
         Json::Value _value;
         std::map<std::string, std::reference_wrapper<Interface>> _plugins;
     };

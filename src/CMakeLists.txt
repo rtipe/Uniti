@@ -6,6 +6,7 @@ target_sources(Uniti PUBLIC
 
 target_include_directories(Uniti PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 
+add_subdirectory(Vector)
 add_subdirectory(Box)
 add_subdirectory(Color)
 add_subdirectory(Logger)
@@ -13,5 +14,4 @@ add_subdirectory(Object)
 add_subdirectory(Plugin)
 add_subdirectory(Scene)
 add_subdirectory(Time)
-add_subdirectory(Vector)
 add_subdirectory(Event)

@@ -13,7 +13,8 @@ namespace Uniti {
     class Core;
     class CorePluginManager : public TPluginManager<PluginHandler<ICorePlugin, IPluginCreator<ICorePlugin, Core>, Core>, ICorePlugin, Core> {
     public:
-        CorePluginManager(const Json::Value &plugins, Core &parent) : TPluginManager(plugins, parent) {}
+        CorePluginManager(const Json::Value &plugins, Core &parent, Logger &logger) : TPluginManager(plugins, parent,
+                                                                                                     logger) {}
         CorePluginManager(CorePluginManager &pluginManager) : TPluginManager(pluginManager) {}
     };
 }

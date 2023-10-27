@@ -9,9 +9,10 @@
 #include "ScenePath.hpp"
 
 namespace Uniti {
+    class Core;
     class SceneManager {
         public:
-            SceneManager(const Json::Value &value);
+        SceneManager(const Json::Value &value, Core &core);
             const Scene &getCurrentScene() const;
             Scene &getCurrentScene();
             const Scene &getGlobalScene() const;
@@ -23,7 +24,12 @@ namespace Uniti {
             void update();
             void end();
             Json::Value getSceneValue(const ScenePath &scenePath) const;
+
+        const Core &getCore() const;
+
+        Core &getCore();
         private:
+        Core &_core;
             std::unique_ptr<Scene> _globalScene;
             std::unique_ptr<Scene> _currentScene;
             std::optional<ScenePath> _nextScene = std::nullopt;

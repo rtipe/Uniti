@@ -9,6 +9,7 @@
 namespace Uniti {
     class Clock {
     public:
+        Clock();
         void restart();
         float getSeconds() const;
         float getMilliSeconds() const;

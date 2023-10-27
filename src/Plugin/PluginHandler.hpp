@@ -4,19 +4,27 @@
 
 #pragma once
 
-#include <windows.h>
 #include <string>
 #include <vector>
 #include <stdexcept>
 
-#ifdef __linux__
+#ifndef __linux__
+
+#include <windows.h>
+#include <iostream>
+
+#else
+#include <dlfcn.h>
+#endif
+
+#ifndef WINVER
     #define LIBTYPE void*
     #define OPENLIB(libname) dlopen((libname), RTLD_LAZY)
     #define LIBFUNC(lib, fn) dlsym((lib), (fn))
     #define GET_LIB_ERROR() dlerror()
     #define CLOSELIB(lib) dlclose((lib))
     #define FUNCTYPE void*
-#elif defined(WINVER)
+#else
     #define LIBTYPE HINSTANCE
     #define OPENLIB(libname) LoadLibrary(libname)
     #define LIBFUNC(lib, fn) GetProcAddress((lib), (fn))
@@ -29,13 +37,13 @@ namespace Uniti {
     template<typename Interface, typename Creator, typename Parent>
     class PluginHandler {
     public:
-        PluginHandler(const std::string &filePath) {
-            this->_handler = OPENLIB(filePath.c_str());
+        PluginHandler(const std::string &filePath) : _filePath(filePath) {
+            this->_handler = OPENLIB(_filePath.c_str());
             if (!this->_handler) {
-#ifdef __linux__
+#ifndef WINVER
                 char *error = nullptr;
                 error = GET_LIB_ERROR();
-#elif defined(WINVER)
+#else
                 char error[1024];
                 FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, nullptr, GET_LIB_ERROR(), 0, error, sizeof(error), nullptr);
 #endif
@@ -56,7 +64,7 @@ namespace Uniti {
         }
         void deleteElement(Interface *element) {
             this->_creator->remove(element);
-            this->_elements.erase(element);
+            this->_elements.erase(std::find(this->_elements.begin(), this->_elements.end(), element));
         }
     protected:
         template<typename T, typename... Args>
@@ -64,14 +72,15 @@ namespace Uniti {
             FUNCTYPE sym = LIBFUNC(this->_handler, name.c_str());
 
             if (!sym) {
-#ifdef __linux__
+#ifndef WINVER
                 char *error = nullptr;
                 error = GET_LIB_ERROR();
-#elif defined(WINVER)
+#else
                 char error[1024];
                 FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, nullptr, GET_LIB_ERROR(), 0, error, sizeof(error), nullptr);
 #endif
-                throw std::runtime_error("Error on open with dlsym in PluginHandler: " + std::string(error));
+                throw std::runtime_error(
+                        "Error on open with dlsym in PluginHandler (" + name + "): " + std::string(error));
             }
             T (*function)(...) = reinterpret_cast<T(*)(...)>(sym);
             return function(__args...);
