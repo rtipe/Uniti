@@ -8,9 +8,8 @@ namespace Uniti {
     void Core::start() {
         std::unique_lock<std::mutex> lock(this->_mutexForStop);
 
-        std::string oldPath = this->_logger.getPath();
-        this->_logger.changePath(this->_logger.getPath() + " > Core:" + this->_value.get("name", "").asString());
-        while (this->_stop) {
+        this->_logger.changePath("Core:" + this->_value.get("name", "").asString());
+        while (!this->_stop) {
             lock.unlock();
             this->_pluginManager.preUpdate();
             this->_sceneManager.update();
@@ -36,7 +35,6 @@ namespace Uniti {
         this->_pluginManager.end();
         this->_pluginManager.postEnd();
         this->_logger.Warn("bye !");
-        this->_logger.changePath(oldPath);
     }
 
     void Core::stop() {

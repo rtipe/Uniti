@@ -7,6 +7,7 @@
 #include <string>
 #include <filesystem>
 #include <memory>
+#include <iostream>
 #include "PluginFactory.hpp"
 
 namespace Uniti {
@@ -27,7 +28,8 @@ namespace Uniti {
             for (const auto &entry: std::filesystem::directory_iterator(directoryCopy)) {
                 currentFilePath = entry.path().string();
                 fileName = entry.path().filename().string();
-                PluginFactory<Handler, Interface, Parent>::getFactory().add(fileName.substr(0, fileName.size() - 3),
+                size_t found = fileName.find('.');
+                PluginFactory<Handler, Interface, Parent>::getFactory().add(fileName.substr(0, found),
                                                                             std::make_unique<Handler>(currentFilePath));
             }
         }
