@@ -48,7 +48,7 @@ FetchContent_MakeAvailable(Boost)
 
 find_package(Threads REQUIRED)
 
-add_library(Uniti)
+add_library(Uniti STATIC)
 
 foreach(lib ${BOOST_INCLUDE_LIBRARIES})
     target_link_libraries(
@@ -60,7 +60,7 @@ endforeach()
 
 target_link_libraries(Uniti PUBLIC Threads::Threads)
 target_link_libraries(Uniti PUBLIC jsoncpp_lib)
-target_link_libraries(Uniti PUBLIC dl)
+target_link_libraries(Uniti PUBLIC ${CMAKE_DL_LIBS})
 
 add_subdirectory(src)
 
@@ -68,5 +68,27 @@ install(DIRECTORY src/
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
         COMPONENT devel
         FILES_MATCHING PATTERN "*.hpp" PATTERN "*.inl")
+
+add_library(plugin SHARED)
+target_link_libraries(plugin PUBLIC Uniti)
+set_target_properties(plugin PROPERTIES
+        CXX_STANDARD 20
+        PREFIX ""
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+)
+
+add_subdirectory(test)
+
+add_executable(test
+        index.cpp)
+set_target_properties(test PROPERTIES
+        CXX_STANDARD 20
+        LINK_FLAGS "-rdynamic"
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+)
+target_link_libraries(test PUBLIC Threads::Threads)
+target_link_libraries(test PUBLIC jsoncpp_lib)
+target_link_libraries(test PUBLIC ${CMAKE_DL_LIBS})
+target_link_libraries(test PUBLIC Uniti)
 
 include(CPack)

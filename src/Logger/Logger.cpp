@@ -19,24 +19,33 @@ namespace Uniti {
         std::string printElement = text;
         if (_events.count("print"))
             printElement = _events.at("print")(WARN, text);
-        if (!printElement.empty())
-            std::cout << "\033[33m[Logger:Warn] (" << _path << ") : " << printElement << "\033[39m" << std::endl;
+        if (!printElement.empty()) {
+            printColor(YELLOW);
+            std::cout << "[Logger:Warn] (" << _path << ") : " << printElement << std::endl;
+            resetColor();
+        }
     }
 
     void Logger::Danger(const std::string &text) {
         std::string printElement = text;
         if (_events.count("print"))
             printElement = _events.at("print")(DANGER, text);
-        if (!printElement.empty())
-            std::cout << "\033[31m[Logger:Warn] (" << _path << ") : " << printElement << "\033[39m" << std::endl;
+        if (!printElement.empty()) {
+            printColor(RED);
+            std::cout << "[Logger:Danger] (" << _path << ") : " << printElement << std::endl;
+            resetColor();
+        }
     }
 
     void Logger::Info(const std::string &text) {
         std::string printElement = text;
         if (_events.count("print"))
             printElement = _events.at("print")(INFO, text);
-        if (!printElement.empty())
-            std::cout << "\033[34m[Logger:Warn] (" << _path << ") : " << printElement << "\033[39m" << std::endl;
+        if (!printElement.empty()) {
+            printColor(BLUE);
+            std::cout << "[Logger:Info] (" << _path << ") : " << printElement << std::endl;
+            resetColor();
+        }
     }
 
     Logger &Logger::operator<<(const std::string &text) {
@@ -45,7 +54,7 @@ namespace Uniti {
         std::string print;
         for (const char &c : this->_buffer.str()) {
             if (c == '\n') {
-                Logger::Print(this->_status, print);
+                Print(this->_status, print);
                 print.clear();
             } else {
                 print += c;
@@ -61,7 +70,7 @@ namespace Uniti {
         std::string print;
         for (const char &c : this->_buffer.str()) {
             if (c == '\n') {
-                Logger::Print(this->_status, print);
+                Print(this->_status, print);
                 print.clear();
             } else {
                 print += c;
@@ -77,7 +86,7 @@ namespace Uniti {
         std::string print;
         for (const char &c : this->_buffer.str()) {
             if (c == '\n') {
-                Logger::Print(this->_status, print);
+                Print(this->_status, print);
                 print.clear();
             } else {
                 print += c;
@@ -93,7 +102,7 @@ namespace Uniti {
         std::string print;
         for (const char &c : this->_buffer.str()) {
             if (c == '\n') {
-                Logger::Print(this->_status, print);
+                Print(this->_status, print);
                 print.clear();
             } else {
                 print += c;
@@ -109,7 +118,7 @@ namespace Uniti {
         std::string print;
         for (const char &c : this->_buffer.str()) {
             if (c == '\n') {
-                Logger::Print(this->_status, print);
+                Print(this->_status, print);
                 print.clear();
             } else {
                 print += c;
@@ -130,27 +139,10 @@ namespace Uniti {
         _events[name] = function;
     }
 
-    Logger Logger::Log() {
-        return {LOG};
-    }
-
-    Logger Logger::Warn() {
-        return {WARN};
-    }
-
-    Logger Logger::Danger() {
-        return {DANGER};
-    }
-
-    Logger Logger::Info() {
-        return {INFO};
-    }
-
-    Logger::Logger(Logger::STATUS status):
-    _status(status) {}
+    Logger::Logger() : _status(LOG) {}
 
     Logger::~Logger() {
-        Logger::Print(this->_status, this->_buffer.str());
+        Print(this->_status, this->_buffer.str());
     }
 
     void Logger::changePath(const std::string &path) {
@@ -176,5 +168,13 @@ namespace Uniti {
 
     std::string &Logger::getPath() {
         return _path;
+    }
+
+    void Logger::changeStatus(Logger::STATUS status) {
+        this->_status = status;
+    }
+
+    Logger::STATUS Logger::getStatus() {
+        return this->_status;
     }
 }

@@ -10,9 +10,10 @@
 #include "ScenePluginManager.hpp"
 
 namespace Uniti {
+    class Core;
     class Scene {
     public:
-        Scene(const Json::Value &scene, const std::string &name = "");
+        Scene(const Json::Value &scene, Core &core, const std::string &name = "");
         void update();
         void end();
         const ObjectManager &getObjects() const;
@@ -28,7 +29,12 @@ namespace Uniti {
         ScenePluginManager &getPluginManager();
         const Object &operator[](const std::string &name) const;
         Object &operator[](const std::string &name);
+
+        const Core &getCore() const;
+
+        Core &getCore();
     private:
+        Core &_core;
         Event _event;
         ObjectManager _objectManager;
         ScenePluginManager _pluginManager;

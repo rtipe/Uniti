@@ -8,6 +8,7 @@
 #include <map>
 #include <memory>
 #include <stdexcept>
+#include "Logger.hpp"
 
 namespace Uniti {
     template<typename Handler, typename Interface, typename Parent>
@@ -15,17 +16,14 @@ namespace Uniti {
     public:
         ~PluginFactory() = default;
         void add(const std::string &name, std::unique_ptr<Handler> handler) {
-            Logger::Info("add plugin -> " + name);
             this->_stock[name] = std::move(handler);
         }
         Interface &get(const std::string &name, Parent &parent) {
-            Logger::Info("creating new instance of -> " + name);
             if (_stock.count(name) == 0)
                 throw std::runtime_error(name + " <- not found");
             return this->_stock.at(name)->get(parent);
         }
         void removeElement(const std::string &name, Interface &element) {
-            Logger::Info("removing instance of -> " + name);
             if (_stock.count(name) == 0)
                 throw std::runtime_error(name + " <- not found");
             this->_stock.at(name)->deleteElement(&element);
@@ -44,4 +42,7 @@ namespace Uniti {
         static std::unique_ptr<PluginFactory<Handler, Interface, Parent>> _factory;
         std::map<std::string, std::unique_ptr<Handler>> _stock;
     };
+
+    template<typename Handler, typename Interface, typename Parent>
+    std::unique_ptr<PluginFactory<Handler, Interface, Parent>> PluginFactory<Handler, Interface, Parent>::_factory = nullptr;
 }

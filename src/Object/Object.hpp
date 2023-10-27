@@ -12,21 +12,28 @@
 namespace Uniti {
     class Object;
     class Scene;
+
+    class Core;
     class ObjectManager {
     public:
         ObjectManager(const Json::Value &value, Scene &scene);
-        ObjectManager(const std::vector<std::unique_ptr<Object>> &objects);
+
+        ObjectManager(const std::vector<std::unique_ptr<Object>> &objects, Core &core);
         void add(std::unique_ptr<Object> object);
         void remove(const std::string &name);
         const std::vector<std::unique_ptr<Object>> &getObjects() const;
         std::vector<std::unique_ptr<Object>> &getObjects();
         void update();
-
         void end();
         void emitEvent(const std::string &name, const Json::Value &value);
         const Object &operator[](const std::string &name) const;
         Object &operator[](const std::string &name);
+
+        const Core &getCore() const;
+
+        Core &getCore();
     private:
+        Core &_core;
         std::vector<std::unique_ptr<Object>> _objects;
         std::vector<std::unique_ptr<Object>> _inObjects;
         std::vector<std::string> _outObjects;
@@ -61,16 +68,25 @@ namespace Uniti {
         ObjectPluginManager &getPluginManager();
         const Json::Value &getValue() const;
         Json::Value &getValue();
-        static std::optional<std::reference_wrapper<Object>> find(const std::string &name, bool recursive = true);
+
+        static std::optional<std::reference_wrapper<Object>>
+        find(const std::string &name, const Core &core, bool recursive = true);
         static std::optional<std::reference_wrapper<Object>> find(const std::string &name, const Scene &scene, bool recursive = true);
         static std::optional<std::reference_wrapper<Object>> find(const std::string &name, const ObjectManager &objectManager, bool recursive = true);
         static std::optional<std::reference_wrapper<Object>> find(const std::string &name, const Object &object, bool recursive = true);
-        static std::optional<std::reference_wrapper<Object>> find_if(std::function<bool(const Object &object)>, bool recursive = true);
+
+        static std::optional<std::reference_wrapper<Object>>
+        find_if(const Core &core, std::function<bool(const Object &object)>, bool recursive = true);
         static std::optional<std::reference_wrapper<Object>> find_if(const Scene &scene, std::function<bool(const Object &object)> function, bool recursive = true);
         static std::optional<std::reference_wrapper<Object>> find_if(const ObjectManager &objectManager, std::function<bool(const Object &object)> function, bool recursive = true);
         static std::optional<std::reference_wrapper<Object>> find_if(const Object &object, std::function<bool(const Object &object)> function, bool recursive = true);
         static Json::Value openJsonFile(const std::string &fileName);
+
+        const Core &getCore() const;
+
+        Core &getCore();
     private:
+        Core &_core;
         Json::Value _value;
         Scene &_scene;
         ObjectManager _objectManager;

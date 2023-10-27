@@ -3,14 +3,17 @@
 //
 
 #include "Object.hpp"
+#include "Scene.hpp"
 
 namespace Uniti {
-    ObjectManager::ObjectManager(const Json::Value &value, Scene &scene) {
+    ObjectManager::ObjectManager(const Json::Value &value, Scene &scene) :
+            _core(scene.getCore()) {
         for (const auto &object : value)
             this->_objects.push_back(std::make_unique<Object>(object, scene));
     }
 
-    ObjectManager::ObjectManager(const std::vector<std::unique_ptr<Object>> &objects) {
+    ObjectManager::ObjectManager(const std::vector<std::unique_ptr<Object>> &objects, Core &core) :
+            _core(core) {
         for (const auto &object : objects)
             this->_objects.push_back(std::make_unique<Object>(*object));
     }
@@ -70,5 +73,13 @@ namespace Uniti {
     void ObjectManager::end() {
         for (const auto &object: this->_objects)
             object->end();
+    }
+
+    const Core &ObjectManager::getCore() const {
+        return this->_core;
+    }
+
+    Core &ObjectManager::getCore() {
+        return this->_core;
     }
 }

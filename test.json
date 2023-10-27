@@ -1,0 +1,7 @@
+{
+    "plugins": [],
+    "name": "lol",
+    "sceneFolder": "../../json",
+    "startScene": "startScene.json",
+    "globalScene": "globalScene.json"
+}

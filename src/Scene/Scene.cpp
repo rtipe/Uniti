@@ -3,22 +3,24 @@
 //
 
 #include "Scene.hpp"
+#include "Core.hpp"
 
 namespace Uniti {
-    Scene::Scene(const Json::Value &scene, const std::string &name):
+    Scene::Scene(const Json::Value &scene, Core &core, const std::string &name) :
+            _core(core),
     _value(scene),
     _name(name),
     _objectManager(scene["objects"], *this),
-    _pluginManager(scene["plugins"], *this) {}
+            _pluginManager(scene["plugins"], *this, _core.log()) {}
 
     void Scene::update() {
-        std::string oldPath = Logger::getPath();
-        Logger::changePath(Logger::getPath() + " > Scene:" + this->_name);
+        std::string oldPath = this->_core.log().getPath();
+        this->_core.log().changePath(this->_core.log().getPath() + " > Scene:" + this->_name);
         this->_pluginManager.postUpdate();
         this->_objectManager.update();
         this->_pluginManager.update();
         this->_pluginManager.preUpdate();
-        Logger::changePath(oldPath);
+        this->_core.log().changePath(oldPath);
     }
 
     const ObjectManager &Scene::getObjects() const {
@@ -38,10 +40,11 @@ namespace Uniti {
     }
 
     void Scene::emitEvent(const std::string &name, const Json::Value &value) {
-        std::string oldPath = Logger::getPath();
-        Logger::changePath(Logger::getPath() + " > (SceneEvent -> Scene:" + this->_name + " Event:" + name + ")");
-        this->_event.emitEvent(name, value);
-        Logger::changePath(oldPath);
+        std::string oldPath = this->_core.log().getPath();
+        this->_core.log().changePath(
+                this->_core.log().getPath() + " > (SceneEvent -> Scene:" + this->_name + " Event:" + name + ")");
+        this->_event.emitEvent(name, value, this->_core.log());
+        this->_core.log().changePath(oldPath);
         this->_pluginManager.emitEvent(name, value);
         this->_objectManager.emitEvent(name, value);
     }
@@ -63,12 +66,20 @@ namespace Uniti {
     }
 
     void Scene::end() {
-        std::string oldPath = Logger::getPath();
-        Logger::changePath(Logger::getPath() + " > Scene:" + this->_name);
+        std::string oldPath = this->_core.log().getPath();
+        this->_core.log().changePath(this->_core.log().getPath() + " > Scene:" + this->_name);
         this->_pluginManager.postEnd();
         this->_objectManager.end();
         this->_pluginManager.end();
         this->_pluginManager.postEnd();
-        Logger::changePath(oldPath);
+        this->_core.log().changePath(oldPath);
+    }
+
+    const Core &Scene::getCore() const {
+        return this->_core;
+    }
+
+    Core &Scene::getCore() {
+        return this->_core;
     }
 }

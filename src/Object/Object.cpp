@@ -11,54 +11,58 @@
 
 namespace Uniti {
     Object::Object(const std::string &name, Scene &scene):
+            _core(scene.getCore()),
     _objectManager({}, scene),
     _name(name),
-    _objectPluginManager({}, *this),
+            _objectPluginManager({}, *this, _core.log()),
     _scene(scene) {
-        Logger::Info("Empty object created : " + name);
+        this->_core.log().Info("Empty object created : " + name);
     }
 
     Object::Object(Object &object):
+            _core(object.getCore()),
     _value(object.getValue()),
     _name(object.getName() + std::string("_clone")),
-    _objectManager(object.getChildren().getObjects()),
+            _objectManager(object.getChildren().getObjects(), object.getCore()),
     _objectPluginManager(object.getPluginManager()),
     _transform(object.getTransform()),
     _scene(object.getScene()) {
-        Logger::Info("Clone object created : " + object.getName() + std::string("_clone"));
+        this->_core.log().Info("Clone object created : " + object.getName() + std::string("_clone"));
     }
 
     Object::Object(const Json::Value &value, Scene &scene):
+            _core(scene.getCore()),
     _value(value),
     _name(value["name"].asString()),
     _objectManager(value["children"], scene),
-    _objectPluginManager(value["plugins"], *this),
+            _objectPluginManager(value["plugins"], *this, _core.log()),
     _transform(value["transform"]),
     _isEnabled(value.get("isEnable", true).asBool()),
     _scene(scene) {
-        Logger::Info("Object created : " + value["name"].asString());
+        this->_core.log().Info("Object created : " + value["name"].asString());
     }
 
     Object::Object(Scene &scene, const std::string &fileName):
+            _core(scene.getCore()),
     _value(openJsonFile(fileName)),
     _name(_value["name"].asString()),
     _objectManager(_value["children"], scene),
-    _objectPluginManager(_value["plugins"], *this),
+            _objectPluginManager(_value["plugins"], *this, _core.log()),
     _transform(_value["transform"]),
     _isEnabled(_value.get("isEnable", true).asBool()),
     _scene(scene) {
-        Logger::Info("object created by prefab : " + _value["name"].asString() + " path : " + fileName);
+        this->_core.log().Info("object created by prefab : " + _value["name"].asString() + " path : " + fileName);
     }
 
     void Object::update() {
         if (!this->_isEnabled) return;
-        std::string oldPath = Logger::getPath();
-        Logger::changePath(Logger::getPath() + " > Object:" + this->_name);
+        std::string oldPath = this->_core.log().getPath();
+        this->_core.log().changePath(this->_core.log().getPath() + " > Object:" + this->_name);
         this->_objectPluginManager.preUpdate();
         this->_objectManager.update();
         this->_objectPluginManager.update();
         this->_objectPluginManager.postUpdate();
-        Logger::changePath(oldPath);
+        this->_core.log().changePath(oldPath);
     }
 
     void Object::setName(const std::string &name) {
@@ -141,12 +145,13 @@ namespace Uniti {
         return project;
     }
 
-    std::optional<std::reference_wrapper<Object>> Object::find(const std::string &name, bool recursive)
+    std::optional<std::reference_wrapper<Object>>
+    Object::find(const std::string &name, const Core &core, bool recursive)
     {
-        auto global = find(name, Uniti::Core::getInstance().getSceneManager().getGlobalScene(), recursive);
+        auto global = find(name, core.getSceneManager().getGlobalScene(), recursive);
         if (global)
             return global;
-        auto current = find(name, Uniti::Core::getInstance().getSceneManager().getCurrentScene(), recursive);
+        auto current = find(name, core.getSceneManager().getCurrentScene(), recursive);
         if (current)
             return current;
         return std::nullopt;
@@ -186,12 +191,12 @@ namespace Uniti {
     }
 
     std::optional<std::reference_wrapper<Object>>
-    Object::find_if(std::function<bool(const Object &object)> function, bool recursive)
+    Object::find_if(const Core &core, std::function<bool(const Object &object)> function, bool recursive)
     {
-        auto global = find_if(Uniti::Core::getInstance().getSceneManager().getGlobalScene(), function, recursive);
+        auto global = find_if(core.getSceneManager().getGlobalScene(), function, recursive);
         if (global)
             return global;
-        auto current = find_if(Uniti::Core::getInstance().getSceneManager().getCurrentScene(), function, recursive);
+        auto current = find_if(core.getSceneManager().getCurrentScene(), function, recursive);
         if (current)
             return current;
         return std::nullopt;
@@ -233,12 +238,20 @@ namespace Uniti {
     }
 
     void Object::end() {
-        std::string oldPath = Logger::getPath();
-        Logger::changePath(Logger::getPath() + " > Object:" + this->_name);
+        std::string oldPath = this->_core.log().getPath();
+        this->_core.log().changePath(this->_core.log().getPath() + " > Object:" + this->_name);
         this->_objectPluginManager.preEnd();
         this->_objectManager.end();
         this->_objectPluginManager.end();
         this->_objectPluginManager.postEnd();
-        Logger::changePath(oldPath);
+        this->_core.log().changePath(oldPath);
+    }
+
+    const Core &Object::getCore() const {
+        return this->_core;
+    }
+
+    Core &Object::getCore() {
+        return this->_core;
     }
 }

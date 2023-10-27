@@ -8,24 +8,24 @@ namespace Uniti {
     void Core::start() {
         std::unique_lock<std::mutex> lock(this->_mutexForStop);
 
-        std::string oldPath = Logger::getPath();
-        Logger::changePath(Logger::getPath() + " > Core:" + this->_value.get("name", "").asString());
+        std::string oldPath = this->_logger.getPath();
+        this->_logger.changePath(this->_logger.getPath() + " > Core:" + this->_value.get("name", "").asString());
         while (this->_stop) {
             lock.unlock();
             this->_pluginManager.preUpdate();
             this->_sceneManager.update();
             this->_pluginManager.update();
             this->_queue.consume_all([&](std::tuple<std::string, Json::Value> *event) {
-                std::string oldPath = Logger::getPath();
-                Logger::changePath(
-                        Logger::getPath() + " > (CoreEvent -> core:" + this->_value.get("name", "").asString() +
+                std::string oldPath = this->_logger.getPath();
+                this->_logger.changePath(
+                        this->_logger.getPath() + " > (CoreEvent -> core:" + this->_value.get("name", "").asString() +
                         " Event:" + std::get<0>(*event) + ")");
                 try {
-                    this->_event.emitEvent(std::get<0>(*event), std::get<1>(*event));
+                    this->_event.emitEvent(std::get<0>(*event), std::get<1>(*event), _logger);
                 } catch (std::exception &e) {
-                    Logger::Danger(e.what());
+                    this->_logger.Danger(e.what());
                 }
-                Logger::changePath(oldPath);
+                this->_logger.changePath(oldPath);
                 delete event;
             });
             this->_pluginManager.postUpdate();
@@ -35,27 +35,14 @@ namespace Uniti {
         this->_sceneManager.end();
         this->_pluginManager.end();
         this->_pluginManager.postEnd();
-        Logger::Warn("bye !");
-        Logger::changePath(oldPath);
+        this->_logger.Warn("bye !");
+        this->_logger.changePath(oldPath);
     }
 
     void Core::stop() {
         const std::lock_guard<std::mutex> lock(this->_mutexForStop);
-        Logger::Warn("Shutdown request");
+        this->_logger.Warn("Shutdown request");
         this->_stop = true;
-    }
-
-    void Core::initProject(const Json::Value &value) {
-        Logger::Info("Starting project : " + value.get("name", "").asString());
-        _instance.reset(new Core(value));
-    }
-
-    void Core::initProject(const std::string &fileName) {
-        _instance.reset(new Core(Object::openJsonFile(fileName)));
-    }
-
-    Core &Core::getInstance() {
-        return *_instance;
     }
 
     Core &Core::getSubInstance(const std::string &name) {
@@ -74,7 +61,7 @@ namespace Uniti {
         std::unique_ptr<Core> core = std::make_unique<Core>(value);
         std::thread thread = std::thread([](Core &core) {
             core.start();
-        }, std::ref(*core.get()));
+        }, std::ref(*core));
         this->_subInstances[value["name"].asString()] = {std::move(core), std::move(thread)};
     }
 
@@ -122,10 +109,11 @@ namespace Uniti {
     }
 
     Core::Core(const Json::Value &value):
+            _logger(),
     _value(value),
     _queue(10000),
-    _pluginManager(value["plugins"], *this),
-    _sceneManager(value) {}
+            _pluginManager(value["plugins"], *this, _logger),
+            _sceneManager(value, *this) {}
 
     Core::~Core() {
         std::vector<std::string> keys;
@@ -134,5 +122,13 @@ namespace Uniti {
             keys.push_back(subInstance.first);
         for (const auto &key : keys)
             this->closeSubInstance(key);
+    }
+
+    const Logger &Core::log() const {
+        return this->_logger;
+    }
+
+    Logger &Core::log() {
+        return this->_logger;
     }
 }
