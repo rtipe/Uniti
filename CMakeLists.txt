@@ -69,15 +69,7 @@ install(DIRECTORY src/
         COMPONENT devel
         FILES_MATCHING PATTERN "*.hpp" PATTERN "*.inl")
 
-add_library(plugin SHARED)
-target_link_libraries(plugin PUBLIC Uniti)
-set_target_properties(plugin PROPERTIES
-        CXX_STANDARD 20
-        PREFIX ""
-        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-)
-
-add_subdirectory(test)
+add_subdirectory(Render)
 
 add_executable(test
         index.cpp)
