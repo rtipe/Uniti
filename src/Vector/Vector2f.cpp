@@ -99,7 +99,7 @@ namespace Uniti {
 
     Vector2f &Vector2f::operator=(const Vector2f &other) {
         this->_x = other._x;
-        this->_x = other._y;
+        this->_y = other._y;
         return *this;
     }
 

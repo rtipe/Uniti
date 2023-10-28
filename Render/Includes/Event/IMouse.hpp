@@ -17,8 +17,7 @@ public:
 
     virtual ~IMouse() = default;
 
-    virtual void
-    update() = 0; // TODO : si on a besoin d'une variable le passer dans le constructeur au lieu de le passer à la méthode comme avant
+    virtual void update() = 0;
     virtual bool isMousePressed(const std::string &key) = 0;
 
     virtual bool isMousePressed(KeyMouse keyMouse) = 0;
