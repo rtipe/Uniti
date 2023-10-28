@@ -9,7 +9,8 @@
 int main() {
     try {
         Uniti::PluginLoader loader;
-        loader.loadCorePlugin("../../plugin");
+        loader.loadCorePlugin("../../CorePlugin");
+        loader.loadObjectPlugin("../../ObjectPlugin");
         Uniti::Core mainInstance(Uniti::Object::openJsonFile("../../test.json"));
 
         mainInstance.start();

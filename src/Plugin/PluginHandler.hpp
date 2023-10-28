@@ -7,12 +7,10 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
-
-#ifndef __linux__
-
-#include <windows.h>
 #include <iostream>
-
+#ifndef __linux__
+#define NOMINMAX
+#include <windows.h>
 #else
 #include <dlfcn.h>
 #endif
@@ -46,8 +44,9 @@ namespace Uniti {
 #else
                 char error[1024];
                 FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, nullptr, GET_LIB_ERROR(), 0, error, sizeof(error), nullptr);
+                std::cout << GET_LIB_ERROR() << std::endl;
 #endif
-                throw std::runtime_error("Couldn't open in PluginHandler: " + std::string(error));
+                throw std::runtime_error("Couldn't open in PluginHandler " + _filePath + ": " + std::string(error));
             }
             _creator = this->getResult<Creator *>("getCreator");
             if (!_creator)

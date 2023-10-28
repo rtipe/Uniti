@@ -19,7 +19,7 @@ public:
 
     virtual void setString(const std::string &text) = 0;
 
-    virtual void setFont(const Json::Value &value) = 0;
+    virtual void setFont(const std::string &path) = 0;
 
     virtual void setCharacterSize(unsigned int size) = 0;
 
@@ -27,5 +27,5 @@ public:
 
     virtual void setColor(const Uniti::Color &color) = 0;
 
-    virtual std::string &getString() = 0;
+    virtual const std::string getString() const = 0;
 };
