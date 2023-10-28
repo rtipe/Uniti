@@ -9,9 +9,8 @@
 #include "json/value.h"
 
 #ifndef __linux__
-
+#define NOMINMAX
 #include <windows.h>
-
 #endif
 
 namespace Uniti {

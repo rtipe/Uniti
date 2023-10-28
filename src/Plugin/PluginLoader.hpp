@@ -29,6 +29,7 @@ namespace Uniti {
                 currentFilePath = entry.path().string();
                 fileName = entry.path().filename().string();
                 size_t found = fileName.find('.');
+                std::replace(currentFilePath.begin(), currentFilePath.end(), '\\', '/');
                 PluginFactory<Handler, Interface, Parent>::getFactory().add(fileName.substr(0, found),
                                                                             std::make_unique<Handler>(currentFilePath));
             }
