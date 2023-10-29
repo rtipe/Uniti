@@ -16,6 +16,10 @@
                     "texture": {
                         "path": "../../assets/untitled.png"
                     }
+                },
+                {
+                    "name": "PhysicsPlugin",
+                    "boxes": []
                 }
             ],
             "children": []
