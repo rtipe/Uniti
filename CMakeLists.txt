@@ -71,6 +71,7 @@ install(DIRECTORY src/
 
 add_subdirectory(Render)
 add_subdirectory(Network)
+add_subdirectory(Physics)
 
 add_executable(test
         index.cpp)

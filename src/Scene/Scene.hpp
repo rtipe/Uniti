@@ -23,6 +23,11 @@ namespace Uniti {
         PLUGIN &get(const std::string &name) {
             return dynamic_cast<PLUGIN &>(this->_pluginManager.get(name));
         }
+
+        template<typename PLUGIN>
+        const PLUGIN &get(const std::string &name) const {
+            return dynamic_cast<PLUGIN &>(this->_pluginManager.get(name));
+        }
         void addEventListener(const std::string &name, eventFunction);
         void emitEvent(const std::string &name, const Json::Value &value);
         const ScenePluginManager &getPluginManager() const;
