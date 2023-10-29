@@ -9,7 +9,9 @@
 #include <stdexcept>
 #include <iostream>
 #ifndef __linux__
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #include <windows.h>
 #else
 #include <dlfcn.h>

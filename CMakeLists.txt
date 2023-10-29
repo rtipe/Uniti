@@ -70,6 +70,7 @@ install(DIRECTORY src/
         FILES_MATCHING PATTERN "*.hpp" PATTERN "*.inl")
 
 add_subdirectory(Render)
+add_subdirectory(Network)
 
 add_executable(test
         index.cpp)
