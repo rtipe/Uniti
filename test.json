@@ -8,6 +8,9 @@
         },
         {
             "name": "NetworkPlugin"
+        },
+        {
+            "name": "JSScriptPlugin"
         }
     ],
     "name": "lol",
