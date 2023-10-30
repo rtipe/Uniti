@@ -49,6 +49,10 @@ namespace Uniti {
         const Logger &log() const;
 
         Logger &log();
+
+        const CorePluginManager &getPluginManager() const;
+
+        CorePluginManager &getPluginManager();
     private:
         Logger _logger;
         std::map<std::string, std::tuple<std::unique_ptr<Core>, std::thread>> _subInstances;
