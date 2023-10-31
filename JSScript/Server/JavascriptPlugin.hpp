@@ -8,6 +8,7 @@
 #include <thread>
 #include "ICorePlugin.hpp"
 #include "sio_client.h"
+#include "Scene.hpp"
 
 class JavascriptPlugin : public Uniti::ICorePlugin {
 public:
@@ -44,12 +45,29 @@ public:
     Uniti::Event &getEvent() override;
 
 private:
+    Json::Value getSceneJson(Uniti::Scene &scene);
+
+    Json::Value getObjectJson(Uniti::Object &object);
+
+    Json::Value getUnloadScenes();
+
+    void applyCoreEvent(const Json::Value &events);
+
+    void applySceneManagerEvent(const Json::Value &events);
+
+    void applySceneEvent(Uniti::Scene &scene, const Json::Value &events);
+
+    void applyObjectEvent(Uniti::Object &object, const Json::Value &events);
+
+    void applyNetworkEvent(const Json::Value &events);
     std::string _code;
     std::thread _thread;
-    boost::lockfree::queue<std::string *> _queue;
+    boost::lockfree::queue<std::string *> _queueUpdate;
+    boost::lockfree::queue<std::string *> _queueLog;
     Uniti::Core &_core;
     Uniti::Event _event;
     Uniti::Clock _clock;
     sio::client client;
     int _port;
+    float _updateJS;
 };

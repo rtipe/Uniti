@@ -1,94 +1,42 @@
-export class Text {
+export class Printable {
+    constructor(object) {
+        this.gameObject = object;
+    }
+
+    createJson() {
+        return {
+            events: this._events
+        }
+    }
     setString(text) {
-        this._events.push({
-            "name": "setString",
-            "data": text
-        })
+        this.gameObject.emitEvent("setString", text)
     }
 
-    _text = "";
-
-    getString() {
-        return this._text;
-    }
-
-    setFont(path) {
-        this._events.push({
-            "name": "setFont",
-            "data": path
-        })
-    }
-
-    setCharacterSize(size) {
-        this._events.push({
-            "name": "setCharacterSize",
-            "data": size
-        })
-    }
-
-    setStyle(style) {
-        this._events.push({
-            "name": "setStyle",
-            "data": style
-        })
-    }
-
-    setColor(color) {
-        this._events.push({
-            "name": "setColor",
-            "data": color
-        })
-    }
-
-    changeZIndex(zIndex) {
-        this._events.push({
-            "name": "changeZIndex",
-            "data": zIndex
-        })
-    }
-
-    _zIndex = 0;
-
-    getZIndex() {
-        return this._zIndex;
-    }
-
-    _events = [];
-}
-
-export class Sprite {
     setTexture(information) {
-        this._events.push({
-            "name": "setTexture",
-            "data": information
-        })
+        this.gameObject.emitEvent("setTexture", information)
     }
 
     changeTextureRect(box) {
-        this._events.push({
-            "name": "changeTextureRect",
-            "data": box
-        })
+        this.gameObject.emitEvent("changeTextureRect", box)
+    }
+    setFont(path) {
+        this.gameObject.emitEvent("setFont", path)
     }
 
-    changeColor(color) {
-        this._events.push({
-            "name": "changeColor",
-            "data": color
-        })
+    setCharacterSize(size) {
+        this.gameObject.emitEvent("setCharacterSize", size)
+    }
+
+    setStyle(style) {
+        this.gameObject.emitEvent("setStyle", style)
+    }
+
+    setColor(color) {
+        this.gameObject.emitEvent("setColor", color)
     }
 
     changeZIndex(zIndex) {
-        this._events.push({
-            "name": "changeZIndex",
-            "data": zIndex
-        })
-    }
-
-    _zIndex = 0;
-
-    getZIndex() {
-        return this._zIndex;
+        this.gameObject.emitEvent("changeZIndex", zIndex)
     }
 
     _events = [];
