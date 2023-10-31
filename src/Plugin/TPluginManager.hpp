@@ -54,6 +54,19 @@ namespace Uniti {
             }
             this->_logger.changePath(oldPath);
         }
+
+        void add(const std::string &name, Interface &element, const Json::Value &value) {
+            std::string oldPath = this->_logger.getPath();
+            this->_logger.changePath(this->_logger.getPath() + " > Plugin:" + name + " awake()");
+            try {
+                this->_plugins.emplace(name, element);
+                this->_logger.Info("start");
+                this->_plugins.at(name).get().awake(value);
+            } catch (std::exception &e) {
+                this->_logger.Danger(e.what());
+            }
+            this->_logger.changePath(oldPath);
+        }
         void remove(const std::string &name) {
             if (_plugins.count(name) == 0)
                 throw std::runtime_error(name + " <- not found");

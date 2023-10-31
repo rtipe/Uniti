@@ -8,6 +8,7 @@ namespace Uniti {
     void Core::start() {
         std::unique_lock<std::mutex> lock(this->_mutexForStop);
 
+        srand(time(NULL));
         this->_logger.changePath("Core:" + this->_value.get("name", "").asString());
         while (!this->_stop) {
             lock.unlock();
@@ -128,5 +129,13 @@ namespace Uniti {
 
     Logger &Core::log() {
         return this->_logger;
+    }
+
+    const CorePluginManager &Core::getPluginManager() const {
+        return this->_pluginManager;
+    }
+
+    CorePluginManager &Core::getPluginManager() {
+        return this->_pluginManager;
     }
 }
