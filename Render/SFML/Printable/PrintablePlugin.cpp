@@ -79,7 +79,65 @@ void PrintablePlugin::awake(const Json::Value &value) {
 }
 
 void PrintablePlugin::preStart() {
-
+    this->_event.addEvent("setString", [&](const Json::Value &value) {
+        if (!this->_printable) return;
+        try {
+            IText &text = dynamic_cast<IText &>(*this->_printable.get());
+            text.setString(value.asString());
+        } catch (std::exception &e) {}
+    });
+    this->_event.addEvent("setFont", [&](const Json::Value &value) {
+        if (!this->_printable) return;
+        try {
+            IText &text = dynamic_cast<IText &>(*this->_printable.get());
+            text.setFont(value.asString());
+        } catch (std::exception &e) {}
+    });
+    this->_event.addEvent("setCharacterSize", [&](const Json::Value &value) {
+        if (!this->_printable) return;
+        try {
+            IText &text = dynamic_cast<IText &>(*this->_printable.get());
+            text.setCharacterSize(value.asInt());
+        } catch (std::exception &e) {}
+    });
+    this->_event.addEvent("setStyle", [&](const Json::Value &value) {
+        if (!this->_printable) return;
+        try {
+            IText &text = dynamic_cast<IText &>(*this->_printable.get());
+            const std::string &style = value.asString();
+            if (style == "regular")
+                text.setStyle(Text::REGULAR);
+            if (style == "bold")
+                text.setStyle(Text::BOLD);
+            if (style == "italic")
+                text.setStyle(Text::ITALIC);
+        } catch (std::exception &e) {}
+    });
+    this->_event.addEvent("setColor", [&](const Json::Value &value) {
+        if (!this->_printable) return;
+        try {
+            IText &text = dynamic_cast<IText &>(*this->_printable.get());
+            text.setColor(value);
+        } catch (std::exception &e) {}
+    });
+    this->_event.addEvent("setTexture", [&](const Json::Value &value) {
+        if (!this->_printable) return;
+        try {
+            ISprite &sprite = dynamic_cast<ISprite &>(*this->_printable.get());
+            sprite.setTexture(value);
+        } catch (std::exception &e) {}
+    });
+    this->_event.addEvent("changeTextureRect", [&](const Json::Value &value) {
+        if (!this->_printable) return;
+        try {
+            ISprite &sprite = dynamic_cast<ISprite &>(*this->_printable.get());
+            sprite.setTextureRect(value);
+        } catch (std::exception &e) {}
+    });
+    this->_event.addEvent("changeZIndex", [&](const Json::Value &value) {
+        if (!this->_printable) return;
+        this->_printable->setZIndex(value.asFloat());
+    });
 }
 
 void PrintablePlugin::start() {
