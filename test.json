@@ -8,6 +8,10 @@
         },
         {
             "name": "NetworkPlugin"
+        },
+        {
+            "name": "JSScriptPlugin",
+            "path": "../../JSScript/Interpreter/index.js"
         }
     ],
     "name": "lol",

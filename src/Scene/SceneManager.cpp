@@ -34,8 +34,8 @@ namespace Uniti {
                 }
             }
         }
-        auto globalScenePath = this->getScenePath(value["startScene"].asString());
-        auto startScenePath = this->getScenePath(value["globalScene"].asString());
+        auto globalScenePath = this->getScenePath(value["globalScene"].asString());
+        auto startScenePath = this->getScenePath(value["startScene"].asString());
         this->_core.log().Info("Loading global scene -> " + globalScenePath.name);
         this->_globalScene =
                 std::make_unique<Scene>(this->getSceneValue(globalScenePath), core, globalScenePath.name);
