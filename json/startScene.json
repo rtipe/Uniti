@@ -20,6 +20,9 @@
                 {
                     "name": "PhysicsPlugin",
                     "boxes": []
+                },
+                {
+                    "name": "JSListener"
                 }
             ],
             "children": []
