@@ -4,7 +4,24 @@
 
 #include "NetworkPlugin.hpp"
 
-NetworkPlugin::NetworkPlugin(Uniti::Core &core) : _core(core) {}
+NetworkPlugin::NetworkPlugin(Uniti::Core &core) : _core(core) {
+    this->_event.addEvent("addServer", [&](const Json::Value &value) {
+        this->_network->addServer(
+                value.get("name", "").asString(),
+                value.get("ip", "").asString(),
+                value.get("port", 0).asInt()
+        );
+    });
+    this->_event.addEvent("removeServer", [&](const Json::Value &value) {
+        this->_network->removeServer(value.asString());
+    });
+    this->_event.addEvent("sendEvent", [&](const Json::Value &value) {
+        this->_network->getServer(value["serverName"].asString()).sendEvent(value["name"].asString(), value["value"]);
+    });
+    this->_event.addEvent("changeUser", [&](const Json::Value &value) {
+        this->_network->changeUser(value["changeUser"].asString());
+    });
+}
 
 Uniti::Core &NetworkPlugin::getCore() {
     return this->_core;
