@@ -1,7 +1,11 @@
 export class Collision {
-    boxes = [];
-    isOverlap = true;
+    createJson() {
 
+    }
+
+    load(json) {
+
+    }
     onOverlap(callback) {
         this._onOverlap.push(callback);
         return this._onOverlap.length - 1;

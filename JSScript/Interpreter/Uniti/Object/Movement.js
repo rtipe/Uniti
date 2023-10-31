@@ -1,68 +1,43 @@
 export class Movement {
+    constructor(object) {
+        this.gameObject = object;
+    }
+
+    createJson() {
+        return {
+            events: this._events
+        }
+    }
     moveTo(position, speed) {
-        this._events.push({
-            "name": "moveTo",
-            "data": {position, speed}
-        })
+        this.gameObject.emitEvent("moveTo", {position, speed})
     }
 
     moveForward(speed, deltaTime = -1) {
-        this._events.push({
-            "name": "moveForward",
-            "data": {speed, deltaTime}
-        })
+        this.gameObject.emitEvent("moveForward", {speed, deltaTime})
     }
 
     moveBackward(speed, deltaTime = -1) {
-        this._events.push({
-            "name": "moveBackward",
-            "data": {speed, deltaTime}
-        })
+        this.gameObject.emitEvent("moveBackward", {speed, deltaTime})
     }
 
     moveLeft(speed, deltaTime = -1) {
-        this._events.push({
-            "name": "moveLeft",
-            "data": {speed, deltaTime}
-        })
+        this.gameObject.emitEvent("moveLeft", {speed, deltaTime})
     }
 
     moveRight(speed, deltaTime = -1) {
-        this._events.push({
-            "name": "moveRight",
-            "data": {speed, deltaTime}
-        })
+        this.gameObject.emitEvent("moveRight", {speed, deltaTime})
     }
 
     move(position, speed, deltaTime = -1) {
-        this._events.push({
-            "name": "move",
-            "data": {position, speed, deltaTime}
-        })
+        this.gameObject.emitEvent("move", {position, speed, deltaTime})
     }
 
     cancelMovement() {
-        this._events.push({
-            "name": "cancelMovement"
-        })
-    }
-
-    isMoving() {
-        return this._isMoving;
-    }
-
-    getSpeed() {
-        return this._speed;
+        this.gameObject.emitEvent("cancelMovement", {})
     }
 
     setSpeed(speed) {
-        this._events.push({
-            "name": "setSpeed",
-            data: speed
-        })
+        this.gameObject.emitEvent("setSpeed", speed)
     }
-
-    _speed = 0;
-    _isMoving = false;
     _events = [];
 }
