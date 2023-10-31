@@ -2,7 +2,7 @@ import {createServer} from "http";
 import {Server} from "socket.io";
 import {Uniti} from "./Uniti/Uniti.js";
 import * as util from "util";
-import * as fs from "fs";
+import * as fs from "fs/promises";
 
 const http = createServer();
 export const io = new Server(http);
@@ -27,26 +27,27 @@ console.warn = function () {
     com.emit("log", JSON.stringify({message: util.format.apply(null, arguments) + "", type: "Warn"}));
 }
 
-function executeScript(path, app) {
-    fs.readdir(path, {withFileTypes: true, encoding: 'utf8', flag: 'r'}, (err, files) => {
-        if (err) throw err
+async function executeScript(path, app) {
+    try {
+        const files = await fs.readdir(path, {withFileTypes: true, encoding: 'utf8', flag: 'r'});
+
         for (let i = 0; i < files.length; i++) {
             if (files[i].isDirectory()) {
-                executeScript(path + '/' + files[i].name);
+                await executeScript(path + '/' + files[i].name, app);
                 continue;
             }
+
             let extension = files[i].name.split('.').pop();
 
             if (extension === 'js') {
-                import("./" + path + '/' + files[i].name).then((controller) => {
-                    controller.default(app)
-                })
+                const controller = await import(path + '/' + files[i].name);
+                await controller.default(app);
             }
         }
-    })
-    return false;
+    } catch (err) {
+        throw err;
+    }
 }
-
 io.on("connection", function (socket) {
     let isGood = false;
     let game = undefined;
@@ -56,14 +57,14 @@ io.on("connection", function (socket) {
             com = socket;
         }
     })
-    socket.on("update", (response) => {
+    socket.on("update", async (response) => {
         if (!isGood) return;
         if (!game) {
             game = new Uniti(JSON.parse(response));
         } else {
             game.load(JSON.parse(response));
         }
-        executeScript("scripts", game);
+        await executeScript("../../JSScript/Interpreter/scripts", game);
         socket.emit("update", JSON.stringify(game.createJson()));
     })
     socket.on("disconnect", () => {
