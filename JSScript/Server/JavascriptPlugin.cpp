@@ -18,16 +18,17 @@ void JavascriptPlugin::awake(const Json::Value &value) {
     this->_code = std::to_string(std::rand() % 100000);
     this->_port = value.get("port", 8000).asInt();
     this->_updateJS = 1 / value.get("fps", 10).asFloat();
+    this->_path = value.get("path", "").asString();
     std::string port = std::to_string(this->_port);
 
-    this->_thread = std::thread([](std::string code, std::string port, JavascriptPlugin &plugin) {
-        int result = std::system(std::string("node ../../JSScript/Interpreter/index.js " + port + " " + code).c_str());
+    this->_thread = std::thread([](std::string code, std::string port, std::string path, JavascriptPlugin &plugin) {
+        int result = std::system(std::string("node " + path + " " + port + " " + code).c_str());
 
         if (result != 0) {
             plugin._queueLog.push(new std::string("Error execution of node"));
         }
         plugin._queueLog.push(new std::string("Execution ended"));
-    }, this->_code, port, std::ref(*this));
+    }, this->_code, port, this->_path, std::ref(*this));
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
@@ -94,11 +95,27 @@ void JavascriptPlugin::postUpdate() {
     if (this->_clock.getMilliSeconds() < this->_updateJS) return;
     Json::Value base;
     Json::Value sceneManager;
+    Json::Value events;
 
     sceneManager["currentScene"] = this->getSceneJson(this->_core.getSceneManager().getCurrentScene());
     sceneManager["globalScene"] = this->getSceneJson(this->_core.getSceneManager().getGlobalScene());
     sceneManager["unloadScenes"] = this->getUnloadScenes();
     base["sceneManager"] = sceneManager;
+    int i = 0;
+    for (auto &event: this->_events) {
+        if (event.second.empty()) continue;
+        Json::Value eventJSON;
+        eventJSON["name"] = event.first;
+        int j = 0;
+        for (const auto &eventInfo: event.second) {
+            eventJSON["values"].insert(i, eventInfo);
+            j++;
+        }
+        events.insert(i, eventJSON);
+        i++;
+        event.second.clear();
+    }
+    base["events"] = events;
     Json::FastWriter fastWriter;
     std::string output = fastWriter.write(base);
     client.socket()->emit("update", {output});
@@ -112,6 +129,10 @@ void JavascriptPlugin::end() {
 }
 
 void JavascriptPlugin::postEnd() {
+    if (!this->client.opened()) {
+        this->_core.log().Warn("Session nodeJS already closed...");
+        return;
+    }
     this->client.sync_close();
     this->_core.log().Info("Checking the end of node session");
     if (this->_thread.joinable()) {
@@ -263,4 +284,10 @@ void JavascriptPlugin::applyNetworkEvent(const Json::Value &events) {
     for (const auto &event: events["events"])
         this->_core.getPluginManager().get("NetworkPlugin").getEvent().emitEvent(event["name"].asString(),
                                                                                  event["data"], this->_core.log());
+}
+
+void JavascriptPlugin::emitJSEvent(const std::string &name, const Json::Value &value) {
+    if (!this->_events.contains(name))
+        this->_events[name] = std::vector<Json::Value>();
+    this->_events[name].push_back(value);
 }

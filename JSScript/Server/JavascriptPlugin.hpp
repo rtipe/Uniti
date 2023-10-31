@@ -44,6 +44,8 @@ public:
 
     Uniti::Event &getEvent() override;
 
+    void emitJSEvent(const std::string &name, const Json::Value &value);
+
 private:
     Json::Value getSceneJson(Uniti::Scene &scene);
 
@@ -61,9 +63,11 @@ private:
 
     void applyNetworkEvent(const Json::Value &events);
     std::string _code;
+    std::string _path;
     std::thread _thread;
     boost::lockfree::queue<std::string *> _queueUpdate;
     boost::lockfree::queue<std::string *> _queueLog;
+    std::map<std::string, std::vector<Json::Value>> _events;
     Uniti::Core &_core;
     Uniti::Event _event;
     Uniti::Clock _clock;
