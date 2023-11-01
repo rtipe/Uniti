@@ -15,6 +15,7 @@ export class Uniti {
     load(json) {
         this.sceneManager.load(json.sceneManager);
         if (!json.events) return;
+        this.events.eventsCalled = json.events;
         for (const event of json.events) {
             let name = event.name;
             for (const value of event.values) {
