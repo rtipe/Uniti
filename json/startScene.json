@@ -22,6 +22,41 @@
                     "boxes": []
                 },
                 {
+                    "name": "Button",
+                    "width": 500,
+                    "height": 500
+                }
+            ],
+            "children": []
+        },
+        {
+            "name": "input",
+            "transform": {
+                "scale": {
+                    "x": 1,
+                    "y": 1
+                }
+            },
+            "plugins": [
+                {
+                    "name": "PrintablePlugin",
+                    "type": "text",
+                    "font": "../../assets/Pacifico.ttf",
+                    "text": "lol",
+                    "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255
+                    }
+                },
+                {
+                    "name": "TextInput",
+                    "active": false,
+                    "height": 300,
+                    "width": 500,
+                    "maxChar": 32
+                },
+                {
                     "name": "JSListener"
                 }
             ],

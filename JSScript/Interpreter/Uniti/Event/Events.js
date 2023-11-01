@@ -23,5 +23,6 @@ export class Events {
         }
     }
 
+    eventsCalled = {};
     _callbacks = {};
 }
