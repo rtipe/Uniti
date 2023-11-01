@@ -58,6 +58,18 @@ void RenderPlugin::postUpdate() {
     this->_core.log().Info("Displaying ...");
     try {
         this->_window.display();
+        for (const auto &event: this->_window.getInput().getEvents()) {
+            this->_core.getSceneManager().getGlobalScene().emitEvent(event, {});
+            this->_core.getSceneManager().getCurrentScene().emitEvent(event, {});
+        }
+        Uniti::Vector2f positionMouse = this->_window.getMouse().getPosition();
+        Json::Value position;
+        position["x"] = positionMouse.getX();
+        position["y"] = positionMouse.getY();
+        for (const auto &event: this->_window.getMouse().getEvents()) {
+            this->_core.getSceneManager().getGlobalScene().emitEvent(event, position);
+            this->_core.getSceneManager().getCurrentScene().emitEvent(event, position);
+        }
     } catch (std::exception &e) {
         this->_core.log().Danger("Error while displaying :");
         this->_core.log().Danger(e.what());
