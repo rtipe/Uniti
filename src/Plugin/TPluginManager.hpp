@@ -15,7 +15,8 @@ namespace Uniti {
         TPluginManager(TPluginManager &pluginManager):
         _parent(pluginManager._parent),
         _value(pluginManager._value),
-        _logger(pluginManager._logger) {
+        _logger(pluginManager._logger),
+        _factory(pluginManager.getFactory()) {
             for (const auto &plugin : pluginManager._value) {
                 auto name = plugin["name"].asString();
                 this->add(name, plugin);
@@ -25,10 +26,12 @@ namespace Uniti {
             this->postStart();
         }
 
-        TPluginManager(const Json::Value &plugins, Parent &parent, Logger &logger) :
+        TPluginManager(const Json::Value &plugins, Parent &parent, Logger &logger,
+                       PluginFactory<Handler, Interface, Parent> &factory) :
         _parent(parent),
         _value(plugins),
-        _logger(logger) {
+        _logger(logger),
+        _factory(factory) {
             for (const Json::Value &plugin : plugins) {
                 auto name = plugin["name"].asString();
                 this->add(name, plugin);
@@ -39,14 +42,13 @@ namespace Uniti {
         }
         ~TPluginManager() {
             for (auto &element : this->_plugins)
-                PluginFactory<Handler, Interface, Parent>::getFactory().removeElement(element.first, element.second.get());
+                this->_factory.removeElement(element.first, element.second.get());
         }
         void add(const std::string &name, const Json::Value &value) {
             std::string oldPath = this->_logger.getPath();
             this->_logger.changePath(this->_logger.getPath() + " > Plugin:" + name + " awake()");
             try {
-                this->_plugins.emplace(name,
-                                       PluginFactory<Handler, Interface, Parent>::getFactory().get(name, _parent));
+                this->_plugins.emplace(name, this->_factory.get(name, _parent));
                 this->_logger.Info("start");
                 this->_plugins.at(name).get().awake(value);
             } catch (std::exception &e) {
@@ -70,7 +72,7 @@ namespace Uniti {
         void remove(const std::string &name) {
             if (_plugins.count(name) == 0)
                 throw std::runtime_error(name + " <- not found");
-            PluginFactory<Handler, Interface, Parent>::getFactory().removeElement(name, this->_plugins.at(name).get());
+            this->_factory.removeElement(name, this->_plugins.at(name).get());
             this->_plugins.erase(name);
         }
         const Interface &get(const std::string &name) const {
@@ -202,10 +204,15 @@ namespace Uniti {
                 this->_logger.changePath(oldPath);
             }
         }
+
+        PluginFactory<Handler, Interface, Parent> &getFactory() {
+            return this->_factory;
+        }
     private:
         Parent &_parent;
         Logger &_logger;
         Json::Value _value;
+        PluginFactory<Handler, Interface, Parent> &_factory;
         std::map<std::string, std::reference_wrapper<Interface>> _plugins;
     };
 }

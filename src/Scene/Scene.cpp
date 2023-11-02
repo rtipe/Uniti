@@ -11,7 +11,7 @@ namespace Uniti {
     _value(scene),
     _name(name),
     _objectManager(scene["objects"], *this),
-            _pluginManager(scene["plugins"], *this, _core.log()) {}
+            _pluginManager(scene["plugins"], *this, _core.log(), this->_core.getSceneFactory()) {}
 
     void Scene::update() {
         std::string oldPath = this->_core.log().getPath();
