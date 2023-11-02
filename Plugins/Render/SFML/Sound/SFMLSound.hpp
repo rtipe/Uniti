@@ -5,7 +5,6 @@
 #pragma once
 
 #include "ISound.hpp"
-#include <map>
 
 class SFMLSound : public ISound {
 public:
@@ -30,7 +29,4 @@ public:
     bool addMusic(const std::string &name, const std::string &path) override;
 
 private:
-    std::map<std::string, sf::SoundBuffer> _soundsBuffer;
-    std::map<std::string, sf::Sound> _sounds;
-    std::map<std::string, std::unique_ptr<sf::Music>> _musics;
 };
