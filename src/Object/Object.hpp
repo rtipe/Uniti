@@ -8,6 +8,7 @@
 #include "Transform.hpp"
 #include "IObjectPlugin.hpp"
 #include "ObjectPluginManager.hpp"
+#include <optional>
 
 namespace Uniti {
     class Object;

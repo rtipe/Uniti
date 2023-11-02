@@ -3,6 +3,7 @@
 //
 
 #include "Vector.hpp"
+#include <cmath>
 
 namespace Uniti {
     float Vector::getDistance(const Vector2i &a, const Vector2i &b) {
