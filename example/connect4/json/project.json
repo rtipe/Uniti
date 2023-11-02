@@ -1,0 +1,26 @@
+{
+    "plugins": [
+        {
+            "name": "plugin"
+        },
+        {
+            "name": "RenderPlugin",
+            "width": 600,
+            "height": 600
+        },
+        {
+            "name": "NetworkPlugin"
+        },
+        {
+            "name": "JSScriptPlugin",
+            "path": "./javascript/index.js",
+            "fps": 5
+        }
+    ],
+    "name": "lol",
+    "sceneFolder": "./json",
+    "startScene": "startScene.json",
+    "globalScene": "globalScene.json",
+    "ObjectPlugins": "./ObjectPlugin",
+    "CorePlugins": "./CorePlugin"
+}
