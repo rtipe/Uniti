@@ -15,8 +15,10 @@ export class Uniti {
     load(json) {
         this.sceneManager.load(json.sceneManager);
         if (!json.events) return;
+        this.events.eventsCalled = json.events;
         for (const event of json.events) {
             let name = event.name;
+            if (!event.values) continue;
             for (const value of event.values) {
                 this.events.emitEvent(name, value);
             }
@@ -24,8 +26,10 @@ export class Uniti {
     }
 
     createJson() {
+        let events = this._events;
+        this._events = [];
         return {
-            events: this._events,
+            events: events,
             sceneManager: this.sceneManager.createJson(),
             network: this.network.createJson(),
         }

@@ -18,12 +18,14 @@ export class GameObject {
     }
 
     createJson() {
+        let events = this._events;
+        this._events = [];
         let children = [];
         for (const key in this.children) {
             children.push(this.children[key].createJson());
         }
         return {
-            events: this._events,
+            events: events,
             position: this.position,
             rotation: this.rotation,
             scale: this.scale,

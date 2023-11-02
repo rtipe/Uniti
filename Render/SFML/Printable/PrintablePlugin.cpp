@@ -162,7 +162,6 @@ void PrintablePlugin::postUpdate() {
     this->_printable->setRotation(this->_object.getTransform().getRotation());
     this->_printable->setScale(this->_object.getTransform().getScale());
     this->_printable->setOrigin(this->_object.getTransform().getOrigin());
-    this->_object.getCore().log().Info("add " + this->_object.getName() + " to display queue");
     this->_window->get().print(*this->_printable);
 }
 

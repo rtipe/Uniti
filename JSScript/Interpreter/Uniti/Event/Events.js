@@ -16,12 +16,13 @@ export class Events {
     }
 
     emitEvent(name, value) {
-        for (const key in this._callbacks) {
-            for (const callback of this._callbacks[key]) {
+        if (name in this._callbacks) {
+            for (const callback of this._callbacks[name]) {
                 callback(value);
             }
         }
     }
 
+    eventsCalled = {};
     _callbacks = {};
 }
