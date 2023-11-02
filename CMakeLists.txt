@@ -3,63 +3,25 @@ project(Uniti)
 
 set(CMAKE_CXX_STANDARD 20)
 
+SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install)
+set(CMAKE_INSTALL_LOCAL_ONLY ON)
+
+option(VERSION_GAME_ENGINE "version of the game engine" "v0.0.0")
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin)
+
 include(FetchContent)
-
-message(STATUS "Fetching JSONCPP")
-
-option(BUILD_STATIC_LIBS "Build jsoncpp_lib as a static library." OFF)
-option(BUILD_OBJECT_LIBS "Build jsoncpp_lib as a object library." OFF)
-
-FetchContent_Declare(JSONCpp
-        GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp.git
-        GIT_TAG 1.9.5)
-FetchContent_MakeAvailable(JSONCpp)
-
-FetchContent_Declare(
-        Boost
-        URL "https://github.com/boostorg/boost/releases/download/boost-1.83.0/boost-1.83.0.tar.xz"
-        DOWNLOAD_EXTRACT_TIMESTAMP ON
-)
-
-set(BOOST_RUNTIME_LINK static)
-set(BOOST_INCLUDE_LIBRARIES
-        asio
-        assert
-        align
-        array
-        bind
-        coroutine
-        config
-        context
-        core
-        chrono
-        date_time
-        exception
-        function
-        move
-        system
-        smart_ptr
-        throw_exception
-        type_traits
-        lockfree
-        utility
-)
-FetchContent_MakeAvailable(Boost)
+include(GNUInstallDirs)
 
 find_package(Threads REQUIRED)
 
 add_library(Uniti STATIC)
 
-foreach(lib ${BOOST_INCLUDE_LIBRARIES})
-    target_link_libraries(
-            Uniti
-            PUBLIC
-            Boost::${lib}
-    )
-endforeach()
+add_subdirectory(libs)
 
 target_link_libraries(Uniti PUBLIC Threads::Threads)
-target_link_libraries(Uniti PUBLIC jsoncpp_lib)
 target_link_libraries(Uniti PUBLIC ${CMAKE_DL_LIBS})
 
 add_subdirectory(src)
@@ -69,23 +31,42 @@ install(DIRECTORY src/
         COMPONENT devel
         FILES_MATCHING PATTERN "*.hpp" PATTERN "*.inl")
 
-add_subdirectory(Render)
-add_subdirectory(Network)
-add_subdirectory(Physics)
-add_subdirectory(JSScript)
-add_subdirectory(TextInput)
-add_subdirectory(Button)
+add_subdirectory(Plugins)
 
-add_executable(test
-        index.cpp)
-set_target_properties(test PROPERTIES
-        CXX_STANDARD 20
-        LINK_FLAGS "-rdynamic"
-        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-)
-target_link_libraries(test PUBLIC Threads::Threads)
-target_link_libraries(test PUBLIC jsoncpp_lib)
-target_link_libraries(test PUBLIC ${CMAKE_DL_LIBS})
-target_link_libraries(test PUBLIC Uniti)
+add_subdirectory(example)
+
+install(DIRECTORY "${CMAKE_BINARY_DIR}/bin" DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+include(InstallRequiredSystemLibraries)
+
+if (PACK)
+    set(INSTALL_DIR bin)
+    set(LIB_DIR bin/lib)
+    set(EXT_DIR /bin/ext)
+else (PACK)
+    set(INSTALL_DIR ${PROJECT_BINARY_DIR}/bin)
+    set(LIB_DIR ${PROJECT_BINARY_DIR}/bin/lib)
+    set(EXT_DIR ${PROJECT_BINARY_DIR}/bin/ext)
+endif (PACK)
+
+set(CPACK_CMAKE_GENERATOR Ninja)
+set(CPACK_PACKAGE_NAME "connect4")
+set(CPACK_PACKAGE_VERSION ${VERSION_GAME_ENGINE})
+set(CPACK_PACKAGE_DESCRIPTION "connect4 game !")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "connect4")
+
+set(CPACK_PACKAGE_CONTACT "younes1.bahri@epitech.eu")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "${CPACK_PACKAGE_CONTACT}")
+set(CPACK_SOURCE_INSTALLED_DIRECTORIES "${CMAKE_BINARY_DIR}/bin;/")
+
+if (WIN32)
+    set(CPACK_GENERATOR "NSIS")
+elseif (APPLE)
+    set(CPACK_GENERATOR "DragNDrop")
+else ()
+    set(CPACK_GENERATOR "DEB;RPM")
+endif ()
+
+set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY FALSE)
 
 include(CPack)
