@@ -11,8 +11,7 @@ target_sources(Uniti PUBLIC
         IScenePlugin.hpp
         PluginHandler.hpp
         ObjectPluginManager.hpp
-        CorePluginManager.hpp
-        PluginLoader.cpp)
+        CorePluginManager.hpp)
 
 add_subdirectory(Creator)
 add_subdirectory(Factory)

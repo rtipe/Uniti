@@ -5,6 +5,8 @@
 #pragma once
 
 #include <string>
+#include <filesystem>
+#include <string>
 #include <map>
 #include <memory>
 #include <stdexcept>
@@ -14,6 +16,20 @@ namespace Uniti {
     template<typename Handler, typename Interface, typename Parent>
     class PluginFactory {
     public:
+        PluginFactory(const std::string &directory) {
+            if (directory.empty()) return;
+            std::string directoryCopy = directory;
+            std::string currentFilePath;
+            std::string fileName;
+
+            for (const auto &entry: std::filesystem::directory_iterator(directoryCopy)) {
+                currentFilePath = entry.path().string();
+                fileName = entry.path().filename().string();
+                size_t found = fileName.find('.');
+                std::replace(currentFilePath.begin(), currentFilePath.end(), '\\', '/');
+                this->add(fileName.substr(0, found), std::make_unique<Handler>(currentFilePath));
+            }
+        }
         ~PluginFactory() = default;
         void add(const std::string &name, std::unique_ptr<Handler> handler) {
             this->_stock[name] = std::move(handler);
@@ -28,21 +44,10 @@ namespace Uniti {
                 throw std::runtime_error(name + " <- not found");
             this->_stock.at(name)->deleteElement(&element);
         }
-        static PluginFactory<Handler, Interface, Parent> &getFactory() {
-            if (_factory == nullptr) {
-                _factory.reset(new PluginFactory<Handler, Interface, Parent>());
-            }
-            return *_factory;
-        }
         void clearAll() {
             _stock.clear();
         }
     private:
-        PluginFactory() = default;
-        static std::unique_ptr<PluginFactory<Handler, Interface, Parent>> _factory;
         std::map<std::string, std::unique_ptr<Handler>> _stock;
     };
-
-    template<typename Handler, typename Interface, typename Parent>
-    std::unique_ptr<PluginFactory<Handler, Interface, Parent>> PluginFactory<Handler, Interface, Parent>::_factory = nullptr;
 }

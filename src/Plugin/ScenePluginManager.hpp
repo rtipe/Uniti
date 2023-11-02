@@ -14,8 +14,10 @@ namespace Uniti {
     class Scene;
     class ScenePluginManager : public TPluginManager<PluginHandler<IScenePlugin, IPluginCreator<IScenePlugin, Scene>, Scene>, IScenePlugin, Scene> {
     public:
-        ScenePluginManager(const Json::Value &plugins, Scene &parent, Logger &logger) : TPluginManager(plugins, parent,
-                                                                                                       logger) {}
+        ScenePluginManager(const Json::Value &plugins, Scene &parent, Logger &logger,
+                           PluginFactory<PluginHandler<IScenePlugin, IPluginCreator<IScenePlugin, Scene>, Scene>, IScenePlugin, Scene> &factory)
+                : TPluginManager(plugins, parent,
+                                 logger, factory) {}
         ScenePluginManager(ScenePluginManager &pluginManager) : TPluginManager(pluginManager) {}
     };
 }

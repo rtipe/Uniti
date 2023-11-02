@@ -2,7 +2,7 @@
     "plugins": [],
     "objects": [
         {
-            "name": "lol",
+            "name": "background",
             "transform": {
                 "scale": {
                     "x": 1,
@@ -14,18 +14,224 @@
                     "name": "PrintablePlugin",
                     "type": "sprite",
                     "texture": {
-                        "path": "../../assets/untitled.png"
+                        "path": "../../assets/background.png"
                     }
+                }
+            ],
+            "children": []
+        },
+        {
+            "name": "grid",
+            "transform": {
+                "scale": {
+                    "x": 0.4,
+                    "y": 0.4
                 },
+                "position": {
+                    "x": 0,
+                    "y": 50
+                }
+            },
+            "plugins": [
                 {
-                    "name": "PhysicsPlugin",
-                    "boxes": []
+                    "name": "PrintablePlugin",
+                    "type": "sprite",
+                    "texture": {
+                        "path": "../../assets/grid.png"
+                    },
+                    "zIndex": 10
+                }
+            ],
+            "children": []
+        },
+        {
+            "name": "status",
+            "transform": {
+                "scale": {
+                    "x": 1,
+                    "y": 1
+                },
+                "position": {
+                    "x": 5,
+                    "y": 5
+                }
+            },
+            "plugins": [
+                {
+                    "name": "PrintablePlugin",
+                    "type": "text",
+                    "font": "../../assets/Pacifico.ttf",
+                    "zIndex": 10,
+                    "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255
+                    },
+                    "text": "test"
+                }
+            ],
+            "children": []
+        },
+        {
+            "name": "column1",
+            "transform": {
+                "scale": {
+                    "x": 1,
+                    "y": 1
+                },
+                "position": {
+                    "x": 20,
+                    "y": 60
+                }
+            },
+            "plugins": [
+                {
+                    "name": "Button",
+                    "width": 80,
+                    "height": 520
                 },
                 {
                     "name": "JSListener"
                 }
-            ],
-            "children": []
+            ]
+        },
+        {
+            "name": "column2",
+            "transform": {
+                "scale": {
+                    "x": 1,
+                    "y": 1
+                },
+                "position": {
+                    "x": 100,
+                    "y": 60
+                }
+            },
+            "plugins": [
+                {
+                    "name": "Button",
+                    "width": 80,
+                    "height": 520
+                },
+                {
+                    "name": "JSListener"
+                }
+            ]
+        },
+        {
+            "name": "column3",
+            "transform": {
+                "scale": {
+                    "x": 1,
+                    "y": 1
+                },
+                "position": {
+                    "x": 180,
+                    "y": 60
+                }
+            },
+            "plugins": [
+                {
+                    "name": "Button",
+                    "width": 80,
+                    "height": 520
+                },
+                {
+                    "name": "JSListener"
+                }
+            ]
+        },
+        {
+            "name": "column4",
+            "transform": {
+                "scale": {
+                    "x": 1,
+                    "y": 1
+                },
+                "position": {
+                    "x": 260,
+                    "y": 60
+                }
+            },
+            "plugins": [
+                {
+                    "name": "Button",
+                    "width": 80,
+                    "height": 520
+                },
+                {
+                    "name": "JSListener"
+                }
+            ]
+        },
+        {
+            "name": "column5",
+            "transform": {
+                "scale": {
+                    "x": 1,
+                    "y": 1
+                },
+                "position": {
+                    "x": 340,
+                    "y": 60
+                }
+            },
+            "plugins": [
+                {
+                    "name": "Button",
+                    "width": 80,
+                    "height": 520
+                },
+                {
+                    "name": "JSListener"
+                }
+            ]
+        },
+        {
+            "name": "column6",
+            "transform": {
+                "scale": {
+                    "x": 1,
+                    "y": 1
+                },
+                "position": {
+                    "x": 420,
+                    "y": 60
+                }
+            },
+            "plugins": [
+                {
+                    "name": "Button",
+                    "width": 80,
+                    "height": 520
+                },
+                {
+                    "name": "JSListener"
+                }
+            ]
+        },
+        {
+            "name": "column7",
+            "transform": {
+                "scale": {
+                    "x": 1,
+                    "y": 1
+                },
+                "position": {
+                    "x": 500,
+                    "y": 60
+                }
+            },
+            "plugins": [
+                {
+                    "name": "Button",
+                    "width": 80,
+                    "height": 520
+                },
+                {
+                    "name": "JSListener"
+                }
+            ]
         }
     ]
 }

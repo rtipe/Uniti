@@ -48,9 +48,11 @@ async function executeScript(path, app) {
         throw err;
     }
 }
+
+export let game = undefined;
+
 io.on("connection", function (socket) {
     let isGood = false;
-    let game = undefined;
     socket.on("init", (response) => {
         if (response === code) {
             isGood = true;

@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <string>
+#include <filesystem>
 #include <map>
 #include <string>
 #include <memory>
@@ -53,9 +55,43 @@ namespace Uniti {
         const CorePluginManager &getPluginManager() const;
 
         CorePluginManager &getPluginManager();
+
+        PluginFactory<PluginHandler<ICorePlugin, IPluginCreator<ICorePlugin, Core>, Core>, ICorePlugin, Core> &
+        getCoreFactory();
+
+        PluginFactory<PluginHandler<IObjectPlugin, IPluginCreator<IObjectPlugin, Object>, Object>, IObjectPlugin, Object> &
+        getObjectFactory();
+
+        PluginFactory<PluginHandler<IScenePlugin, IPluginCreator<IScenePlugin, Scene>, Scene>, IScenePlugin, Scene> &
+        getSceneFactory();
+
+        void loadCoreFactory(const std::string &directory);
+
+        void loadObjectFactory(const std::string &directory);
+
+        void loadSceneFactory(const std::string &directory);
+
+        template<typename Handler, typename Interface, typename Parent>
+        void load(const std::string &directory, PluginFactory<Handler, Interface, Parent> &factory) {
+            if (directory.empty()) return;
+            std::string directoryCopy = directory;
+            std::string currentFilePath;
+            std::string fileName;
+
+            for (const auto &entry: std::filesystem::directory_iterator(directoryCopy)) {
+                currentFilePath = entry.path().string();
+                fileName = entry.path().filename().string();
+                size_t found = fileName.find('.');
+                std::replace(currentFilePath.begin(), currentFilePath.end(), '\\', '/');
+                factory.add(fileName.substr(0, found), std::make_unique<Handler>(currentFilePath));
+            }
+        }
     private:
         Logger _logger;
         std::map<std::string, std::tuple<std::unique_ptr<Core>, std::thread>> _subInstances;
+        PluginFactory<PluginHandler<ICorePlugin, IPluginCreator<ICorePlugin, Core>, Core>, ICorePlugin, Core> _coreFactory;
+        PluginFactory<PluginHandler<IObjectPlugin, IPluginCreator<IObjectPlugin, Object>, Object>, IObjectPlugin, Object> _objectFactory;
+        PluginFactory<PluginHandler<IScenePlugin, IPluginCreator<IScenePlugin, Scene>, Scene>, IScenePlugin, Scene> _sceneFactory;
         CorePluginManager _pluginManager;
         SceneManager _sceneManager;
         Json::Value _value;

@@ -73,6 +73,8 @@ add_subdirectory(Render)
 add_subdirectory(Network)
 add_subdirectory(Physics)
 add_subdirectory(JSScript)
+add_subdirectory(TextInput)
+add_subdirectory(Button)
 
 add_executable(test
         index.cpp)

@@ -55,7 +55,6 @@ void RenderPlugin::postUpdate() {
         if (this->_clock.getSeconds() < 1 / this->_framerateLimit) return;
         this->_clock.restart();
     }
-    this->_core.log().Info("Displaying ...");
     try {
         this->_window.display();
         for (const auto &event: this->_window.getInput().getEvents()) {
@@ -74,7 +73,6 @@ void RenderPlugin::postUpdate() {
         this->_core.log().Danger("Error while displaying :");
         this->_core.log().Danger(e.what());
     }
-    this->_core.log().Info("Displayed !");
     if (!this->_window.isOpen()) {
         this->_core.log().Warn("Window closed, asking for close instance...");
         this->_core.stop();

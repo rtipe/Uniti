@@ -2,6 +2,7 @@
 // Created by youba on 25/10/2023.
 //
 
+#include <filesystem>
 #include "Core.hpp"
 
 namespace Uniti {
@@ -108,11 +109,15 @@ namespace Uniti {
     }
 
     Core::Core(const Json::Value &value):
+            _coreFactory(value.get("CorePlugins", "").asString()),
+            _objectFactory(value.get("ObjectPlugins", "").asString()),
+            _sceneFactory(value.get("ScenePlugins", "").asString()),
             _logger(),
     _value(value),
     _queue(10000),
-            _pluginManager(value["plugins"], *this, _logger),
-            _sceneManager(value, *this) {}
+            _pluginManager(value["plugins"], *this, _logger, this->_coreFactory),
+            _sceneManager(value, *this) {
+    }
 
     Core::~Core() {
         std::vector<std::string> keys;
@@ -137,5 +142,35 @@ namespace Uniti {
 
     CorePluginManager &Core::getPluginManager() {
         return this->_pluginManager;
+    }
+
+    PluginFactory<PluginHandler<ICorePlugin, IPluginCreator<ICorePlugin, Core>, Core>, ICorePlugin, Core>
+    &Core::getCoreFactory() {
+        return this->_coreFactory;
+    }
+
+    PluginFactory<PluginHandler<IObjectPlugin, IPluginCreator<IObjectPlugin, Object>, Object>, IObjectPlugin, Object>
+    &Core::getObjectFactory() {
+        return this->_objectFactory;
+    }
+
+    PluginFactory<PluginHandler<IScenePlugin, IPluginCreator<IScenePlugin, Scene>, Scene>, IScenePlugin, Scene>
+    &Core::getSceneFactory() {
+        return this->_sceneFactory;
+    }
+
+    void Core::loadCoreFactory(const std::string &directory) {
+        this->load<PluginHandler<ICorePlugin, IPluginCreator<ICorePlugin, Core>, Core>, ICorePlugin, Core>(directory,
+                                                                                                           this->_coreFactory);
+    }
+
+    void Core::loadObjectFactory(const std::string &directory) {
+        this->load<PluginHandler<IObjectPlugin, IPluginCreator<IObjectPlugin, Object>, Object>, IObjectPlugin, Object>(
+                directory, this->_objectFactory);
+    }
+
+    void Core::loadSceneFactory(const std::string &directory) {
+        this->load<PluginHandler<IScenePlugin, IPluginCreator<IScenePlugin, Scene>, Scene>, IScenePlugin, Scene>(
+                directory, this->_sceneFactory);
     }
 }

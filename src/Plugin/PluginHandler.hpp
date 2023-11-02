@@ -81,7 +81,8 @@ namespace Uniti {
                 FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, nullptr, GET_LIB_ERROR(), 0, error, sizeof(error), nullptr);
 #endif
                 throw std::runtime_error(
-                        "Error on open with dlsym in PluginHandler (" + name + "): " + std::string(error));
+                        "Error on open with dlsym in PluginHandler (" + name + " / " + this->_filePath + "): " +
+                        std::string(error));
             }
             T (*function)(...) = reinterpret_cast<T(*)(...)>(sym);
             return function(__args...);

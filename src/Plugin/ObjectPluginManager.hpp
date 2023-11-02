@@ -13,9 +13,11 @@ namespace Uniti {
     class Object;
     class ObjectPluginManager : public TPluginManager<PluginHandler<IObjectPlugin, IPluginCreator<IObjectPlugin, Object>, Object>, IObjectPlugin, Object> {
     public:
-        ObjectPluginManager(const Json::Value &plugins, Object &parent, Logger &logger) : TPluginManager(plugins,
+        ObjectPluginManager(const Json::Value &plugins, Object &parent, Logger &logger,
+                            PluginFactory<PluginHandler<IObjectPlugin, IPluginCreator<IObjectPlugin, Object>, Object>, IObjectPlugin, Object> &factory)
+                : TPluginManager(plugins,
                                                                                                          parent,
-                                                                                                         logger) {}
+                                 logger, factory) {}
         ObjectPluginManager(ObjectPluginManager &pluginManager) : TPluginManager(pluginManager) {}
     };
 }
