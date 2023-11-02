@@ -27,4 +27,4 @@ jobs:
         run: cmake -S . -B build
 
       - name: Build with CMake
-        run: cmake --build build -j
+        run: cmake --build build

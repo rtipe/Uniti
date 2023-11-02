@@ -6,7 +6,6 @@
 
 #include "ISound.hpp"
 #include <map>
-#include <SFML/Audio.hpp>
 
 class SFMLSound : public ISound {
 public:
