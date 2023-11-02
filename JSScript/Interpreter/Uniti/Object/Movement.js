@@ -4,8 +4,10 @@ export class Movement {
     }
 
     createJson() {
+        let events = this._events;
+        this._events = [];
         return {
-            events: this._events
+            events: events
         }
     }
     moveTo(position, speed) {

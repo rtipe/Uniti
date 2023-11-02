@@ -65,7 +65,6 @@ void JavascriptPlugin::preUpdate() {
         Json::Value base;
         std::istringstream(*event) >> base;
 
-        this->_core.log().Warn(*event);
         this->applyCoreEvent(base);
         delete event;
     });
@@ -93,6 +92,7 @@ void JavascriptPlugin::update() {
 
 void JavascriptPlugin::postUpdate() {
     if (this->_clock.getMilliSeconds() < this->_updateJS) return;
+    this->_clock.restart();
     Json::Value base;
     Json::Value sceneManager;
     Json::Value events;
@@ -108,7 +108,7 @@ void JavascriptPlugin::postUpdate() {
         eventJSON["name"] = event.first;
         int j = 0;
         for (const auto &eventInfo: event.second) {
-            eventJSON["values"].insert(i, eventInfo);
+            eventJSON["values"].insert(j, eventInfo);
             j++;
         }
         events.insert(i, eventJSON);
@@ -240,7 +240,7 @@ void JavascriptPlugin::applySceneEvent(Uniti::Scene &scene, const Json::Value &e
         scene.emitEvent(value["name"].asString(), value["value"]);
     };
     functions["addObject"] = [&](const Json::Value &value) {
-        scene.getObjects().add(std::make_unique<Uniti::Object>(value, scene));
+        scene.getObjects().add(value, scene);
     };
     functions["removeObject"] = [&](const Json::Value &value) {
         scene.getObjects().remove(value.asString());
@@ -259,7 +259,7 @@ void JavascriptPlugin::applyObjectEvent(Uniti::Object &object, const Json::Value
     std::map<std::string, std::function<void(const Json::Value &)>> functions;
 
     functions["clone"] = [&](const Json::Value &value) {
-        object.getScene().getObjects().add(std::make_unique<Uniti::Object>(object));
+        object.getScene().getObjects().add(object);
     };
     functions["emitEvent"] = [&](const Json::Value &value) {
         object.emitEvent(value["name"].asString(), value["value"]);
