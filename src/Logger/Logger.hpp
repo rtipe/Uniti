@@ -6,6 +6,7 @@
 
 #include <string>
 #include <functional>
+#include <iostream>
 #include "json/value.h"
 
 #ifndef __linux__
