@@ -8,13 +8,15 @@ export class Scene {
     }
 
     createJson() {
+        let events = this._events;
+        this._events = [];
         let objects = [];
         for (const key in this.objects) {
             objects.push(this.objects[key].createJson());
         }
         return {
             objects,
-            events: this._events
+            events: events
         }
     }
 

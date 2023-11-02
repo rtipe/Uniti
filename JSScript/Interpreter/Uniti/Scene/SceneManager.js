@@ -8,8 +8,10 @@ export class SceneManager {
     }
 
     createJson() {
+        let events = this._events;
+        this._events = [];
         return {
-            events: this._events,
+            events: events,
             currentScene: this.currentScene.createJson(),
             globalScene: this.globalScene.createJson(),
         }
