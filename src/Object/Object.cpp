@@ -14,7 +14,7 @@ namespace Uniti {
             _core(scene.getCore()),
     _objectManager({}, scene),
     _name(name),
-            _objectPluginManager({}, *this, _core.log()),
+            _objectPluginManager({}, *this, _core.log(), this->_core.getObjectFactory()),
     _scene(scene) {
         this->_core.log().Info("Empty object created : " + name);
     }
@@ -35,7 +35,7 @@ namespace Uniti {
     _value(value),
     _name(value["name"].asString()),
     _objectManager(value["children"], scene),
-            _objectPluginManager(value["plugins"], *this, _core.log()),
+            _objectPluginManager(value["plugins"], *this, _core.log(), this->_core.getObjectFactory()),
     _transform(value["transform"]),
     _isEnabled(value.get("isEnable", true).asBool()),
     _scene(scene) {
@@ -47,7 +47,7 @@ namespace Uniti {
     _value(openJsonFile(fileName)),
     _name(_value["name"].asString()),
     _objectManager(_value["children"], scene),
-            _objectPluginManager(_value["plugins"], *this, _core.log()),
+            _objectPluginManager(_value["plugins"], *this, _core.log(), this->_core.getObjectFactory()),
     _transform(_value["transform"]),
     _isEnabled(_value.get("isEnable", true).asBool()),
     _scene(scene) {

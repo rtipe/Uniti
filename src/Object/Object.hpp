@@ -19,6 +19,11 @@ namespace Uniti {
         ObjectManager(const Json::Value &value, Scene &scene);
 
         ObjectManager(const std::vector<std::unique_ptr<Object>> &objects, Core &core);
+
+        template<typename... Args>
+        void add(Args &&... __args) {
+            this->add(std::make_unique<Object>(__args...));
+        }
         void add(std::unique_ptr<Object> object);
         void remove(const std::string &name);
         const std::vector<std::unique_ptr<Object>> &getObjects() const;
@@ -28,7 +33,6 @@ namespace Uniti {
         void emitEvent(const std::string &name, const Json::Value &value);
         const Object &operator[](const std::string &name) const;
         Object &operator[](const std::string &name);
-
         const Core &getCore() const;
 
         Core &getCore();
