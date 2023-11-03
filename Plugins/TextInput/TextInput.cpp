@@ -2,6 +2,7 @@
 // Created by youba on 01/11/2023.
 //
 
+#include <string>
 #include "TextInput.hpp"
 #include "RenderPlugin.hpp"
 #include "Box.hpp"
@@ -68,7 +69,7 @@ void TextInput::writeInputField() {
         if (!event.ends_with("_PRESSED")) continue;
         size_t firstUnderscore = event.find('_');
         size_t secondUnderscore = event.find('_', firstUnderscore + 1);
-        int keyId = stoi(event.substr(firstUnderscore + 1, secondUnderscore - firstUnderscore - 1));
+        int keyId = std::stoi(event.substr(firstUnderscore + 1, secondUnderscore - firstUnderscore - 1));
         if (keyId >= 0 && keyId <= 25)
             text += keyId + 65;
         if (keyId == 57)
