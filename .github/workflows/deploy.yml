@@ -14,8 +14,7 @@ jobs:
         uses: actions/checkout@master
         with:
           repository: EpitechPromo2026/B-CPP-500-TLS-5-1-rtype-younes1.bahri
-          ref: main
-          token: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Config user
         run: |
