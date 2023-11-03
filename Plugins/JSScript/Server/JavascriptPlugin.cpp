@@ -22,7 +22,7 @@ void JavascriptPlugin::awake(const Json::Value &value) {
     std::string port = std::to_string(this->_port);
 
     this->_thread = std::thread([](std::string code, std::string port, std::string path, JavascriptPlugin &plugin) {
-#ifdef __linux__
+#ifndef _WIN32 || _WIN64
         int result = std::system(std::string("./node/bin/node " + path + " " + port + " " + code).c_str());
 #else
         int result = std::system(std::string(
