@@ -19,7 +19,7 @@ jobs:
         run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 
       - name: Build with CMake
-        run: cmake --build build --config Release -j -D
+        run: cmake --build build --config Release -j
 
       - name: Start Cpack
         run: cd build && cpack --config .\CPackSourceConfig.cmake -G NSIS
