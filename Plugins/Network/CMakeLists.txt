@@ -11,7 +11,7 @@ FetchContent_Declare(zlib
 )
 FetchContent_MakeAvailable(zlib)
 
-target_link_libraries(Network PUBLIC zlibstatic)
+target_link_libraries(Network PUBLIC zlib)
 
 include_directories(${zlib_SOURCE_DIR})
 include_directories(${zlib_BINARY_DIR})
