@@ -1,0 +1,35 @@
+name: Mirror Repository
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Repository
+        uses: actions/checkout@v2
+        with:
+          repository: git@github.com:EpitechPromo2026/B-CPP-500-TLS-5-1-rtype-younes1.bahri.git
+          ref: main
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          git config --global user.email "abdelkader.mazouz@epitech.eu"
+          git config --global user.name "Amaz31"
+
+      - name: Push to Target Repository
+        run: |
+          git clone git@github.com:EpitechPromo2026/B-CPP-500-TLS-5-1-rtype-younes1.bahri.git Uniti
+          cd Uniti/Engine
+          git clone git@github.com:rtipe/Uniti.git
+          cd ..
+          git commit -m "add Uniti repo"
+          git push
