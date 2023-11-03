@@ -13,7 +13,7 @@ jobs:
       - name: Checkout Source Repository
         uses: actions/checkout@v2
         with:
-          repository: EpitechPromo2026/B-CPP-500-TLS-5-1-rtype-younes1.bahri.git
+          repository: git@github.com:EpitechPromo2026/B-CPP-500-TLS-5-1-rtype-younes1.bahri.git
           ref: main
           token: ${{ secrets.SSH_PRIVATE_KEY }}
 
