@@ -137,6 +137,12 @@ void Network::receiveBuffer(const std::string &buffer, boost::asio::ip::udp::end
                 });
                 if (it == this->_servers.end())
                     throw std::runtime_error("error while creating server profile");
+                Json::Value value;
+                value["user"] = command["user"].asString();
+                value["ip"] = senderEndPoint.address().to_string();
+                value["port"] = senderEndPoint.port();
+                this->_core.getSceneManager().getCurrentScene().emitEvent("newServerUser", value);
+                this->_core.getSceneManager().getGlobalScene().emitEvent("newServerUser", value);
             }
             Json::Value receivedInfo = command["received"];
 
