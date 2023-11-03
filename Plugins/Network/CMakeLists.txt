@@ -7,7 +7,7 @@ FetchContent_Declare(zlib
         GIT_REPOSITORY https://github.com/madler/zlib.git
         GIT_TAG v1.3
         CMAKE_ARGS
-        "-DCMAKE_INSTALL_PREFIX=${ZLIB_INSTALL_DIR}"
+        "-DCMAKE_INSTALL_PREFIX=${ZLIB_INSTALL_DIR} -DCMAKE_C_FLAGS=-fPIC -DCMAKE_POSITION_INDEPENDENT_CODE=ON"
 )
 FetchContent_MakeAvailable(zlib)
 
