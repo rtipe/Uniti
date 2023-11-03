@@ -6,6 +6,7 @@
 
 #include "IObjectPlugin.hpp"
 #include "IWindow.hpp"
+#include <optional>
 
 class TextInput : public Uniti::IObjectPlugin {
 public:
