@@ -3,7 +3,11 @@ cmake_minimum_required(VERSION 3.22)
 add_library(JSScript STATIC)
 target_link_libraries(JSScript PUBLIC Uniti)
 
-set(BUILD_SHARED_LIBS ON)
+if (WIN32)
+    set(BUILD_SHARED_LIBS OFF)
+else ()
+    set(BUILD_SHARED_LIBS ON)
+endif ()
 
 FetchContent_Declare(socketio
         GIT_REPOSITORY https://github.com/socketio/socket.io-client-cpp.git
