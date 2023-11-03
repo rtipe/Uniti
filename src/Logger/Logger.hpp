@@ -9,7 +9,7 @@
 #include <iostream>
 #include "json/value.h"
 
-#ifndef __linux__
+#ifdef _WIN32 || _WIN64
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
