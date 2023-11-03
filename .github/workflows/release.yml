@@ -62,7 +62,7 @@ jobs:
         run: mkdir release
 
       - name: Start Cpack
-        run: cd build && cpack --config .\CPackSourceConfig.cmake -G STGZ
+        run: cd build && cpack --config ./CPackSourceConfig.cmake -G STGZ
 
       - name: Move Library to Release
         run: mv build/connect4-OFF-Source.sh release/connect4.sh
@@ -98,7 +98,7 @@ jobs:
         run: mkdir release
 
       - name: Start Cpack
-        run: cd build && cpack --config .\CPackSourceConfig.cmake -G DragNDrop
+        run: cd build && cpack --config ./CPackSourceConfig.cmake -G DragNDrop
 
       - name: Move Library to Release
         run: mv build/connect4-OFF-Source.dmg release/connect4.dmg

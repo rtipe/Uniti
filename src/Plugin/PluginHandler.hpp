@@ -8,7 +8,8 @@
 #include <vector>
 #include <stdexcept>
 #include <iostream>
-#ifndef __linux__
+
+#ifdef _WIN32 || _WIN64
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
