@@ -1,0 +1,25 @@
+name: buildwindow
+
+on:
+  push:
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build-ubuntu:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up CMake
+        run: cmake -S . -B build
+
+      - name: Build with CMake
+        run: cmake --build build -j
