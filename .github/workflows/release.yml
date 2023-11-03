@@ -19,7 +19,7 @@ jobs:
         run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 
       - name: Build with CMake
-        run: cmake --build build --config Release -j -D
+        run: cmake --build build --config Release -j
 
       - name: Start Cpack
         run: cd build && cpack --config .\CPackSourceConfig.cmake -G NSIS
@@ -62,7 +62,7 @@ jobs:
         run: mkdir release
 
       - name: Start Cpack
-        run: cd build && cpack --config .\CPackSourceConfig.cmake -G STGZ
+        run: cd build && cpack --config ./CPackSourceConfig.cmake -G STGZ
 
       - name: Move Library to Release
         run: mv build/connect4-OFF-Source.sh release/connect4.sh
@@ -98,7 +98,7 @@ jobs:
         run: mkdir release
 
       - name: Start Cpack
-        run: cd build && cpack --config .\CPackSourceConfig.cmake -G DragNDrop
+        run: cd build && cpack --config ./CPackSourceConfig.cmake -G DragNDrop
 
       - name: Move Library to Release
         run: mv build/connect4-OFF-Source.dmg release/connect4.dmg
