@@ -8,18 +8,23 @@ on:
 jobs:
   mirror:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
+      - name: Config user
+        run: |
+          git config --global user.email "abdelkader.mazouz@epitech.eu"
+          git config --global user.name "Amaz31"
+
       - name: Checkout Source Repository
         uses: actions/checkout@master
         with:
           repository: EpitechPromo2026/B-CPP-500-TLS-5-1-rtype-younes1.bahri
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Config user
+      - name: move to good folder
         run: |
-          git config --global user.email "abdelkader.mazouz@epitech.eu"
-          git config --global user.name "Amaz31"
           cd B-CPP-500-TLS-5-1-rtype-younes1.bahri/Engine
 
       - name: Checkout Source Repository
