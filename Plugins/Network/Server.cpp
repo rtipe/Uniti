@@ -135,3 +135,7 @@ Json::Value Server::createPacket() {
 bool Server::isTimeout(float time) {
     return this->_time.getSeconds() > time;
 }
+
+std::map<std::string, Json::Value> &Server::getSendEvents() {
+    return this->_events;
+}

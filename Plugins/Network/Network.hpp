@@ -35,17 +35,21 @@ public:
 
     void changeUser(const std::string &value);
 
+    std::map<std::string, std::unique_ptr<Server>> &getServers();
 private:
     Uniti::Core &_core;
     std::string _user;
 
     std::map<boost::asio::ip::udp::endpoint, Json::Value> getPacketToSend();
 
+    void compressData(const std::string &input, std::vector<unsigned char> &output);
+
+    void decompressData(const std::vector<unsigned char> &input, std::string &output);
     void sendPackets();
 
     void startReceive();
 
-    void receiveBuffer(const std::string &buffer, boost::asio::ip::udp::endpoint &senderEndPoint);
+    void receiveBuffer(const std::vector<unsigned char> &buffer, boost::asio::ip::udp::endpoint &senderEndPoint);
 
     void handlePackets();
 
@@ -58,7 +62,7 @@ private:
     std::thread _ioThread;
     Uniti::Clock _clock;
     int _size = 50000;
-    char _buffer[50000] = {0};
+    std::vector<unsigned char> _buffer;
     boost::asio::ip::udp::endpoint _senderEndPoint;
-    boost::lockfree::queue<std::tuple<boost::asio::ip::udp::endpoint, std::string> *> _queue;
+    boost::lockfree::queue<std::tuple<boost::asio::ip::udp::endpoint, std::vector<unsigned char>> *> _queue;
 };
