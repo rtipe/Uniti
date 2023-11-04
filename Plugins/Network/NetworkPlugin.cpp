@@ -21,6 +21,15 @@ NetworkPlugin::NetworkPlugin(Uniti::Core &core) : _core(core) {
     this->_event.addEvent("changeUser", [&](const Json::Value &value) {
         this->_network->changeUser(value["changeUser"].asString());
     });
+    this->_event.addEvent("sendAll", [&](const Json::Value &value) {
+        for (auto &user: this->_network.get()->getServers()) {
+            Json::Value data;
+            if (user.second->getSendEvents().contains(value["name"].asString()))
+                data = user.second->getSendEvents().at(value["name"].asString());
+            data[value["id"].asString()] = value["value"];
+            user.second->sendEvent(value["name"].asString(), data);
+        }
+    });
 }
 
 Uniti::Core &NetworkPlugin::getCore() {

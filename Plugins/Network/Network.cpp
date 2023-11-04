@@ -15,7 +15,8 @@ Network::Network(unsigned int port, unsigned int latence, float timeout, const s
         _queue(10000),
         _user(user),
         _core(core),
-        _timeout(timeout) {
+        _timeout(timeout),
+        _buffer(50000) {
     if (this->_user.empty())
         this->_user = "User" + this->_socketUDP.local_endpoint().address().to_string() + ":" +
                       std::to_string(this->_socketUDP.local_endpoint().port());
@@ -86,6 +87,72 @@ std::map<boost::asio::ip::udp::endpoint, Json::Value> Network::getPacketToSend()
     return packets;
 }
 
+void Network::compressData(const std::string &input, std::vector<unsigned char> &output) {
+    z_stream zs;
+    int ret;
+
+    zs.zalloc = Z_NULL;
+    zs.zfree = Z_NULL;
+    zs.opaque = Z_NULL;
+
+    ret = deflateInit(&zs, Z_BEST_COMPRESSION);
+    if (ret != Z_OK) {
+        throw std::runtime_error("deflateInit failed");
+    }
+
+    zs.next_in = (Bytef *) input.data();
+    zs.avail_in = input.size();
+
+    output.resize(input.size() * 2);
+
+    do {
+        zs.next_out = output.data() + zs.total_out;
+        zs.avail_out = output.size() - zs.total_out;
+        ret = deflate(&zs, Z_FINISH);
+    } while (ret == Z_OK);
+
+    deflateEnd(&zs);
+
+    if (ret != Z_STREAM_END) {
+        throw std::runtime_error("zlib compression failed");
+    }
+
+    output.resize(zs.total_out);
+}
+
+void Network::decompressData(const std::vector<unsigned char> &input, std::string &output) {
+    z_stream zs;
+    int ret;
+
+    zs.zalloc = Z_NULL;
+    zs.zfree = Z_NULL;
+    zs.opaque = Z_NULL;
+
+    ret = inflateInit(&zs);
+    if (ret != Z_OK) {
+        throw std::runtime_error("inflateInit failed");
+    }
+
+    zs.next_in = const_cast<Bytef *>(input.data());
+    zs.avail_in = input.size();
+
+    output.resize(input.size() * 2);
+
+    do {
+        zs.next_out = (Bytef *) output.data() + zs.total_out;
+        zs.avail_out = output.size() - zs.total_out;
+        ret = inflate(&zs, Z_NO_FLUSH);
+    } while (ret == Z_OK);
+
+    inflateEnd(&zs);
+
+    if (ret != Z_STREAM_END) {
+        throw std::runtime_error("zlib decompression failed");
+    }
+
+    output.resize(zs.total_out);
+}
+
 void Network::sendPackets() {
     if (this->_clock.getMilliSeconds() < this->_latence)
         return;
@@ -95,36 +162,25 @@ void Network::sendPackets() {
         try {
             Json::FastWriter fastWriter;
             std::string output = fastWriter.write(pair.second);
-            std::vector<unsigned char> compressedData(output.size() * 2);
-            uLong destLength = compressedData.size();
-            int result = compress(&compressedData[0], &destLength, (const Bytef *) output.c_str(), output.size());
-            if (result == Z_OK) {
-                compressedData.resize(destLength);
-                this->_socketUDP.async_send_to(boost::asio::buffer(compressedData), pair.first,
-                                               [](const boost::system::error_code &error,
-                                                  std::size_t bytes_transferred) {
-                                                   if (error) std::cerr << error.what() << std::endl;
-                                               });
-            } else {
-                std::cerr << "error compression " << result << std::endl;
-            }
+            std::vector<unsigned char> compressedData;
+            this->compressData(output, compressedData);
+            this->_socketUDP.send_to(boost::asio::buffer(compressedData), pair.first);
         } catch (std::exception &e) {
             std::cerr << "error sent " << e.what() << std::endl;
         }
     }
 }
 
-void Network::receiveBuffer(const std::string &buffer, boost::asio::ip::udp::endpoint &senderEndPoint) {
+void Network::receiveBuffer(const std::vector<unsigned char> &buffer, boost::asio::ip::udp::endpoint &senderEndPoint) {
     auto it = std::find_if(this->_servers.begin(), this->_servers.end(), [&](const auto &server) {
         return senderEndPoint == server.second->getEndPoint();
     });
     try {
-        std::vector<unsigned char> decompressedData(buffer.size() * 2);
-        uLong decompressedLength = decompressedData.size();
-        int result = uncompress(&decompressedData[0], &decompressedLength, &decompressedData[0], buffer.size());
+        std::string originData;
+        decompressData(buffer, originData);
+        std::cout << originData << std::endl;
 
-        if (result == Z_OK) {
-            std::string originData(decompressedData.begin(), decompressedData.begin() + decompressedLength);
+        if (!originData.empty()) {
             Json::Value command;
             std::istringstream(originData) >> command;
             if (it == this->_servers.end()) {
@@ -148,8 +204,6 @@ void Network::receiveBuffer(const std::string &buffer, boost::asio::ip::udp::end
 
             it->second->addPacket(command);
             it->second->checkSentPacket(receivedInfo);
-        } else {
-            std::cerr << "error decompression " << result << std::endl;
         }
     } catch (std::exception &e) {
         std::cerr << "error inside receiveBuffer" << std::endl;
@@ -158,7 +212,7 @@ void Network::receiveBuffer(const std::string &buffer, boost::asio::ip::udp::end
 }
 
 void Network::handlePackets() {
-    this->_queue.consume_all([&](std::tuple<boost::asio::ip::udp::endpoint, std::string> *packet) {
+    this->_queue.consume_all([&](std::tuple<boost::asio::ip::udp::endpoint, std::vector<unsigned char>> *packet) {
         this->receiveBuffer(std::get<1>(*packet), std::get<0>(*packet));
         delete packet;
     });
@@ -166,14 +220,15 @@ void Network::handlePackets() {
 
 void Network::startReceive() {
     this->_socketUDP.async_receive_from(
-            boost::asio::buffer(this->_buffer, this->_size),
+            boost::asio::buffer(this->_buffer),
             _senderEndPoint,
             [&](const boost::system::error_code &error, std::size_t length) {
                 if (!error) {
-                    std::string text(this->_buffer, length);
-                    memset(this->_buffer, 0, this->_size);
+                    auto copy = this->_buffer;
+                    copy.resize(length);
                     auto *packet =
-                            new std::tuple<boost::asio::ip::udp::endpoint, std::string>(_senderEndPoint, text);
+                            new std::tuple<boost::asio::ip::udp::endpoint, std::vector<unsigned char>>(_senderEndPoint,
+                                                                                                       copy);
                     this->_queue.push(packet);
                 } else {
                     std::cerr << "Error network : " << error.message() << std::endl;
@@ -188,4 +243,8 @@ std::string &Network::getUser() {
 
 void Network::changeUser(const std::string &value) {
     this->_user = value;
+}
+
+std::map<std::string, std::unique_ptr<Server>> &Network::getServers() {
+    return this->_servers;
 }

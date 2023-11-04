@@ -17,6 +17,8 @@ public:
 
     void sendEvent(const std::string &name, const Json::Value &value);
 
+    std::map<std::string, Json::Value> &getSendEvents();
+
     const boost::asio::ip::udp::endpoint &getEndPoint() const;
 
     boost::asio::ip::udp::endpoint &getEndPoint();
