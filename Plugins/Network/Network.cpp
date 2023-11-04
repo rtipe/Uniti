@@ -49,6 +49,8 @@ void Network::update() {
     }
     for (const auto &name: toDelete) {
         this->_core.log().Info("Connection lost with " + name);
+        this->_core.getSceneManager().getCurrentScene().emitEvent("disconnectUser", name);
+        this->_core.getSceneManager().getGlobalScene().emitEvent("disconnectUser", name);
         this->_servers.erase(name);
     }
 }
@@ -103,7 +105,7 @@ void Network::compressData(const std::string &input, std::vector<unsigned char> 
     zs.next_in = (Bytef *) input.data();
     zs.avail_in = input.size();
 
-    output.resize(input.size() * 2);
+    output.resize(input.size() * 5);
 
     do {
         zs.next_out = output.data() + zs.total_out;
@@ -136,7 +138,7 @@ void Network::decompressData(const std::vector<unsigned char> &input, std::strin
     zs.next_in = const_cast<Bytef *>(input.data());
     zs.avail_in = input.size();
 
-    output.resize(input.size() * 2);
+    output.resize(input.size() * 5);
 
     do {
         zs.next_out = (Bytef *) output.data() + zs.total_out;
@@ -178,7 +180,6 @@ void Network::receiveBuffer(const std::vector<unsigned char> &buffer, boost::asi
     try {
         std::string originData;
         decompressData(buffer, originData);
-        std::cout << originData << std::endl;
 
         if (!originData.empty()) {
             Json::Value command;
