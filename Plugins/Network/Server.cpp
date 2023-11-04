@@ -63,9 +63,11 @@ void Server::updateEvent() {
     Json::Value events = itToHandle.operator*()["events"];
 
     for (const auto &event: events) {
+        Json::Value newData = event;
         const std::string &name = event.get("name", "undefined").asString();
-        this->_core.getSceneManager().getCurrentScene().emitEvent(name, event);
-        this->_core.getSceneManager().getGlobalScene().emitEvent(name, event);
+        newData["idUser"] = this->_user;
+        this->_core.getSceneManager().getCurrentScene().emitEvent(name, newData);
+        this->_core.getSceneManager().getGlobalScene().emitEvent(name, newData);
     }
     if (this->_packetHandled.size() > 16)
         this->_packetHandled.pop_front();

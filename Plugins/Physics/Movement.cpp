@@ -59,10 +59,13 @@ void Movement::move(const Uniti::Vector2f &normal, float speed, float deltaTime)
     auto isOverlapped = Collision::isOverlapped(this->_object);
     if (isCollided && !this->_collision.isOverlap()) {
         isCollided.value().get().emitEvent("collided", this->_object.getName());
+        this->_object.emitEvent("collided", isCollided.value().get().getName());
         this->_object.getTransform().getPosition().operator=(position);
     }
-    if (isOverlapped)
+    if (isOverlapped) {
         isOverlapped.value().get().emitEvent("overlapped", this->_object.getName());
+        this->_object.emitEvent("overlapped", isOverlapped.value().get().getName());
+    }
 }
 
 void Movement::cancelMovement() {
