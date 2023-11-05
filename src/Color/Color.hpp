@@ -10,109 +10,109 @@
 namespace Uniti {
     class Color {
     public:
-        /** @brief Constructeur par défaut de la classe Color.
+        /** @brief Default constructor of the Color class.
         */
         Color();
 
-        /** @brief Constructeur de la classe Color prenant un objet JSON comme argument.
-            @param const Json::Value &value : Objet JSON pour l'initialisation.
+        /** @brief Constructor of the Color class taking a JSON object as an argument.
+            @param const Json::Value &value : JSON object for initialization.
         */
         Color(const Json::Value &value);
 
-        /** @brief Constructeur de copie de la classe Color.
-            @param const Color &color : Color à copier.
+        /** @brief Copy constructor of the Color class.
+            @param const Color &color : Color to copy.
         */
         Color(const Color &color);
 
-        /** @brief Constructeur de la classe Color prenant les composantes RVB.
-            @param int r : Composante rouge.
-            @param int g : Composante verte.
-            @param int b : Composante bleue.
+        /** @brief Constructor of the Color class taking RGB components.
+            @param int r : Red component.
+            @param int g : Green component.
+            @param int b : Blue component.
         */
         Color(int r, int g, int b);
 
-        /** @brief Constructeur de la classe Color prenant les composantes RVBA.
-            @param int r : Composante rouge.
-            @param int g : Composante verte.
-            @param int b : Composante bleue.
-            @param int a : Composante alpha (transparence).
+        /** @brief Constructor of the Color class taking RGBA components.
+            @param int r : Red component.
+            @param int g : Green component.
+            @param int b : Blue component.
+            @param int a : Alpha component (transparency).
         */
         Color(int r, int g, int b, int a);
 
-        /** @brief Retourne la composante rouge de la couleur (lecture seule).
-            @return int : Composante rouge.
+        /** @brief Returns the red component of the color (read-only).
+            @return int : Red component.
         */
         int getR() const;
 
-        /** @brief Retourne la composante rouge de la couleur (lecture/écriture).
-            @return int & : Composante rouge.
+        /** @brief Returns the red component of the color (read/write).
+            @return int & : Red component.
         */
         int &getR();
 
-        /** @brief Retourne la composante verte de la couleur (lecture seule).
-            @return int : Composante verte.
+        /** @brief Returns the green component of the color (read-only).
+            @return int : Green component.
         */
         int getG() const;
 
-        /** @brief Retourne la composante verte de la couleur (lecture/écriture).
-            @return int & : Composante verte.
+        /** @brief Returns the green component of the color (read/write).
+            @return int & : Green component.
         */
         int &getG();
 
-        /** @brief Retourne la composante bleue de la couleur (lecture seule).
-            @return int : Composante bleue.
+        /** @brief Returns the blue component of the color (read-only).
+            @return int : Blue component.
         */
         int getB() const;
 
-        /** @brief Retourne la composante bleue de la couleur (lecture/écriture).
-            @return int & : Composante bleue.
+        /** @brief Returns the blue component of the color (read/write).
+            @return int & : Blue component.
         */
         int &getB();
 
-        /** @brief Retourne la composante alpha (transparence) de la couleur (lecture seule).
-            @return int : Composante alpha.
+        /** @brief Returns the alpha (transparency) component of the color (read-only).
+            @return int : Alpha component.
         */
         int getA() const;
 
-        /** @brief Retourne la composante alpha (transparence) de la couleur (lecture/écriture).
-            @return int & : Composante alpha.
+        /** @brief Returns the alpha (transparency) component of the color (read/write).
+            @return int & : Alpha component.
         */
         int &getA();
 
-        /** @brief Définit la composante rouge de la couleur.
-            @param int value : Nouvelle valeur de la composante rouge.
+        /** @brief Sets the red component of the color.
+            @param int value : New value of the red component.
         */
         void setR(int value);
 
-        /** @brief Définit la composante verte de la couleur.
-            @param int value : Nouvelle valeur de la composante verte.
+        /** @brief Sets the green component of the color.
+            @param int value : New value of the green component.
         */
         void setG(int value);
 
-        /** @brief Définit la composante bleue de la couleur.
-            @param int value : Nouvelle valeur de la composante bleue.
+        /** @brief Sets the blue component of the color.
+            @param int value : New value of the blue component.
         */
         void setB(int value);
 
-        /** @brief Définit la composante alpha (transparence) de la couleur.
-            @param int value : Nouvelle valeur de la composante alpha.
+        /** @brief Sets the alpha (transparency) component of the color.
+            @param int value : New value of the alpha component.
         */
         void setA(int value);
 
-        /** @brief Définit les composantes RVB de la couleur.
-            @param int r : Composante rouge.
-            @param int g : Composante verte.
-            @param int b : Composante bleue.
+        /** @brief Sets the RGB components of the color.
+            @param int r : Red component.
+            @param int g : Green component.
+            @param int b : Blue component.
         */
         void set(int r, int g, int b);
 
-        /** @brief Définit les composantes RVBA de la couleur.
-            @param int r : Composante rouge.
-            @param int g : Composante verte.
-            @param int b : Composante bleue.
-            @param int a : Composante alpha (transparence).
+        /** @brief Sets the RGBA components of the color.
+            @param int r : Red component.
+            @param int g : Green component.
+            @param int b : Blue component.
+            @param int a : Alpha component (transparency).
         */
-        void set(int r, int g, int b, int a);
+        void set(int r, int g, b, int a);
 
     private:
         int _r;
@@ -122,16 +122,16 @@ namespace Uniti {
     };
 }
 
-/** @brief Surcharge de l'opérateur de sortie pour afficher la couleur dans un flux de sortie standard.
-    @param std::ostream& os : Flux de sortie.
-    @param const Uniti::Color &color : Couleur à afficher.
-    @return std::ostream& : Référence au flux de sortie.
+/** @brief Overload of the output operator to display the color in a standard output stream.
+    @param std::ostream& os : Output stream.
+    @param const Uniti::Color &color : Color to display.
+    @return std::ostream& : Reference to the output stream.
 */
 std::ostream &operator<<(std::ostream &os, const Uniti::Color &color);
 
-/** @brief Surcharge de l'opérateur de sortie pour afficher la couleur dans un objet de journalisation spécifique (Logger).
-    @param Uniti::Logger& os : Objet de journalisation.
-    @param const Uniti::Color &color : Couleur à afficher.
-    @return Uniti::Logger& : Référence à l'objet de journalisation.
+/** @brief Overload of the output operator to display the color in a specific logging object (Logger).
+    @param Uniti::Logger& os : Logging object.
+    @param const Uniti::Color &color : Color to display.
+    @return Uniti::Logger& : Reference to the logging object.
 */
 Uniti::Logger &operator<<(Uniti::Logger &os, const Uniti::Color &color);
