@@ -71,7 +71,6 @@ namespace Uniti {
             @param float value: The new y-coordinate value.
         */
         void setY(float value);
-        void set(float x, float y);
 
         /** @brief Overloaded addition operator to add two Vector2f instances.
             @param const Vector2f &other: Another Vector2f to add.
