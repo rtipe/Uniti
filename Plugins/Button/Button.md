@@ -1,14 +1,18 @@
-explication de Button.md
+# Button.md
 
-- Button.md est un ObjectPlugin
+Button is an ObjectPlugin that allows you to create interactive buttons.
 
-il prend des paramètres :
+## Parameters
 
-- width
-- height
+- `width`: The width of the button.
+- `height`: The height of the button.
 
-lorsqu'on clique sur la zone il émet un event onClick
+## Event
 
-Button à besoin de Render pour fonctioner
+When you click on the button area, it emits an `onClick` event.
 
-(mettre un lien vers plugin.md)
+## Dependencies
+
+Button requires the use of the `Render` component to function.
+
+For more information about plugins, check out [plugin.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/Plugin.md).
