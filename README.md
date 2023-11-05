@@ -93,4 +93,4 @@ vincent.balandi@epitech.eu
 
 ## License
 
-[MIT Licence]
+[MIT Licence](https://github.com/rtipe/Uniti/blob/19856c67d392aaea7be7fed8fd82cb25cbfe2874/LICENSE)
