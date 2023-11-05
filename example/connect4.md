@@ -28,7 +28,7 @@ To run Connect4, follow these steps:
 1. Clone the Connect4 repository from GitHub.
 
    ```bash
-   git clone https://github.com/yourusername/connect4.git
+   git clone https://github.com/rtipe/Uniti
    
 2. Create a build directory at the root.
 
