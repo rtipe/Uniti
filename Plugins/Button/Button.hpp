@@ -7,55 +7,80 @@
 #include "IObjectPlugin.hpp"
 #include "IWindow.hpp"
 
+/** @brief Button class that implements the IObjectPlugin interface.
+*/
 class Button : public Uniti::IObjectPlugin {
 public:
+    /** @brief Constructor for the Button class.
+        @param Uniti::Object &object: Reference to the associated Object.
+    */
     Button(Uniti::Object &object);
-    // Constructor for the Button class.
 
+    /** @brief Get the associated Object.
+        @return Uniti::Object&: Reference to the associated Object.
+    */
     Uniti::Object &getObject() override;
-    // Returns a reference to the associated Object.
 
+    /** @brief Called when the Button is awakened and initializes it based on the provided JSON value.
+        @param const Json::Value &value: JSON configuration for the Button.
+    */
     void awake(const Json::Value &value) override;
-    // Called when the Button is awakened and initializes it based on the provided JSON value.
 
+    /** @brief Called before the Button's main start() method. Can be used for pre-start setup.
+    */
     void preStart() override;
-    // Called before the Button's main start() method. Can be used for pre-start setup.
 
+    /** @brief Called when the Button is starting its functionality.
+    */
     void start() override;
-    // Called when the Button is starting its functionality.
 
+    /** @brief Called after the Button has started. Can be used for post-start actions.
+    */
     void postStart() override;
-    // Called after the Button has started. Can be used for post-start actions.
 
+    /** @brief Called before the update() method. Useful for pre-update preparations.
+    */
     void preUpdate() override;
-    // Called before the update() method. Useful for pre-update preparations.
 
+    /** @brief The main update method for the Button. Called to update the Button's behavior.
+    */
     void update() override;
-    // The main update method for the Button. Called to update the Button's behavior.
 
+    /** @brief Called after the update() method. Can be used for post-update tasks.
+    */
     void postUpdate() override;
-    // Called after the update() method. Can be used for post-update tasks.
 
+    /** @brief Called before the Button is ending or being destroyed.
+    */
     void preEnd() override;
-    // Called before the Button is ending or being destroyed.
 
+    /** @brief The method to end the Button's functionality, typically called when it's being removed or deactivated.
+    */
     void end() override;
-    // The method to end the Button's functionality, typically called when it's being removed or deactivated.
 
+    /** @brief Called after the end() method, used for post-end clean-up.
+    */
     void postEnd() override;
-    // Called after the end() method, used for post-end clean-up.
 
+    /** @brief Get associated Clock (constant reference).
+        @return const Uniti::Clock&: Constant reference to the associated Clock.
+    */
     const Uniti::Clock &getClock() const override;
-    // Returns a constant reference to the Clock associated with the Button.
 
+    /** @brief Get associated Clock (reference).
+        @return Uniti::Clock&: Reference to the associated Clock.
+    */
     Uniti::Clock &getClock() override;
-    // Returns a reference to the Clock associated with the Button.
 
+    /** @brief Get associated Event (constant reference).
+        @return const Uniti::Event&: Constant reference to the associated Event.
+    */
     const Uniti::Event &getEvent() const override;
-    // Returns a constant reference to the Event associated with the Button.
 
+    /** @brief Get associated Event (reference).
+        @return Uniti::Event&: Reference to the associated Event.
+    */
     Uniti::Event &getEvent() override;
-    // Returns a reference to the Event associated with the Button.
 
 private:
     Uniti::Object &_object;
@@ -64,3 +89,4 @@ private:
     float _width;
     float _height;
 };
+
