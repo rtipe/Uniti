@@ -17,25 +17,98 @@ namespace Uniti {
     class Core;
     class ObjectManager {
     public:
+        /**
+         * @brief Construct a new Object Manager object
+         *
+         * @param scene
+         */
         ObjectManager(const Json::Value &value, Scene &scene);
-
+        /**
+         * @brief Construct a new Object Manager object
+         *
+         * @param objects
+         * @param core
+         */
         ObjectManager(const std::vector<std::unique_ptr<Object>> &objects, Core &core);
 
         template<typename... Args>
         void add(Args &&... __args) {
             this->add(std::make_unique<Object>(__args...));
         }
+        /**
+         * @brief Add a object object
+         *
+         * @param object
+         */
         void add(std::unique_ptr<Object> object);
+        /**
+         * @brief Remove a object object
+         *
+         * @param name
+         */
         void remove(const std::string &name);
+        /**
+         * @brief Get the Object object
+         *
+         * @param name
+         * @return Object&
+         */
         const std::vector<std::unique_ptr<Object>> &getObjects() const;
+        /**
+         * @brief Get the Object object
+         *
+         * @param name
+         * @return Object&
+         */
         std::vector<std::unique_ptr<Object>> &getObjects();
+        /**
+         * @brief Get the Object object
+         *
+         * @param name
+         * @return Object&
+         */
         void update();
+        /**
+         * @brief Get the Object object
+         *
+         * @param name
+         * @return Object&
+         */
         void end();
+        /**
+         * @brief Get the Object object
+         *
+         * @param name
+         * @return Object&
+         */
         void emitEvent(const std::string &name, const Json::Value &value);
+        /**
+         * @brief Get the Object object
+         *
+         * @param name
+         * @return Object&
+         */
         const Object &operator[](const std::string &name) const;
+        /**
+         * @brief Get the Object object
+         *
+         * @param name
+         * @return Object&
+         */
         Object &operator[](const std::string &name);
+        /**
+         * @brief Get the Object object
+         *
+         * @param name
+         * @return Object&
+         */
         const Core &getCore() const;
-
+        /**
+         * @brief Get the Object object
+         *
+         * @param name
+         * @return Object&
+         */
         Core &getCore();
     private:
         Core &_core;
