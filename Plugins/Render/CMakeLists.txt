@@ -7,12 +7,6 @@ target_link_libraries(Render PUBLIC Uniti)
 add_subdirectory(Includes)
 add_subdirectory(SFML)
 
-if (WIN32)
-    target_link_libraries(Render PUBLIC sfml-graphics sfml-window sfml-system sfml-audio sfml-main)
-else ()
-    target_link_libraries(Render PUBLIC sfml-graphics sfml-window sfml-system sfml-audio)
-endif ()
-
 add_library(RenderPlugin SHARED EntryPointRender.cpp)
 set_target_properties(RenderPlugin PROPERTIES PREFIX "")
 target_link_libraries(RenderPlugin PUBLIC Render)
