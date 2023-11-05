@@ -14,6 +14,7 @@ else ()
 endif ()
 
 add_library(RenderPlugin SHARED EntryPointRender.cpp)
+set_target_properties(RenderPlugin PROPERTIES PREFIX "")
 target_link_libraries(RenderPlugin PUBLIC Render)
 add_custom_command(
         TARGET RenderPlugin
@@ -23,6 +24,7 @@ add_custom_command(
         ${CMAKE_BINARY_DIR}/bin/CorePlugin/$<TARGET_FILE_NAME:RenderPlugin>
 )
 add_library(PrintablePlugin SHARED EntryPointPrintable.cpp)
+set_target_properties(PrintablePlugin PROPERTIES PREFIX "")
 target_link_libraries(PrintablePlugin PUBLIC Render)
 add_custom_command(
         TARGET PrintablePlugin

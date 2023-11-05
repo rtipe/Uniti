@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 add_library(TextInput SHARED TextInput.cpp)
+set_target_properties(TextInput PROPERTIES PREFIX "")
 target_link_libraries(TextInput PUBLIC Uniti)
 target_link_libraries(TextInput PUBLIC Render)
 add_custom_command(
