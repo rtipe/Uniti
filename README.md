@@ -1,90 +1,96 @@
-# Uniti
+# Rtype Game Engine
 
-(une image si possible)
+![Rtype Logo](./example/connect4/assets/Uniti.png)
 
-Expliquer que le game engine s'inspire de uniti (on reprenant des éléments d'avant)
+The Rtype Game Engine is a C++ game engine inspired by Uniti, incorporating elements from its predecessor. It offers modularity through dynamic plugins, allowing for runtime configuration via JSON files.
 
-et dire qu'on peut crée un serveur à partir du game engine et que tout est
-modulable au runtime à partir de plugin et que tout est configurable à partir d'un json
+## Getting Started
 
-mettre un exemple de comment init le projet :
-
+```cpp
 int main() {
-try {
-Uniti::Core mainInstance(Uniti::Object::openJsonFile("./json/project.json"));
-
+    try {
+        Uniti::Core mainInstance(Uniti::Object::openJsonFile("./json/project.json"));
         mainInstance.start();
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
-
 }
-(le code je l'ai trouvé sur example/connect4/index.cpp)
-(et que c'est aussi simple que ça)
+```
+## Example `project.json`
 
-exemple de project.json :
-
+```cpp
 {
-"plugins": [
-{
-"name": "plugin"
-},
-{
-"name": "RenderPlugin",
-"width": 600,
-"height": 600
-},
-{
-"name": "NetworkPlugin"
-},
-{
-"name": "JSScriptPlugin",
-"path": "./javascript/index.js",
-"fps": 5
+    "plugins": [
+        { "name": "plugin" },
+        { "name": "RenderPlugin", "width": 600, "height": 600 },
+        { "name": "NetworkPlugin" },
+        { "name": "JSScriptPlugin", "path": "./javascript/index.js", "fps": 5 }
+    ],
+    "name": "name",
+    "sceneFolder": "./json",
+    "startScene": "startScene.json",
+    "globalScene": "globalScene.json",
+    "ObjectPlugins": "./ObjectPlugin",
+    "CorePlugins": "./CorePlugin",
+    "ScenePlugins": "./ScenePlugin"
 }
-],
-"name": "name",
-"sceneFolder": "./json",
-"startScene": "startScene.json",
-"globalScene": "globalScene.json",
-"ObjectPlugins": "./ObjectPlugin",
-"CorePlugins": "./CorePlugin"
-}
+```
 
-expliquer ensuite les paramètres que prend le project.json:
+## `project.json` Parameters
 
-- name -> nom du projet
-- sceneFolder -> le chemin où se trouvera tout les scènes (il prendra de façon recursive)
-- startScene -> le nom de la scène (avec .json à la fin attention !)
-- globalScene -> le nom de la scène (avec .json à la fin attention !)
-- ObjectPlugins -> le chemin du dossier où se trouvera tout les plugins ObjectPlugin(mettre un petit lien sur
-  ObjectPlugin) (c pas récursive)
-- CorePlugins -> le chemin du dossier où se trouvera tout les plugins scenePlugin(mettre un petit lien sur
-  scenePlugin) (c pas récursive)
-- ScenePlugins -> le chemin du dossier où se trouvera tout les plugins CorePlugin(mettre un petit lien sur corePlugin) (
-  c pas récursive)
+`name`: Project name.  
+`sceneFolder`: Path to the folder containing all scenes (recursive).  
+`startScene`: Name of the start scene (with .json extension).  
+`globalScene`: Name of the global scene (with .json extension).  
+`ObjectPlugins`: Path to the folder containing ObjectPlugins (non-recursive).  
+`CorePlugins`: Path to the folder containing CorePlugins (non-recursive).  
+`ScenePlugins`: Path to the folder containing ScenePlugins (non-recursive).  
 
-expliquer comment fonctionne les scènes :
+## Scene Management
+## Global Scene
 
-globalScene -> est une scène qui va reste tout le temps pendant que le moteur tourne il ne peut pas être changé
-il est utile de stock des informations de jeu comme la vie du joueur ou mettre les objets qui gére les inputs de
-l'utilisateur en fonction de ses paramètres
+The global scene persists throughout the engine's runtime. It is useful for storing game information like player lives or objects that handle user inputs based on their parameters.
 
-startScene -> est une scène qui peut être changer pendant le cycle du moteur
-il est utile de l'utiliser pour afficher la map du jeu
+## Start Scene
 
-faire une navbar qui permet d'aller sur Plugin.md
+The start scene can be changed during the engine's cycle. It is useful for displaying the game map.
 
-exemple de jeu crée :
+## Example Games
 
-mettre connect4 et un lien avec connect4.md (et une image)
+## Connect4
 
-mettre rtype et un lien vers le repo rtype (et une image)
+Connect4 Image
 
-expliquer que pour tout problème il faudrait faire un issue sur github
+Connect4 Documentation
 
-mettre les contacts
+## Rtype
 
-mettre les contributeurs
+Rtype Image
 
-mettre la license
+Rtype Repository
+
+## Reporting Issues
+
+If you encounter any problems, please create an issue on GitHub.
+
+## Contributors
+
+Younes Bahri  
+Vincent Balandi  
+Abdelkader Mazouz  
+Simon Vermeulen  
+Swann Lagoute  
+
+## Contacts
+
+For inquiries, please contact:
+
+younes1.bahri@epitech.eu  
+swann.lagoute@epitech.eu  
+abdelkader.mazouz@epitech.eu  
+simon.vermeulen@epitech.eu  
+vincent.balandi@epitech.eu  
+
+## License
+
+[MIT Licence]
