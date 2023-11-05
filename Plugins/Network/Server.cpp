@@ -5,15 +5,18 @@
 #include "Server.hpp"
 #include <algorithm>
 
-Server::Server(const std::string &ip, unsigned int port, const std::string &user, Uniti::Core &core) :
+Server::Server(const std::string &ip, unsigned int port, const std::string &user, Uniti::Core &core,
+               const std::string &id) :
         _endpoint(boost::asio::ip::address::from_string(ip), port),
         _user(user),
-        _core(core) {}
+        _core(core),
+        _id(id) {}
 
-Server::Server(boost::asio::ip::udp::endpoint &ip, const std::string &user, Uniti::Core &core) :
+Server::Server(boost::asio::ip::udp::endpoint &ip, const std::string &user, Uniti::Core &core, const std::string &id) :
         _endpoint(ip),
         _user(user),
-        _core(core) {}
+        _core(core),
+        _id(id) {}
 
 void Server::sendEvent(const std::string &name, const Json::Value &value) {
     this->_events[name] = value;
@@ -65,7 +68,7 @@ void Server::updateEvent() {
     for (const auto &event: events) {
         Json::Value newData = event;
         const std::string &name = event.get("name", "undefined").asString();
-        newData["idUser"] = this->_user;
+        newData["idUser"] = this->_id;
         this->_core.getSceneManager().getCurrentScene().emitEvent(name, newData);
         this->_core.getSceneManager().getGlobalScene().emitEvent(name, newData);
     }
