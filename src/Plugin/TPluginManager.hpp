@@ -68,7 +68,7 @@ namespace Uniti {
             @param const Json::Value &value: JSON configuration data for the plugin.
         */
         void add(const std::string &name, Interface &element, const Json::Value &value) {
-            std::string oldPath is = this->_logger.getPath();
+            std::string oldPath = this->_logger.getPath();
             this->_logger.changePath(this->_logger.getPath() + " > Plugin:" + name + " awake()");
             try {
                 this->_plugins.emplace(name, element);
