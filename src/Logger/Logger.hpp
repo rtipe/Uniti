@@ -32,101 +32,101 @@ namespace Uniti {
             WHITE
         };
 
-        /** @brief Constructeur par défaut de la classe Logger.
+        /** @brief Default constructor of the Logger class.
         */
         Logger();
 
-        /** @brief Destructeur de la classe Logger.
+        /** @brief Destructor of the Logger class.
         */
         ~Logger();
 
         using eventLoggerFunction = std::function<std::string(STATUS status, const std::string &text)>;
 
-        /** @brief Enregistre un message dans le journal avec le statut "LOG".
-            @param const std::string &text : Message à enregistrer.
+        /** @brief Logs a message to the log with "LOG" status.
+            @param const std::string &text : Message to log.
         */
         void Log(const std::string &text);
 
-        /** @brief Enregistre un message dans le journal avec le statut "WARN".
-            @param const std::string &text : Message à enregistrer.
+        /** @brief Logs a message to the log with "WARN" status.
+            @param const std::string &text : Message to log.
         */
         void Warn(const std::string &text);
 
-        /** @brief Enregistre un message dans le journal avec le statut "DANGER".
-            @param const std::string &text : Message à enregistrer.
+        /** @brief Logs a message to the log with "DANGER" status.
+            @param const std::string &text : Message to log.
         */
         void Danger(const std::string &text);
 
-        /** @brief Enregistre un message dans le journal avec le statut "INFO".
-            @param const std::string &text : Message à enregistrer.
+        /** @brief Logs a message to the log with "INFO" status.
+            @param const std::string &text : Message to log.
         */
         void Info(const std::string &text);
 
-        /** @brief Affiche un message dans le journal avec le statut spécifié.
-            @param STATUS status : Statut du message.
-            @param const std::string &text : Message à afficher.
+        /** @brief Prints a message to the log with the specified status.
+            @param STATUS status : Status of the message.
+            @param const std::string &text : Message to print.
         */
         void Print(STATUS status, const std::string &text);
 
-        /** @brief Surcharge de l'opérateur << pour enregistrer une chaîne de caractères dans le journal.
-            @param const std::string &text : Chaîne de caractères à enregistrer.
-            @return Logger & : Référence à l'objet Logger.
+        /** @brief Overload of the << operator to log a string in the log.
+            @param const std::string &text : String to log.
+            @return Logger & : Reference to the Logger object.
         */
         Logger &operator<<(const std::string &text);
 
-        /** @brief Surcharge de l'opérateur << pour enregistrer un pointeur de caractère dans le journal.
-            @param const char *text : Pointeur de caractère à enregistrer.
-            @return Logger & : Référence à l'objet Logger.
+        /** @brief Overload of the << operator to log a character pointer in the log.
+            @param const char *text : Character pointer to log.
+            @return Logger & : Reference to the Logger object.
         */
         Logger &operator<<(const char *text);
 
-        /** @brief Surcharge de l'opérateur << pour enregistrer un entier dans le journal.
-            @param const int &text : Entier à enregistrer.
-            @return Logger & : Référence à l'objet Logger.
+        /** @brief Overload of the << operator to log an integer in the log.
+            @param const int &text : Integer to log.
+            @return Logger & : Reference to the Logger object.
         */
         Logger &operator<<(const int &text);
 
-        /** @brief Surcharge de l'opérateur << pour enregistrer un nombre à virgule flottante dans le journal.
-            @param const float &text : Nombre à virgule flottante à enregistrer.
-            @return Logger & : Référence à l'objet Logger.
+        /** @brief Overload of the << operator to log a floating-point number in the log.
+            @param const float &text : Floating-point number to log.
+            @return Logger & : Reference to the Logger object.
         */
         Logger &operator<<(const float &text);
 
-        /** @brief Surcharge de l'opérateur << pour enregistrer un entier long dans le journal.
-            @param const long &text : Entier long à enregistrer.
-            @return Logger & : Référence à l'objet Logger.
+        /** @brief Overload of the << operator to log a long integer in the log.
+            @param const long &text : Long integer to log.
+            @return Logger & : Reference to the Logger object.
         */
         Logger &operator<<(const long &text);
 
-        /** @brief Surcharge de l'opérateur << pour enregistrer un objet JSON dans le journal.
-            @param const Json::Value &text : Objet JSON à enregistrer.
-            @return Logger & : Référence à l'objet Logger.
+        /** @brief Overload of the << operator to log a JSON object in the log.
+            @param const Json::Value &text : JSON object to log.
+            @return Logger & : Reference to the Logger object.
         */
         Logger &operator<<(const Json::Value &text);
 
-        /** @brief Ajoute un auditeur d'événements de journalisation associé à un nom donné.
-            @param const std::string &name : Nom de l'auditeur d'événements.
-            @param eventLoggerFunction function : Fonction d'auditeur d'événements à ajouter.
+        /** @brief Adds a logging event listener associated with a given name.
+            @param const std::string &name : Name of the event listener.
+            @param eventLoggerFunction function : Event listener function to add.
         */
         void addEventListener(const std::string &name, eventLoggerFunction function);
 
-        /** @brief Modifie le chemin de stockage des journaux.
-            @param const std::string &path : Nouveau chemin de stockage.
+        /** @brief Changes the log storage path.
+            @param const std::string &path : New storage path.
         */
         void changePath(const std::string &path);
 
-        /** @brief Retourne le chemin de stockage actuel des journaux (lecture/écriture).
-            @return std::string & : Référence au chemin de stockage.
+        /** @brief Returns the current log storage path (read/write).
+            @return std::string & : Reference to the storage path.
         */
         std::string &getPath();
 
-        /** @brief Modifie le statut actuel du journal.
-            @param STATUS status : Nouveau statut du journal.
+        /** @brief Changes the current log status.
+            @param STATUS status : New log status.
         */
         void changeStatus(STATUS status);
 
-        /** @brief Retourne le statut actuel du journal (lecture seule).
-            @return STATUS : Statut actuel du journal.
+        /** @brief Returns the current log status (read-only).
+            @return STATUS : Current log status.
         */
         STATUS getStatus();
 
