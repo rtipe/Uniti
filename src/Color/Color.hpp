@@ -112,7 +112,7 @@ namespace Uniti {
             @param int b : Blue component.
             @param int a : Alpha component (transparency).
         */
-        void set(int r, int g, b, int a);
+        void set(int r, int g, int b, int a);
 
     private:
         int _r;
