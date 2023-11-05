@@ -114,19 +114,44 @@ public:
         Pause
     };
 
+    /** @brief Virtual destructor for the IInput class.
+    */
     virtual ~IInput() = default;
 
+    /** @brief Update method to process and update input state.
+    */
     virtual void update() = 0;
 
+    /** @brief Check if a specific key (by string representation) is currently pressed.
+        @param const std::string &key: The key to check.
+        @return bool: True if the key is currently pressed; otherwise, false.
+    */
     virtual bool isPressed(const std::string &key) = 0;
 
+    /** @brief Check if a specific keyboard key is currently pressed.
+        @param Key key: The keyboard key to check.
+        @return bool: True if the key is currently pressed; otherwise, false.
+    */
     virtual bool isPressed(Key key) = 0;
 
+    /** @brief Check if a specific key (by string representation) is currently released.
+        @param const std::string &key: The key to check.
+        @return bool: True if the key is currently released; otherwise, false.
+    */
     virtual bool isReleased(const std::string &key) = 0;
 
+    /** @brief Check if a specific keyboard key is currently released.
+        @param Key key: The keyboard key to check.
+        @return bool: True if the key is currently released; otherwise, false.
+    */
     virtual bool isReleased(Key key) = 0;
 
+    /** @brief Get a reference to a list of input events.
+        @return std::vector<std::string>&: Reference to the list of input events.
+    */
     virtual std::vector<std::string> &getEvents() = 0;
 
+    /** @brief Clear the list of input events.
+    */
     virtual void clearEvents() = 0;
 };
