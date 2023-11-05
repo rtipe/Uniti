@@ -1,12 +1,8 @@
 cmake_minimum_required(VERSION 3.22)
 
-add_subdirectory(SFML)
+add_subdirectory(RayLib)
 
-if (WIN32)
-    target_link_libraries(Render PUBLIC sfml-graphics sfml-window sfml-system sfml-audio sfml-main)
-else ()
-    target_link_libraries(Render PUBLIC sfml-graphics sfml-window sfml-system sfml-audio)
-endif ()
+target_link_libraries(Render PUBLIC raylib)
 
 target_sources(Render PUBLIC
         RenderPlugin.cpp
