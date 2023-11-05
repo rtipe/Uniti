@@ -1,53 +1,53 @@
-explication de Render.md
+# Render.md
 
-- RenderPlugin est un CorePlugin
+## Explanation of RenderPlugin
 
-il prend des paramètres :
+RenderPlugin is a CorePlugin responsible for handling rendering logic, including object creation and depth management. It accepts the following parameters:
 
-- width
-- height
-- icon (chemin vers l'image)
-- title
+- `width`
+- `height`
+- `icon` (path to the image)
+- `title`
 
-elle emet des events :
+### Emitted Events
 
-- MOUSE_XX_RELEASED qui envoie la position de la souris
-- MOUSE_XX_POUSSED qui envoie la position de la souris
-- KEY_XX_RELEASED qui envoie rien
-- KEY_XX_PRESSED qui envoie rien
+- `MOUSE_XX_RELEASED`: Sends the mouse position upon release.
+- `MOUSE_XX_PRESSED`: Sends the mouse position upon press.
+- `KEY_XX_RELEASED`: Does not send any information.
+- `KEY_XX_PRESSED`: Does not send any information.
 
-Elle gère toute la logique de rendu (création de l'objet, gestion de la profondeur...)
+RenderPlugin manages the entire rendering logic, from creating objects to handling depth.
 
-- PrintablePlugin est un ObjectPlugin
+## Explanation of PrintablePlugin
 
-il prend des paramètres :
+PrintablePlugin is an ObjectPlugin responsible for defining printable objects within the environment. It accepts the following parameters:
 
-- type (sprite ou text)
-- zIndex (float) (la profondeur de l'objet)
+- `type` (sprite or text)
+- `zIndex` (float, representing object depth)
 
-si c'est un sprite :
+### If it's a sprite:
 
-- texture -> (path,smooth,repeat)
-- textureRect -> (x,y,width,height)
+- `texture` -> (path, smooth, repeat)
+- `textureRect` -> (x, y, width, height)
 
-si c'est un texte:
+### If it's text:
 
-- font -> (path)
-- text -> text qui sera affiché
-- color -> (r,g,b,a)
-- style ->(regular,bold,italic)
-- size
+- `font` -> (path)
+- `text` -> the displayed text
+- `color` -> (r, g, b, a)
+- `style` -> (regular, bold, italic)
+- `size`
 
-elle reçoit des events :
+### Received Events
 
-- setString qui reçoit un json (string) change le texte d'affichage
-- setFont qui reçoit un json (string -> path) change le chemin de la font
-- setCharacterSize qui reçoit un json (int)
-- setStyle qui reçoit un json (string)
-- setColor qui reçoit un json (string)
-- setTexture qui reçoit un json (path(string),smooth(bool),repeat(bool))
-- changeZIndex qui reçoit un json (float)
+- `setString`: Receives a JSON parameter (`string`) to change the displayed text.
+- `setFont`: Receives a JSON parameter (`string` -> path) to change the font path.
+- `setCharacterSize`: Receives a JSON parameter (`int`).
+- `setStyle`: Receives a JSON parameter (`string`).
+- `setColor`: Receives a JSON parameter (`string`).
+- `setTexture`: Receives a JSON parameter (`path`[string], `smooth`[bool], `repeat`[bool]).
+- `changeZIndex`: Receives a JSON parameter (`float`).
 
-Elle permet de dire à RenderPlugin d'afficher cette objet là avec les paramètres données
+PrintablePlugin instructs RenderPlugin to display the specified object with the provided parameters.
 
-(mettre un lien vers plugin.md)
+For more detailed information about plugins, please refer to [plugin.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/Plugin.md).
