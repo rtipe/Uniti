@@ -11,9 +11,9 @@
 
 class Server {
 public:
-    Server(const std::string &ip, unsigned int port, const std::string &user, Uniti::Core &core);
+    Server(const std::string &ip, unsigned int port, const std::string &user, Uniti::Core &core, const std::string &id);
 
-    Server(boost::asio::ip::udp::endpoint &ip, const std::string &user, Uniti::Core &core);
+    Server(boost::asio::ip::udp::endpoint &ip, const std::string &user, Uniti::Core &core, const std::string &id);
 
     void sendEvent(const std::string &name, const Json::Value &value);
 
@@ -49,4 +49,5 @@ private:
     int _waitedId = 0;
     int _sendId = 0;
     std::string _user;
+    std::string _id;
 };

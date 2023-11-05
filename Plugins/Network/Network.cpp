@@ -56,11 +56,11 @@ void Network::update() {
 }
 
 void Network::addServer(const std::string &name, const std::string &ip, unsigned int port) {
-    this->_servers[name] = std::make_unique<Server>(ip, port, this->_user, this->_core);
+    this->_servers[name] = std::make_unique<Server>(ip, port, this->_user, this->_core, name);
 }
 
 void Network::addServer(const std::string &name, boost::asio::ip::udp::endpoint &ip) {
-    this->_servers[name] = std::make_unique<Server>(ip, this->_user, this->_core);
+    this->_servers[name] = std::make_unique<Server>(ip, this->_user, this->_core, name);
 }
 
 void Network::removeServer(const std::string &name) {
