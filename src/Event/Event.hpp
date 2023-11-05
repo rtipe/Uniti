@@ -12,28 +12,28 @@ namespace Uniti {
     using eventFunction = std::function<void(const Json::Value &value)>;
     class Event {
     public:
-        /** @brief Ajoute une fonction d'événement associée à un nom donné.
-            @param const std::string &name : Nom de l'événement.
-            @param eventFunction function : Fonction d'événement à ajouter.
-            @return std::size_t : Identifiant unique de la fonction d'événement ajoutée.
+        /** @brief Add an event function associated with a given name.
+            @param const std::string &name : Event name.
+            @param eventFunction function : Event function to add.
+            @return std::size_t : Unique identifier of the added event function.
         */
         std::size_t addEvent(const std::string &name, eventFunction function);
 
-        /** @brief Supprime toutes les fonctions d'événement associées à un nom donné.
-            @param const std::string &name : Nom de l'événement à supprimer.
+        /** @brief Remove all event functions associated with a given name.
+            @param const std::string &name : Event name to remove.
         */
         void removeEvent(const std::string &name);
 
-        /** @brief Supprime une fonction d'événement spécifique associée à un nom donné.
-            @param const std::string &name : Nom de l'événement.
-            @param std::size_t id : Identifiant unique de la fonction d'événement à supprimer.
+        /** @brief Remove a specific event function associated with a given name.
+            @param const std::string &name : Event name.
+            @param std::size_t id : Unique identifier of the event function to remove.
         */
         void removeEvent(const std::string &name, std::size_t id);
 
-        /** @brief Émet un événement spécifique avec des données JSON associées.
-            @param const std::string &name : Nom de l'événement à émettre.
-            @param const Json::Value &value : Données JSON associées à l'événement.
-            @param Logger &logger : Objet de journalisation pour enregistrer des informations.
+        /** @brief Emit a specific event with associated JSON data.
+            @param const std::string &name : Name of the event to emit.
+            @param const Json::Value &value : JSON data associated with the event.
+            @param Logger &logger : Logging object to record information.
         */
         virtual void emitEvent(const std::string &name, const Json::Value &value, Logger &logger);
 
