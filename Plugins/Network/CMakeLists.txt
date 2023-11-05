@@ -25,6 +25,7 @@ target_sources(Network PUBLIC
 target_include_directories(Network PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 
 add_library(NetworkPlugin SHARED EntryPoint.cpp)
+set_target_properties(NetworkPlugin PROPERTIES PREFIX "")
 target_link_libraries(NetworkPlugin PUBLIC Network)
 add_custom_command(
         TARGET NetworkPlugin

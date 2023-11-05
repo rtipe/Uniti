@@ -59,6 +59,7 @@ target_sources(JSScript PUBLIC
 target_include_directories(JSScript PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 
 add_library(JSScriptPlugin SHARED EntryPointJSScript.cpp)
+set_target_properties(JSScriptPlugin PROPERTIES PREFIX "")
 target_link_libraries(JSScriptPlugin PUBLIC JSScript)
 add_custom_command(
         TARGET JSScriptPlugin
@@ -69,6 +70,7 @@ add_custom_command(
 )
 
 add_library(JSListener SHARED EntryPointJSListener.cpp)
+set_target_properties(JSListener PROPERTIES PREFIX "")
 target_link_libraries(JSListener PUBLIC JSScript)
 add_custom_command(
         TARGET JSListener

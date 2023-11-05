@@ -12,6 +12,7 @@ target_sources(Physics PUBLIC
 target_include_directories(Physics PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 
 add_library(PhysicsPlugin SHARED EntryPoint.cpp)
+set_target_properties(PhysicsPlugin PROPERTIES PREFIX "")
 target_link_libraries(PhysicsPlugin PUBLIC Physics)
 add_custom_command(
         TARGET PhysicsPlugin
