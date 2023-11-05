@@ -1,45 +1,69 @@
-Expliquer que le plugin c'est une lib dynamique qui sera importé dynamiquement
-au moment de lancer le moteur.
+# plugin.md
 
-mettre des liens vers les différents plugins crée (Button.md...)
+## Introduction to Plugins
 
-expliquer la structure d'un plugin :
+A plugin is a dynamic library that is dynamically loaded at the moment the engine is launched. It extends the functionality of the engine by providing additional features and capabilities.
 
-(méthode executé dans l'ordre)
-Démarrage :
+### List of Created Plugins:
 
-- preStart des corePlugin
-- start des corePlugin
-- postStart des corePlugin
-- preStart des scenePlugin
-- start des scenePlugin
-- postStart des scenePlugin
-- preStart des objectPlugin
-- start des objectPlugin
-- postStart des objectPlugin
+- [Button.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/Button/Button.md)
+- [TextInput.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/TextInput/TextInput.md)
+- [ScenePlugin.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/ScenePlugin.md)
+- [JSScript.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/JSScript/JSScript.md)
+- [NetworkPlugin.md](https://github.com/rtipe/Uniti/tree/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/Network)
+- [Physics.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/Physics/Physics.md)
+- [Render.md](https://github.com/rtipe/Uniti/tree/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/Render)
+- [ObjectPlugin.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/ObjectPlugin.md)
+- [CorePlugin.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/CorePlugin.md)
 
-Boucle du moteur :
+## Structure of a Plugin
 
-- preUpdate corePlugin
-- preUpdate scenePlugin
-- preUpdate objectPlugin
-- update objectPlugin
-- update scenePlugin
-- update corePlugin
-- postUpdate objectPlugin
-- postUpdate scenePlugin
-- postUpdate corePlugin
+A plugin follows a specific lifecycle sequence, with methods executed in a defined order:
 
-fin :
+### Startup:
 
-- preEnd corePlugin
-- preEnd scenePlugin
-- preEnd objectPlugin
-- end objectPlugin
-- end scenePlugin
-- end corePlugin
-- postEnd objectPlugin
-- postEnd scenePlugin
-- postEnd corePlugin
+- `preStart` for corePlugins
+- `start` for corePlugins
+- `postStart` for corePlugins
+- `preStart` for scenePlugins
+- `start` for scenePlugins
+- `postStart` for scenePlugins
+- `preStart` for objectPlugins
+- `start` for objectPlugins
+- `postStart` for objectPlugins
 
-mettre des liens vers les différentes explication (CorePlugin, ObjectPlugin...)
+### Engine Loop:
+
+- `preUpdate` for corePlugins
+- `preUpdate` for scenePlugins
+- `preUpdate` for objectPlugins
+- `update` for objectPlugins
+- `update` for scenePlugins
+- `update` for corePlugins
+- `postUpdate` for objectPlugins
+- `postUpdate` for scenePlugins
+- `postUpdate` for corePlugins
+
+### Shutdown:
+
+- `preEnd` for corePlugins
+- `preEnd` for scenePlugins
+- `preEnd` for objectPlugins
+- `end` for objectPlugins
+- `end` for scenePlugins
+- `end` for corePlugins
+- `postEnd` for objectPlugins
+- `postEnd` for scenePlugins
+- `postEnd` for corePlugins
+
+For detailed explanations of each type of plugin (CorePlugin, ObjectPlugin, etc.), refer to their respective documentation.
+
+- [Button.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/Button/Button.md)
+- [TextInput.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/TextInput/TextInput.md)
+- [ScenePlugin.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/ScenePlugin.md)
+- [JSScript.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/JSScript/JSScript.md)
+- [NetworkPlugin.md](https://github.com/rtipe/Uniti/tree/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/Network)
+- [Physics.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/Physics/Physics.md)
+- [Render.md](https://github.com/rtipe/Uniti/tree/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/Render)
+- [ObjectPlugin.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/ObjectPlugin.md)
+- [CorePlugin.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/CorePlugin.md)
