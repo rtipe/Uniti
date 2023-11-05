@@ -11,133 +11,133 @@
 namespace Uniti {
     class Box {
     public:
-        /** @brief Constructeur de la classe Box prenant un objet JSON comme argument.
-            @param const Json::Value &value : Objet JSON pour l'initialisation.
+        /** @brief Constructor of the Box class taking a JSON object as an argument.
+            @param const Json::Value &value : JSON object for initialization.
         */
         Box(const Json::Value &value);
 
-        /** @brief Constructeur de la classe Box prenant des coordonnées et des dimensions.
-            @param float x : Coordonnée X.
-            @param float y : Coordonnée Y.
-            @param float width : Largeur.
-            @param float height : Hauteur.
+        /** @brief Constructor of the Box class taking coordinates and dimensions.
+            @param float x : X-coordinate.
+            @param float y : Y-coordinate.
+            @param float width : Width.
+            @param float height : Height.
         */
         Box(float x, float y, float width, float height);
 
-        /** @brief Retourne la position actuelle de la boîte (lecture seule).
-            @return const Vector2f & : Position de la boîte.
+        /** @brief Returns the current position of the box (read-only).
+            @return const Vector2f & : Box position.
         */
         const Vector2f &getPosition() const;
 
-        /** @brief Retourne la position actuelle de la boîte (lecture/écriture).
-            @return Vector2f & : Position de la boîte.
+        /** @brief Returns the current position of the box (read/write).
+            @return Vector2f & : Box position.
         */
         Vector2f &getPosition();
 
-        /** @brief Retourne les dimensions actuelles de la boîte (lecture seule).
-            @return const Vector2f & : Dimensions de la boîte.
+        /** @brief Returns the current dimensions of the box (read-only).
+            @return const Vector2f & : Box dimensions.
         */
         const Vector2f &getDimension() const;
 
-        /** @brief Retourne les dimensions actuelles de la boîte (lecture/écriture).
-            @return Vector2f & : Dimensions de la boîte.
+        /** @brief Returns the current dimensions of the box (read/write).
+            @return Vector2f & : Box dimensions.
         */
         Vector2f &getDimension();
 
-        /** @brief Retourne la coordonnée X de la position (lecture seule).
-            @return const float : Coordonnée X de la position.
+        /** @brief Returns the X-coordinate of the position (read-only).
+            @return const float : X-coordinate of the position.
         */
         const float getX() const;
 
-        /** @brief Retourne la coordonnée X de la position (lecture/écriture).
-            @return float : Coordonnée X de la position.
+        /** @brief Returns the X-coordinate of the position (read/write).
+            @return float : X-coordinate of the position.
         */
         float getX();
 
-        /** @brief Retourne la coordonnée Y de la position (lecture seule).
-            @return const float : Coordonnée Y de la position.
+        /** @brief Returns the Y-coordinate of the position (read-only).
+            @return const float : Y-coordinate of the position.
         */
         const float getY() const;
 
-        /** @brief Retourne la coordonnée Y de la position (lecture/écriture).
-            @return float : Coordonnée Y de la position.
+        /** @brief Returns the Y-coordinate of the position (read/write).
+            @return float : Y-coordinate of the position.
         */
         float getY();
 
-        /** @brief Retourne la largeur de la boîte (lecture seule).
-            @return const float : Largeur de la boîte.
+        /** @brief Returns the width of the box (read-only).
+            @return const float : Width of the box.
         */
         const float getWidth() const;
 
-        /** @brief Retourne la largeur de la boîte (lecture/écriture).
-            @return float : Largeur de la boîte.
+        /** @brief Returns the width of the box (read/write).
+            @return float : Width of the box.
         */
         float getWidth();
 
-        /** @brief Retourne la hauteur de la boîte (lecture seule).
-            @return const float : Hauteur de la boîte.
+        /** @brief Returns the height of the box (read-only).
+            @return const float : Height of the box.
         */
         const float getHeight() const;
 
-        /** @brief Retourne la hauteur de la boîte (lecture/écriture).
-            @return float : Hauteur de la boîte.
+        /** @brief Returns the height of the box (read/write).
+            @return float : Height of the box.
         */
         float getHeight();
 
-        /** @brief Définit la position de la boîte en fonction d'un objet Vector2f donné.
-            @param const Vector2f &position : Nouvelle position de la boîte.
+        /** @brief Sets the position of the box based on a given Vector2f object.
+            @param const Vector2f &position : New position of the box.
         */
         void setPosition(const Vector2f &position);
 
-        /** @brief Définit les dimensions de la boîte en fonction d'un objet Vector2f donné.
-            @param const Vector2f &dimension : Nouvelles dimensions de la boîte.
+        /** @brief Sets the dimensions of the box based on a given Vector2f object.
+            @param const Vector2f &dimension : New dimensions of the box.
         */
         void setDimension(const Vector2f &dimension);
 
-        /** @brief Définit la coordonnée X de la position de la boîte.
-            @param float x : Nouvelle coordonnée X.
+        /** @brief Sets the X-coordinate of the position of the box.
+            @param float x : New X-coordinate.
         */
         void setX(float x);
 
-        /** @brief Définit la coordonnée Y de la position de la boîte.
-            @param float y : Nouvelle coordonnée Y.
+        /** @brief Sets the Y-coordinate of the position of the box.
+            @param float y : New Y-coordinate.
         */
         void setY(float y);
 
-        /** @brief Définit la largeur de la boîte.
-            @param float width : Nouvelle largeur.
+        /** @brief Sets the width of the box.
+            @param float width : New width.
         */
         void setWidth(float width);
 
-        /** @brief Définit la hauteur de la boîte.
-            @param float height : Nouvelle hauteur.
+        /** @brief Sets the height of the box.
+            @param float height : New height.
         */
         void setHeight(float height);
 
-        /** @brief Vérifie si un point donné est à l'intérieur de la boîte.
-            @param const Vector2f &point : Point à vérifier.
-            @return bool : Vrai si le point est à l'intérieur de la boîte, sinon faux.
+        /** @brief Checks if a given point is inside the box.
+            @param const Vector2f &point : Point to check.
+            @return bool : True if the point is inside the box, otherwise false.
         */
         bool isInside(const Vector2f &point) const;
 
-        /** @brief Vérifie si un point donné est à l'intérieur de la boîte, par rapport à un parent.
-            @param const Vector2f &point : Point à vérifier.
-            @param const Vector2f &parent : Parent de référence.
-            @return bool : Vrai si le point est à l'intérieur de la boîte, sinon faux.
+        /** @brief Checks if a given point is inside the box relative to a parent.
+            @param const Vector2f &point : Point to check.
+            @param const Vector2f &parent : Reference parent.
+            @return bool : True if the point is inside the box, otherwise false.
         */
         bool isInside(const Vector2f &point, const Vector2f &parent) const;
 
-        /** @brief Vérifie si une autre boîte est entièrement à l'intérieur de cette boîte.
-            @param const Box &box : Boîte à vérifier.
-            @return bool : Vrai si l'autre boîte est entièrement à l'intérieur, sinon faux.
+        /** @brief Checks if another box is entirely inside this box.
+            @param const Box &box : Box to check.
+            @return bool : True if the other box is entirely inside, otherwise false.
         */
         bool isInside(const Box &box) const;
 
-        /** @brief Vérifie si une autre boîte est entièrement à l'intérieur de cette boîte, par rapport à deux parents.
-            @param const Box &box : Boîte à vérifier.
-            @param const Vector2f &parentA : Premier parent de référence.
-            @param const Vector2f &parentB : Deuxième parent de référence.
-            @return bool : Vrai si l'autre boîte est entièrement à l'intérieur, sinon faux.
+        /** @brief Checks if another box is entirely inside this box relative to two parents.
+            @param const Box &box : Box to check.
+            @param const Vector2f &parentA : First reference parent.
+            @param const Vector2f &parentB : Second reference parent.
+            @return bool : True if the other box is entirely inside, otherwise false.
         */
         bool isInside(const Box &box, const Vector2f &parentA, const Vector2f &parentB) const;
 
@@ -147,16 +147,16 @@ namespace Uniti {
     };
 }
 
-/** @brief Surcharge de l'opérateur de sortie pour afficher la boîte dans un flux de sortie standard.
-    @param std::ostream& os : Flux de sortie.
-    @param const Uniti::Box &box : Boîte à afficher.
-    @return std::ostream& : Référence au flux de sortie.
+/** @brief Overload of the output operator to display the box in a standard output stream.
+    @param std::ostream& os : Output stream.
+    @param const Uniti::Box &box : Box to display.
+    @return std::ostream& : Reference to the output stream.
 */
 std::ostream& operator<<(std::ostream& os, const Uniti::Box &box);
 
-/** @brief Surcharge de l'opérateur de sortie pour afficher la boîte dans un objet de journalisation spécifique (Logger).
-    @param Uniti::Logger& os : Objet de journalisation.
-    @param const Uniti::Box &box : Boîte à afficher.
-    @return Uniti::Logger& : Référence à l'objet de journalisation.
+/** @brief Overload of the output operator to display the box in a specific logging object (Logger).
+    @param Uniti::Logger& os : Logging object.
+    @param const Uniti::Box &box : Box to display.
+    @return Uniti::Logger& : Reference to the logging object.
 */
 Uniti::Logger& operator<<(Uniti::Logger& os, const Uniti::Box &box);
