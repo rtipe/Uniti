@@ -1,30 +1,28 @@
-explication de Physics.md
+# Physics.md
 
-- Physics.md est un ObjectPlugin
+## Explanation of Physics.md
 
-il prend des paramètres :
+Physics.md is an ObjectPlugin that governs the physics behavior of objects within the environment. It accepts the following parameters:
 
-- isOverlap
-- boxes (tableau de box(x,y,width,height))
+- `isOverlap`
+- `boxes` (an array of boxes containing `x`, `y`, `width`, and `height` properties)
 
-il reçoit des events :
+### Received Events
 
-- moveTo qui prend un json (position(x(float),y(float)),speed(float)) qui permet de déplacer l'object un à un point
-  donné
-- moveForward qui prend un json (deltaTime(float)(optionnel), speed(float)) qui permet de faire avancer l'objet
-- moveBackward qui prend un json (deltaTime(float)(optionnel), speed(float)) qui permet de faire avancer l'objet
-- moveLeft qui prend un json (deltaTime(float)(optionnel), speed(float)) qui permet de faire avancer l'objet
-- moveRight qui prend un json (deltaTime(float)(optionnel), speed(float)) qui permet de faire avancer l'objet
-- move qui prend un json (position(x(float),y(float)),deltaTime(float)(optionnel), speed(float)) qui permet de faire
-  avancer l'objet à partir d'un normal (position)
-- cancelMovement qui prend rien qui permet d'annuler le movement (pour moveTo)
-- setspeed qui prend un json (float) qui permet de changer la vitesse de l'objet (pour moveTo)
+- `moveTo`: Takes a JSON parameter (`position`[object with `x`[float], `y`[float]], `speed`[float]) to move the object to a specific point.
+- `moveForward`: Takes a JSON parameter (`deltaTime`[float](optional), `speed`[float]) to move the object forward.
+- `moveBackward`: Takes a JSON parameter (`deltaTime`[float](optional), `speed`[float]) to move the object backward.
+- `moveLeft`: Takes a JSON parameter (`deltaTime`[float](optional), `speed`[float]) to move the object left.
+- `moveRight`: Takes a JSON parameter (`deltaTime`[float](optional), `speed`[float]) to move the object right.
+- `move`: Takes a JSON parameter (`position`[object with `x`[float], `y`[float]], `deltaTime`[float](optional), `speed`[float]) to move the object from a specified position.
+- `cancelMovement`: Takes no parameter and cancels any ongoing movement (for `moveTo`).
+- `setSpeed`: Takes a JSON parameter (`float`) to change the speed of the object (for `moveTo`).
 
-elle emet des events :
+### Emitted Events
 
-- overlapped qui prend un json (string -> nom de l'objet) lorsqu'un objet à tranversé cette objet
-- collided qui prend un json (string -> nom de l'objet) lorsqu'un objet à percuté cette objet
+- `overlapped`: Takes a JSON parameter (`string` -> object name) when another object passes through this object.
+- `collided`: Takes a JSON parameter (`string` -> object name) when another object collides with this object.
 
-il traîtera la physique du jeu (collision movement...)
+The plugin manages the physics aspects of the game, including collision and movement.
 
-(mettre un lien vers plugin.md)
+For further information about plugins, please refer to [plugin.md](https://github.com/rtipe/Uniti/blob/d83db8477333b3260975e19cee6697aea1c5bf38/Plugins/Plugin.md).
