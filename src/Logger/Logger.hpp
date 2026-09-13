@@ -31,19 +31,47 @@ namespace Uniti {
             YELLOW,
             WHITE
         };
-
+        /**
+         * @brief Construct a new Logger object
+         *
+         */
         Logger();
+        /**
+         * @brief Destroy the Logger object
+         *
+         */
         ~Logger();
         using eventLoggerFunction = std::function<std::string(STATUS status, const std::string &text)>;
-
+        /**
+         * @brief Log a text
+         *
+         * @param text
+         */
         void Log(const std::string &text);
-
+        /**
+         * @brief Warn a text
+         *
+         * @param text
+         */
         void Warn(const std::string &text);
-
+        /**
+         * @brief Danger a text
+         *
+         * @param text
+         */
         void Danger(const std::string &text);
-
+        /**
+         * @brief Info a text
+         *
+         * @param text
+         */
         void Info(const std::string &text);
-
+        /**
+         * @brief Print a text
+         *
+         * @param status
+         * @param text
+         */
         void Print(STATUS status, const std::string &text);
         Logger &operator<<(const std::string &text);
         Logger &operator<<(const char *text);
